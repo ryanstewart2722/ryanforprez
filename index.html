@@ -140,25 +140,22 @@
 
     /* ── Grid ── */
     #grid-container {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      align-content: flex-start;
+      display: grid;
+      grid-template-columns: repeat(7, var(--item-w));
       gap: var(--row-gap) var(--col-gap);
+      justify-content: center;
       padding: var(--grid-pt) var(--grid-px) calc(var(--row-gap) * 0.5);
     }
 
     .grid-item {
       width: var(--item-w);
-      flex-shrink: 0;
       overflow: hidden;
-      cursor: none; /* system cursor hidden; caption follows mouse */
+      cursor: none;
       position: relative;
+      align-self: center;
     }
     .grid-item.portrait  { height: var(--portrait-h); }
-    .grid-item.landscape { width: var(--portrait-h); height: var(--item-w); }
+    .grid-item.landscape { height: var(--landscape-h); }
 
     .grid-item img,
     .grid-item video {
