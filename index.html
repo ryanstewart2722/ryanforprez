@@ -69,10 +69,9 @@
     #bg-fullbleed video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── Page ── */
-    /* background: #fff gives the stacking context a real background so
-       mix-blend-mode: exclusion on children blends against white, not transparent */
+    /* Desktop: z-index:2 keeps grid above the fullbleed hover background (z-index:1).
+       background:#fff makes mix-blend-mode:exclusion render as black on white. */
     #page { position: relative; z-index: 2; background: #fff; }
-    body.bg-camera #page { background: transparent; }
 
     /* ─────────────────────────────────────
        Nav — mix-blend-mode: exclusion.
@@ -347,6 +346,10 @@
     ══════════════════════════════════════ */
     @media (max-width: 768px) {
 
+      /* Remove stacking context isolation on mobile so mix-blend-mode on all
+         children blends against body (white bg) and camera feed directly. */
+      #page { z-index: auto; background: transparent; }
+
       /* Nav: name left-aligned, work/profile right-aligned, same row */
       #nav-name {
         left: 15px;
@@ -443,9 +446,8 @@
       body.mobile-fb-active #mobile-caption-overlay { display: grid; }
 
       .mob-cap-cell {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        display: block;
+        /* padding-top set by JS = image height, placing caption directly below image */
       }
       .mob-cap-cell span {
         font-family: var(--font);
@@ -916,10 +918,14 @@
       let activeMobileItem = null;
 
       function showMobileFullbleed(item) {
-        // Sync overlay cell heights to actual image heights so captions sit below images
+        // Set padding-top on each overlay cell = its image height, so caption
+        // text lands exactly below the image regardless of row height
         gridItems.forEach((gi, i) => {
           const img = gi.querySelector('img, video');
-          if (img) overlay.children[i].style.height = img.offsetHeight + 'px';
+          if (img) {
+            overlay.children[i].style.paddingTop = img.offsetHeight + 'px';
+            overlay.children[i].style.height = '';
+          }
         });
         showFullbleed(item.dataset.hover || item.dataset.src);
         document.body.classList.add('mobile-fb-active');
