@@ -376,26 +376,26 @@
       .grid-item.portrait {
         width: 100%;
         height: auto;
-        overflow: hidden;
+        overflow: visible;
         min-width: 0;
         cursor: pointer;
       }
 
-      /* Natural aspect ratio — portrait ~122px, landscape ~55px at 82px col.
-         No translateY/blur on mobile: avoids caption overlap during animation. */
+      /* No translateY/blur on mobile — avoids caption overlap and iOS Safari
+         blend-mode isolation bug that overflow:hidden causes. */
       .grid-item img,
       .grid-item video {
         width: 100%;
         height: auto;
         object-fit: fill;
-        transform: none;
-        filter: none;
+        transform: none !important;
+        filter: none !important;
         transition: opacity 0.45s ease calc(var(--stagger, 0) * 1ms);
       }
       .grid-item img.loaded,
       .grid-item video.loaded {
-        transform: none;
-        filter: none;
+        transform: none !important;
+        filter: none !important;
       }
 
       /* Per-image caption */
