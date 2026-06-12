@@ -429,31 +429,21 @@
       body.mobile-fb-active .grid-caption { opacity: 0; }
 
       /* Caption overlay during fullbleed.
-         mix-blend-mode on the overlay itself (not child spans) so the overlay's
-         composited white-text-on-transparent group blends against the fullbleed
-         image, rather than blending within the overlay's own isolated stacking
-         context against transparent. */
+         mix-blend-mode on the overlay itself so the composited group blends
+         against the fullbleed image. Cells are absolutely positioned via JS
+         using getBoundingClientRect() for pixel-perfect caption placement. */
       #mobile-caption-overlay {
         position: fixed;
         inset: 0;
         z-index: 10;
         display: none;
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 17.67vw;
-        row-gap: 17.21vw;
-        padding: 84px 3.49vw 80px;
         pointer-events: auto;
-        overflow-y: auto;
-        align-content: start;
-        justify-content: start;
         mix-blend-mode: exclusion;
       }
-      body.mobile-fb-active #mobile-caption-overlay { display: grid; }
+      body.mobile-fb-active #mobile-caption-overlay { display: block; }
 
       .mob-cap-cell {
-        display: block;
-        min-width: 0;
-        /* padding-top set by JS = image height, placing caption directly below image */
+        position: absolute;
       }
       .mob-cap-cell span {
         font-family: var(--font);
@@ -754,7 +744,7 @@
   <!-- Profile elements — all position:fixed at body level,
        no wrapper containers, so mix-blend-mode:exclusion
        blends directly against the page background -->
-  <p id="profile-bio">Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication in 2020. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.<br><br>He collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.</p>
+  <p id="profile-bio">Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.<br><br>He collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.</p>
 
   <div class="meta-col" id="profile-contact">
     <p class="meta-label">Contact:</p>
@@ -919,17 +909,25 @@
       document.body.appendChild(overlay);
 
       let activeMobileItem = null;
+      let savedScrollY = 0;
 
       function showMobileFullbleed(item) {
-        // Set padding-top on each overlay cell = its image height, so caption
-        // text lands exactly below the image regardless of row height
-        gridItems.forEach((gi, i) => {
-          const img = gi.querySelector('img, video');
-          if (img) {
-            overlay.children[i].style.paddingTop = img.offsetHeight + 'px';
-            overlay.children[i].style.height = '';
-          }
+        // Measure each inline caption's exact viewport position BEFORE freezing scroll
+        const captions = [...document.querySelectorAll('.grid-caption')];
+        captions.forEach((cap, i) => {
+          const rect = cap.getBoundingClientRect();
+          const cell = overlay.children[i];
+          cell.style.top   = rect.top + 'px';
+          cell.style.left  = rect.left + 'px';
+          cell.style.width = rect.width + 'px';
         });
+
+        // Freeze body scroll so positions stay locked while fullbleed is shown
+        savedScrollY = window.scrollY;
+        document.body.style.top      = `-${savedScrollY}px`;
+        document.body.style.position = 'fixed';
+        document.body.style.width    = '100%';
+
         showFullbleed(item.dataset.hover || item.dataset.src);
         document.body.classList.add('mobile-fb-active');
         overlay.querySelectorAll('.mob-cap-cell').forEach(cell => {
@@ -939,6 +937,12 @@
       }
 
       function hideMobileFullbleed() {
+        // Restore scroll position
+        document.body.style.position = '';
+        document.body.style.top      = '';
+        document.body.style.width    = '';
+        window.scrollTo(0, savedScrollY);
+
         hideFullbleed();
         document.body.classList.remove('mobile-fb-active');
         activeMobileItem = null;
