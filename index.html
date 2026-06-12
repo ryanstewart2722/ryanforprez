@@ -32,6 +32,8 @@
       --font: 'ABCDiatype', system-ui, sans-serif;
     }
 
+    html.scroll-locked { overflow: hidden; }
+
     html, body {
       width: 100%;
       min-height: 100%;
@@ -911,14 +913,7 @@
       let savedScrollY = 0;
 
       function showMobileFullbleed(item) {
-        // Freeze scroll first — mobile Safari shifts the viewport slightly when
-        // position:fixed fires, so we must measure AFTER the freeze is applied
-        savedScrollY = window.scrollY;
-        document.body.style.top      = `-${savedScrollY}px`;
-        document.body.style.position = 'fixed';
-        document.body.style.width    = '100%';
-
-        // Now measure caption positions with the frozen layout already in effect
+        // Measure captions first while layout is undisturbed
         const captions = [...document.querySelectorAll('.grid-caption')];
         captions.forEach((cap, i) => {
           const rect = cap.getBoundingClientRect();
@@ -927,6 +922,10 @@
           cell.style.left  = rect.left + 'px';
           cell.style.width = rect.width + 'px';
         });
+
+        // Lock scroll via overflow:hidden on html — no layout shift unlike position:fixed
+        savedScrollY = window.scrollY;
+        document.documentElement.classList.add('scroll-locked');
 
         showFullbleed(item.dataset.hover || item.dataset.src);
         document.body.classList.add('mobile-fb-active');
@@ -937,12 +936,7 @@
       }
 
       function hideMobileFullbleed() {
-        // Restore scroll position
-        document.body.style.position = '';
-        document.body.style.top      = '';
-        document.body.style.width    = '';
-        window.scrollTo(0, savedScrollY);
-
+        document.documentElement.classList.remove('scroll-locked');
         hideFullbleed();
         document.body.classList.remove('mobile-fb-active');
         activeMobileItem = null;
