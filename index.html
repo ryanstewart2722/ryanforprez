@@ -69,7 +69,10 @@
     #bg-fullbleed video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── Page ── */
-    #page { position: relative; z-index: 2; }
+    /* background: #fff gives the stacking context a real background so
+       mix-blend-mode: exclusion on children blends against white, not transparent */
+    #page { position: relative; z-index: 2; background: #fff; }
+    body.bg-camera #page { background: transparent; }
 
     /* ─────────────────────────────────────
        Nav — mix-blend-mode: exclusion.
@@ -371,23 +374,30 @@
         justify-content: start;
       }
 
+      /* Wrapper becomes the grid child — flex column keeps caption always below image */
+      .grid-cell {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
       .grid-item,
       .grid-item.landscape,
       .grid-item.portrait {
         width: 100%;
-        height: auto;
+        height: auto !important;
         overflow: visible;
-        min-width: 0;
         cursor: pointer;
+        flex-shrink: 0;
       }
 
-      /* No translateY/blur on mobile — avoids caption overlap and iOS Safari
-         blend-mode isolation bug that overflow:hidden causes. */
+      /* No translateY/blur on mobile — avoids visual overlap during load */
       .grid-item img,
       .grid-item video {
         width: 100%;
-        height: auto;
+        height: auto !important;
         object-fit: fill;
+        display: block;
         transform: none !important;
         filter: none !important;
         transition: opacity 0.45s ease calc(var(--stagger, 0) * 1ms);
@@ -398,10 +408,9 @@
         filter: none !important;
       }
 
-      /* Per-image caption */
+      /* Caption sits outside grid-item as flex sibling, always strictly below image */
       .grid-caption {
         display: block;
-        position: relative;
         font-family: var(--font);
         font-size: 10px;
         line-height: normal;
@@ -411,7 +420,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        flex-shrink: 0;
       }
+
+      /* Hide inline captions during fullbleed — overlay handles them */
+      body.mobile-fb-active .grid-caption { opacity: 0; }
 
       /* Caption overlay during fullbleed */
       #mobile-caption-overlay {
@@ -871,13 +884,20 @@
     (() => {
       const gridItems = [...document.querySelectorAll('.grid-item')];
 
-      // Inject per-image caption spans
-      gridItems.forEach(item => {
-        const cap = document.createElement('span');
-        cap.className = 'grid-caption';
-        cap.textContent = item.dataset.caption;
-        item.appendChild(cap);
-      });
+      // Mobile only: wrap each grid-item in a .grid-cell flex container so
+      // the caption (appended after grid-item) is always strictly below the image
+      if (window.innerWidth <= 768) {
+        gridItems.forEach(item => {
+          const wrap = document.createElement('div');
+          wrap.className = 'grid-cell';
+          item.parentNode.insertBefore(wrap, item);
+          wrap.appendChild(item);
+          const cap = document.createElement('span');
+          cap.className = 'grid-caption';
+          cap.textContent = item.dataset.caption;
+          wrap.appendChild(cap);
+        });
+      }
 
       // Build caption overlay (matches shuffled grid order)
       const overlay = document.createElement('div');
