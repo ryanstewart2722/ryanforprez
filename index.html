@@ -429,7 +429,11 @@
       /* Hide inline captions during fullbleed — overlay handles them */
       body.mobile-fb-active .grid-caption { opacity: 0; }
 
-      /* Caption overlay during fullbleed */
+      /* Caption overlay during fullbleed.
+         mix-blend-mode on the overlay itself (not child spans) so the overlay's
+         composited white-text-on-transparent group blends against the fullbleed
+         image, rather than blending within the overlay's own isolated stacking
+         context against transparent. */
       #mobile-caption-overlay {
         position: fixed;
         inset: 0;
@@ -442,6 +446,8 @@
         pointer-events: auto;
         overflow-y: auto;
         align-content: start;
+        justify-content: start;
+        mix-blend-mode: exclusion;
       }
       body.mobile-fb-active #mobile-caption-overlay { display: grid; }
 
@@ -454,7 +460,6 @@
         font-size: 10px;
         line-height: normal;
         color: rgba(255,255,255,1);
-        mix-blend-mode: exclusion;
         opacity: 0.25;
         margin-top: 5px;
         display: block;
