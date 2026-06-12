@@ -446,14 +446,21 @@
       items.forEach(item => grid.appendChild(item));
     })();
 
-    // ── Image blur-in on load ──
+    // ── Image blur-in + auto orientation on load ──
+    function applyOrientation(img) {
+      const item = img.closest('.grid-item');
+      const landscape = img.naturalWidth > img.naturalHeight;
+      item.classList.toggle('landscape', landscape);
+      item.classList.toggle('portrait', !landscape);
+      img.classList.add('loaded');
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const img = entry.target;
-        const reveal = () => img.classList.add('loaded');
-        if (img.complete) reveal();
-        else img.addEventListener('load', reveal, { once: true });
+        if (img.complete) applyOrientation(img);
+        else img.addEventListener('load', () => applyOrientation(img), { once: true });
         observer.unobserve(img);
       });
     }, { rootMargin: '100px' });
