@@ -346,9 +346,9 @@
     ══════════════════════════════════════ */
     @media (max-width: 768px) {
 
-      /* Remove stacking context isolation on mobile so mix-blend-mode on all
+      /* position:static removes any stacking context so mix-blend-mode on all
          children blends against body (white bg) and camera feed directly. */
-      #page { z-index: auto; background: transparent; }
+      #page { position: static; background: transparent; }
 
       /* Nav: name left-aligned, work/profile right-aligned, same row */
       #nav-name {
@@ -453,6 +453,7 @@
 
       .mob-cap-cell {
         display: block;
+        min-width: 0;
         /* padding-top set by JS = image height, placing caption directly below image */
       }
       .mob-cap-cell span {
