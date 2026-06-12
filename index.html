@@ -381,17 +381,27 @@
         cursor: pointer;
       }
 
-      /* Natural aspect ratio — portrait ~122px, landscape ~55px at 82px col */
+      /* Natural aspect ratio — portrait ~122px, landscape ~55px at 82px col.
+         No translateY/blur on mobile: avoids caption overlap during animation. */
       .grid-item img,
       .grid-item video {
         width: 100%;
         height: auto;
         object-fit: fill;
+        transform: none;
+        filter: none;
+        transition: opacity 0.45s ease calc(var(--stagger, 0) * 1ms);
+      }
+      .grid-item img.loaded,
+      .grid-item video.loaded {
+        transform: none;
+        filter: none;
       }
 
       /* Per-image caption */
       .grid-caption {
         display: block;
+        position: relative;
         font-family: var(--font);
         font-size: 10px;
         line-height: normal;
