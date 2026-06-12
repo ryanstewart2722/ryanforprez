@@ -439,36 +439,44 @@
       }
       .mob-cap-cell.active span { opacity: 1; }
 
-      /* Profile mobile: 15px left, stacked by JS */
+      /* Profile mobile */
       #profile-bio {
         left: 15px !important;
         width: calc(100% - 30px) !important;
         top: 52px !important;
         font-size: 14px !important;
       }
-      #profile-contact,
-      #profile-recognition,
+      /* Contact + Recognition: side-by-side in two half-columns */
+      #profile-contact {
+        left: 15px !important;
+        width: calc(50% - 22px) !important;
+      }
+      #profile-recognition {
+        left: calc(50% + 7px) !important;
+        width: calc(50% - 22px) !important;
+      }
+      /* Devnotes: full-width below, positioned by JS */
       #profile-devnotes {
         left: 15px !important;
         width: calc(100% - 30px) !important;
       }
 
-      /* Player mobile: right-anchored */
+      /* Player mobile: left-anchored */
       #player-art {
-        left: auto !important;
-        right: 15px !important;
+        left: 15px !important;
+        right: auto !important;
         width: 130px !important;
         bottom: 53px !important;
       }
       #player-annotation {
-        left: auto !important;
-        right: 15px !important;
+        left: 15px !important;
+        right: auto !important;
         width: 130px !important;
         bottom: 34px !important;
       }
       #player-caption {
-        left: auto !important;
-        right: 15px !important;
+        left: 15px !important;
+        right: auto !important;
         width: 130px !important;
         bottom: 13px !important;
         white-space: nowrap !important;
@@ -883,7 +891,7 @@
           const img = gi.querySelector('img, video');
           if (img) overlay.children[i].style.height = img.offsetHeight + 'px';
         });
-        showFullbleed(item.dataset.src);
+        showFullbleed(item.dataset.hover || item.dataset.src);
         document.body.classList.add('mobile-fb-active');
         overlay.querySelectorAll('.mob-cap-cell').forEach(cell => {
           cell.classList.toggle('active', cell.dataset.caption === item.dataset.caption);
@@ -980,19 +988,19 @@
     function layoutProfile() {
       const bio = document.getElementById('profile-bio');
       if (window.innerWidth <= 768) {
-        // Mobile: stack vertically below bio
+        // Mobile: contact + recognition side-by-side, devnotes full-width below
         const contact     = document.getElementById('profile-contact');
         const recognition = document.getElementById('profile-recognition');
         const devnotes    = document.getElementById('profile-devnotes');
         const bioBottom   = Math.round(bio.getBoundingClientRect().bottom) + 32;
-        contact.style.top = bioBottom + 'px';
+        contact.style.top     = bioBottom + 'px';
+        recognition.style.top = bioBottom + 'px';
         requestAnimationFrame(() => {
-          const cBottom = Math.round(contact.getBoundingClientRect().bottom) + 20;
-          recognition.style.top = cBottom + 'px';
-          requestAnimationFrame(() => {
-            const rBottom = Math.round(recognition.getBoundingClientRect().bottom) + 20;
-            devnotes.style.top = rBottom + 'px';
-          });
+          const maxBottom = Math.max(
+            contact.getBoundingClientRect().bottom,
+            recognition.getBoundingClientRect().bottom
+          ) + 20;
+          devnotes.style.top = Math.round(maxBottom) + 'px';
         });
       } else {
         // Desktop: align all meta cols to bio.bottom + 84px (Figma gap)
