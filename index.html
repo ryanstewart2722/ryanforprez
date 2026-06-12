@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryan Stewart</title>
+  <style>
+    @font-face {
+      font-family: 'ABCDiatype';
+      src: url('Fonts/ABCDiatype-Regular.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Grid scale: all values from Figma 1440px canvas ── */
+    :root {
+      --item-w:      calc(84  / 1440 * 100vw);
+      --landscape-h: calc(56  / 1440 * 100vw);
+      --portrait-h:  calc(124 / 1440 * 100vw);
+      --col-gap:     calc(126 / 1440 * 100vw);
+      --row-gap:     calc(137 / 1440 * 100vw);
+      --grid-px:     calc(25  / 1440 * 100vw);
+      --grid-pt:     calc(106 / 1440 * 100vw);
+      --font: 'ABCDiatype', system-ui, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #fff;
+      cursor: default;
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: normal;
+    }
+
+    body.bg-camera { background: #000; }
+
+    /* ── Camera layers ── */
+    #bg-camera {
+      position: fixed; inset: 0; z-index: 0; display: none;
+    }
+    body.bg-camera #bg-camera { display: block; }
+    #bg-camera video { width: 100%; height: 100%; object-fit: cover; }
+
+    #camera-blue {
+      position: fixed; inset: 0; z-index: 1;
+      background: #0057ff;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── Fullbleed (white BG only) ── */
+    #bg-fullbleed {
+      position: fixed; inset: 0; z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      transition: none;
+    }
+    #bg-fullbleed.visible { opacity: 1; }
+    #bg-fullbleed img,
+    #bg-fullbleed video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    /* ── Page ── */
+    #page { position: relative; z-index: 2; }
+
+    /* ─────────────────────────────────────
+       Nav — mix-blend-mode: exclusion on all items.
+       To appear correctly on white bg, source colors are
+       the exclusion complement of the desired display color:
+         display #000  → source #fff
+         display #b5b5b5 → source #4a4a4a
+         display #d9d9d9 → source #262626
+    ───────────────────────────────────── */
+    .nav-item {
+      position: fixed;
+      top: 13px;
+      z-index: 10;
+      font-family: var(--font);
+      font-size: 14px;
+      white-space: nowrap;
+      mix-blend-mode: exclusion;
+      pointer-events: auto;
+      text-decoration: none;
+    }
+
+    /* Ryan Stewart — appears as #b5b5b5 on white */
+    #nav-name {
+      left: 25px;
+      color: #4a4a4a;
+    }
+
+    /* Work  Studio — Work appears black, Studio appears #b5b5b5 */
+    #nav-work-studio {
+      left: calc(32.14% - 18.86px);
+      font-size: 0;
+    }
+    #nav-work-studio .work   { font-size: 14px; color: #fff; }   /* → black on white */
+    #nav-work-studio .studio { font-size: 14px; color: #4a4a4a; } /* → #b5b5b5 on white */
+
+    /* Full Case Studies — appears as #d9d9d9 on white */
+    #nav-case-studies {
+      left: calc(60.71% - 100.29px);
+      color: #262626;
+    }
+
+    /* Nav hover → appears as #0057ff (RGB blue) via exclusion on white */
+    #nav-name:hover,
+    #nav-work-studio .work:hover,
+    #nav-work-studio .studio:hover { color: #ffa800; cursor: pointer; }
+    #bg-toggle:hover span          { color: #ffa800; }
+
+    /* ── Camera toggle — Figma: left:calc(100%-46px), top:calc(50%-28px) ── */
+    #bg-toggle {
+      position: fixed;
+      left: calc(100% - 46px);
+      top: calc(50% - 28px);
+      width: 21px;
+      height: 56px;
+      z-index: 10;
+      mix-blend-mode: exclusion;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    #bg-toggle span {
+      display: block;
+      transform: rotate(90deg);
+      white-space: nowrap;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+    }
+
+    /* ── Grid ── */
+    #grid-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      align-content: flex-start;
+      gap: var(--row-gap) var(--col-gap);
+      padding: var(--grid-pt) var(--grid-px) calc(var(--row-gap) * 0.5);
+    }
+
+    .grid-item {
+      width: var(--item-w);
+      flex-shrink: 0;
+      overflow: hidden;
+      cursor: none; /* system cursor hidden; caption follows mouse */
+      position: relative;
+    }
+    .grid-item.landscape { height: var(--landscape-h); }
+    .grid-item.portrait  { height: var(--portrait-h); }
+
+    .grid-item img,
+    .grid-item video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      pointer-events: none;
+      opacity: 0;
+      filter: blur(12px);
+      transform: scale(1.04);
+      transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    }
+    .grid-item img.loaded,
+    .grid-item video.loaded {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+
+    /* ── Caption cursor — only visible when hovering a grid item ── */
+    #cursor {
+      position: fixed;
+      z-index: 100;
+      pointer-events: none;
+      white-space: nowrap;
+      mix-blend-mode: exclusion;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+      transform: translate(10px, -50%);
+      opacity: 0;
+      transition: opacity 0.1s ease;
+    }
+    #cursor.visible { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Camera feed -->
+  <div id="bg-camera">
+    <video id="camera-video" autoplay muted playsinline></video>
+  </div>
+
+  <!-- RGB blue flash for camera intro -->
+  <div id="camera-blue"></div>
+
+  <!-- Fullbleed hover background (white BG mode only) -->
+  <div id="bg-fullbleed">
+    <img  id="bg-img" src="" alt="" style="display:none">
+    <video id="bg-vid" autoplay muted loop playsinline style="display:none"></video>
+  </div>
+
+  <!-- Nav links -->
+  <a href="/"  id="nav-name"         class="nav-item">Ryan Stewart</a>
+  <span        id="nav-work-studio"  class="nav-item">
+    <a href="/"       class="work"  style="text-decoration:none">Work</a><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Studio</span>
+  </span>
+  <span        id="nav-case-studies" class="nav-item">Full Case Studies Coming Soon</span>
+
+  <!-- Camera toggle -->
+  <div id="bg-toggle"><span>Camera</span></div>
+
+  <!-- Page -->
+  <div id="page">
+    <div id="grid-container">
+
+      <div class="grid-item landscape"
+           data-caption="Future Projects"
+           data-src="Images/01_future-projects.jpg"
+           data-hover="Images/hover/01_future-projects.jpg">
+        <img src="Images/01_future-projects.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Common Bond"
+           data-src="Images/02_common-bond.jpg"
+           data-hover="Images/hover/02_common-bond.mp4">
+        <img src="Images/02_common-bond.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Proof of Concept"
+           data-src="Images/03_proof-of-concept.jpeg"
+           data-hover="Images/hover/03_proof-of-concept.jpg">
+        <img src="Images/03_proof-of-concept.jpeg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Jugger Brand ID"
+           data-src="Images/04_jugger-brand-id.jpg"
+           data-hover="Images/hover/04_jugger-brand-id.mp4">
+        <img src="Images/04_jugger-brand-id.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="L'Entrata Wine"
+           data-src="Images/05_lentrata-wine.jpg"
+           data-hover="Images/hover/05_lentrata-wine.jpg">
+        <img src="Images/05_lentrata-wine.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Beadle"
+           data-src="Images/06_beadle.jpg"
+           data-hover="Images/hover/06_beadle.png">
+        <img src="Images/06_beadle.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Stunt Devil"
+           data-src="Images/07_stunt-devil.jpg"
+           data-hover="Images/hover/07_stunt-devil.mp4">
+        <img src="Images/07_stunt-devil.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="CMFTZN"
+           data-src="Images/08_cmftzn.jpg"
+           data-hover="Images/hover/08_cmftzn.mov">
+        <img src="Images/08_cmftzn.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Puppet Master"
+           data-src="Images/09_puppet-master.jpg"
+           data-hover="Images/hover/09_puppet-master.mp4">
+        <img src="Images/09_puppet-master.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="RUN2RAVE"
+           data-src="Images/10_run2rave.jpg"
+           data-hover="Images/hover/10_run2rave.jpg">
+        <img src="Images/10_run2rave.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Wesley Knight"
+           data-src="Images/11_wesley-knight.jpg"
+           data-hover="Images/hover/11_wesley-knight.jpeg">
+        <img src="Images/11_wesley-knight.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Standard Issue"
+           data-src="Images/12_standard-issue.jpg"
+           data-hover="Images/hover/12_standard-issue.jpg">
+        <img src="Images/12_standard-issue.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="NFT Youngboy"
+           data-src="Images/13_nft-youngboy.jpg"
+           data-hover="Images/hover/13_nft-youngboy.mp4">
+        <img src="Images/13_nft-youngboy.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Spoiler Alert"
+           data-src="Images/14_spoiler-alert.jpg"
+           data-hover="Images/hover/14_spoiler-alert.jpg">
+        <img src="Images/14_spoiler-alert.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Look at This Photograph"
+           data-src="Images/15_look-at-this-photograph.jpg"
+           data-hover="Images/hover/15_look-at-this-photograph.gif">
+        <img src="Images/15_look-at-this-photograph.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Cassettes"
+           data-src="Images/16_cassettes.jpg"
+           data-hover="Images/hover/16_cassettes.jpg">
+        <img src="Images/16_cassettes.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Elements Vol 1"
+           data-src="Images/17_elements-vol-1.jpg"
+           data-hover="Images/hover/17_elements-vol-1.png">
+        <img src="Images/17_elements-vol-1.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Sound OFF"
+           data-src="Images/18_sound-off.jpg"
+           data-hover="Images/hover/18_sound-off.jpg">
+        <img src="Images/18_sound-off.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="CWKTSOF"
+           data-src="Images/19_cwktsof.jpg"
+           data-hover="Images/hover/19_cwktsof.jpg">
+        <img src="Images/19_cwktsof.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="South + West"
+           data-src="Images/20_south-west.jpg"
+           data-hover="Images/hover/20_south-west.png">
+        <img src="Images/20_south-west.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="The Canvas 2.0"
+           data-src="Images/21_the-canvas-2-0.jpg"
+           data-hover="Images/hover/21_the-canvas-2-0.png">
+        <img src="Images/21_the-canvas-2-0.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="The Canvas Web"
+           data-src="Images/22_the-canvas-web.jpg"
+           data-hover="Images/hover/22_the-canvas-web.mp4">
+        <img src="Images/22_the-canvas-web.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Bean Sans"
+           data-src="Images/23_bean-sans.jpg"
+           data-hover="Images/hover/23_bean-sans.jpg">
+        <img src="Images/23_bean-sans.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="No More Noise"
+           data-src="Images/24_no-more-noise.jpg"
+           data-hover="Images/hover/24_no-more-noise.jpg">
+        <img src="Images/24_no-more-noise.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Peterson Rich Office"
+           data-src="Images/25_Peterson-Rich-Office.jpg"
+           data-hover="Images/hover/25_Peterson-Rich-Office.jpg">
+        <img src="Images/25_Peterson-Rich-Office.jpg" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Pill Poppers"
+           data-src="Images/26_Pill-Poppers.png"
+           data-hover="Images/hover/26_Pill-Poppers.png">
+        <img src="Images/26_Pill-Poppers.png" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item landscape"
+           data-caption="Tendencies"
+           data-src="Images/27_Tendencies.png"
+           data-hover="Images/hover/27_Tendencies.png">
+        <img src="Images/27_Tendencies.png" alt="" loading="lazy">
+      </div>
+
+      <div class="grid-item portrait"
+           data-caption="Edible Landscapes"
+           data-src="Images/28_Edible-Landscapes.png"
+           data-hover="Images/hover/28_Edible-Landscapes.png">
+        <img src="Images/28_Edible-Landscapes.png" alt="" loading="lazy">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Caption cursor (only visible over grid items) -->
+  <div id="cursor"></div>
+
+  <script>
+    const cursor      = document.getElementById('cursor');
+    const bgFullbleed = document.getElementById('bg-fullbleed');
+    const bgImg       = document.getElementById('bg-img');
+    const bgVid       = document.getElementById('bg-vid');
+    const bgToggle    = document.getElementById('bg-toggle');
+    const cameraVid   = document.getElementById('camera-video');
+    const cameraBlue  = document.getElementById('camera-blue');
+
+    // ── Shuffle grid on each load ──
+    (() => {
+      const grid = document.getElementById('grid-container');
+      const items = [...grid.querySelectorAll('.grid-item')];
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      items.forEach(item => grid.appendChild(item));
+    })();
+
+    // ── Image blur-in on load ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const img = entry.target;
+        const reveal = () => img.classList.add('loaded');
+        if (img.complete) reveal();
+        else img.addEventListener('load', reveal, { once: true });
+        observer.unobserve(img);
+      });
+    }, { rootMargin: '100px' });
+
+    document.querySelectorAll('.grid-item img').forEach(img => observer.observe(img));
+
+    // ── Mouse tracking ──
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+
+    // ── Helpers ──
+    const isCameraMode = () => document.body.classList.contains('bg-camera');
+    const isVideo = src => /\.(mp4|webm|ogg|mov)$/i.test(src);
+
+    // ── Fullbleed ──
+    function showFullbleed(src) {
+      if (isVideo(src)) {
+        bgImg.style.display = 'none';
+        bgVid.src = src;
+        bgVid.style.display = 'block';
+      } else {
+        bgVid.style.display = 'none';
+        bgVid.src = '';
+        bgImg.src = src;
+        bgImg.style.display = 'block';
+      }
+      bgFullbleed.classList.add('visible');
+    }
+
+    function hideFullbleed() {
+      bgFullbleed.classList.remove('visible');
+      setTimeout(() => {
+        if (!bgFullbleed.classList.contains('visible')) {
+          bgImg.src = ''; bgVid.src = '';
+          bgImg.style.display = 'none';
+          bgVid.style.display = 'none';
+        }
+      }, 100);
+    }
+
+    // ── Grid hover ──
+    document.querySelectorAll('.grid-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        cursor.textContent = item.dataset.caption;
+        cursor.classList.add('visible');
+        if (!isCameraMode()) {
+          showFullbleed(item.dataset.hover || item.dataset.src);
+        }
+      });
+      item.addEventListener('mouseleave', () => {
+        cursor.classList.remove('visible');
+        hideFullbleed();
+      });
+    });
+
+    // ── Camera toggle ──
+    let cameraOn = false;
+    let cameraStream = null;
+
+    async function activateCamera() {
+      if (cameraStream) return;
+
+      // RGB blue flash
+      cameraBlue.style.transition = 'none';
+      cameraBlue.style.filter = 'none';
+      cameraBlue.style.opacity = '1';
+
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        cameraVid.srcObject = cameraStream;
+
+        await new Promise(res => {
+          if (cameraVid.readyState >= 2) { res(); return; }
+          cameraVid.oncanplay = res;
+          setTimeout(res, 1500);
+        });
+
+        // Blur out blue → reveal camera
+        cameraBlue.style.transition = 'filter 0.6s ease, opacity 0.6s ease';
+        cameraBlue.style.filter = 'blur(30px)';
+        cameraBlue.style.opacity = '0';
+
+      } catch (e) {
+        cameraBlue.style.opacity = '0';
+        document.body.classList.remove('bg-camera');
+        cameraOn = false;
+      }
+    }
+
+    function deactivateCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+        cameraVid.srcObject = null;
+      }
+      cameraBlue.style.transition = 'none';
+      cameraBlue.style.opacity = '0';
+    }
+
+    bgToggle.addEventListener('click', () => {
+      cameraOn = !cameraOn;
+      if (cameraOn) {
+        document.body.classList.add('bg-camera');
+        hideFullbleed();
+        activateCamera();
+      } else {
+        document.body.classList.remove('bg-camera');
+        deactivateCamera();
+      }
+    });
+  </script>
+</body>
+</html>
