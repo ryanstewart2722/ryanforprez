@@ -13,7 +13,6 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Grid scale: all values from Figma 1440px canvas ── */
     :root {
       --item-w:      calc(84  / 1440 * 100vw);
       --landscape-h: calc(56  / 1440 * 100vw);
@@ -39,9 +38,7 @@
     body.bg-camera { background: #000; }
 
     /* ── Camera layers ── */
-    #bg-camera {
-      position: fixed; inset: 0; z-index: 0; display: none;
-    }
+    #bg-camera { position: fixed; inset: 0; z-index: 0; display: none; }
     body.bg-camera #bg-camera { display: block; }
     #bg-camera video { width: 100%; height: 100%; object-fit: cover; }
 
@@ -52,7 +49,7 @@
       pointer-events: none;
     }
 
-    /* ── Fullbleed (white BG only) ── */
+    /* ── Fullbleed ── */
     #bg-fullbleed {
       position: fixed; inset: 0; z-index: 3;
       pointer-events: none;
@@ -61,20 +58,18 @@
     }
     #bg-fullbleed.visible { opacity: 1; }
     #bg-fullbleed img,
-    #bg-fullbleed video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
+    #bg-fullbleed video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── Page ── */
     #page { position: relative; z-index: 2; }
 
     /* ─────────────────────────────────────
-       Nav — mix-blend-mode: exclusion on all items.
-       To appear correctly on white bg, source colors are
-       the exclusion complement of the desired display color:
-         display #000  → source #fff
-         display #b5b5b5 → source #4a4a4a
-         display #d9d9d9 → source #262626
+       Nav — mix-blend-mode: exclusion.
+       rgba(255,255,255, X) on white:
+         1.0 → black   (active)
+         0.5 → mid gray
+         0.3 → light gray (inactive nav)
+         0.2 → very light (name, case studies)
     ───────────────────────────────────── */
     .nav-item {
       position: fixed;
@@ -88,33 +83,33 @@
       text-decoration: none;
     }
 
-    /* Ryan Stewart — appears as #b5b5b5 on white */
     #nav-name {
       left: 25px;
-      color: #4a4a4a;
+      color: rgba(255,255,255,0.2);
+      cursor: pointer;
     }
+    #nav-name:hover { color: rgba(255,255,255,1); }
 
-    /* Work  Profile — Work appears black, Profile appears #b5b5b5 */
     #nav-work-studio {
       left: calc(32.14% - 18.86px);
       font-size: 0;
     }
-    #nav-work-studio .work   { font-size: 14px; color: #fff; }   /* → black on white */
-    #nav-work-studio .studio { font-size: 14px; color: #4a4a4a; } /* → #b5b5b5 on white */
+    #nav-work-studio .work   { font-size: 14px; color: rgba(255,255,255,1);   cursor: pointer; }
+    #nav-work-studio .studio { font-size: 14px; color: rgba(255,255,255,0.3); cursor: pointer; }
 
-    /* Full Case Studies — appears as #d9d9d9 on white */
+    /* Flip active state on profile page */
+    body.profile-active #nav-work-studio .work   { color: rgba(255,255,255,0.3); }
+    body.profile-active #nav-work-studio .studio { color: rgba(255,255,255,1);   }
+
+    #nav-work-studio .work:hover,
+    #nav-work-studio .studio:hover { color: rgba(255,255,255,1); }
+
     #nav-case-studies {
       left: calc(60.71% - 100.29px);
-      color: #262626;
+      color: rgba(255,255,255,0.2);
     }
 
-    /* Nav hover → appears as #0057ff (RGB blue) via exclusion on white */
-    #nav-name:hover,
-    #nav-work-studio .work:hover,
-    #nav-work-studio .studio:hover { color: #ffa800; cursor: pointer; }
-    #bg-toggle:hover span          { color: #ffa800; }
-
-    /* ── Camera toggle — Figma: left:calc(100%-46px), top:calc(50%-28px) ── */
+    /* ── Camera toggle ── */
     #bg-toggle {
       position: fixed;
       left: calc(100% - 41px);
@@ -133,7 +128,7 @@
       display: block;
       transform: rotate(90deg);
       white-space: nowrap;
-      color: #fff;
+      color: rgba(255,255,255,1);
       font-family: var(--font);
       font-size: 14px;
     }
@@ -149,12 +144,12 @@
 
     .grid-item {
       width: var(--item-w);
+      height: var(--portrait-h);
       overflow: hidden;
       cursor: none;
       position: relative;
       align-self: center;
     }
-    .grid-item.portrait  { height: var(--portrait-h); }
     .grid-item.landscape { height: var(--landscape-h); }
 
     .grid-item img,
@@ -163,18 +158,34 @@
       object-fit: cover; display: block;
       pointer-events: none;
       opacity: 0;
-      filter: blur(12px);
-      transform: scale(1.04);
-      transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+      transform: translateY(12px);
+      filter: blur(4px);
+      transition: opacity 0.55s ease calc(var(--stagger, 0) * 1ms),
+                  transform 0.55s ease calc(var(--stagger, 0) * 1ms),
+                  filter 0.55s ease calc(var(--stagger, 0) * 1ms);
     }
     .grid-item img.loaded,
     .grid-item video.loaded {
       opacity: 1;
+      transform: translateY(0);
       filter: blur(0);
-      transform: scale(1);
     }
 
-    /* ── Caption cursor — only visible when hovering a grid item ── */
+    /* Grid dims when profile active */
+    body.profile-active .grid-item img.loaded,
+    body.profile-active .grid-item video.loaded {
+      opacity: 0.05 !important;
+      filter: none !important;
+      transform: translateY(0) !important;
+      transition: opacity 0.5s ease !important;
+    }
+    body.profile-active.bg-camera .grid-item img.loaded,
+    body.profile-active.bg-camera .grid-item video.loaded {
+      opacity: 0 !important;
+    }
+    body.profile-active .grid-item { pointer-events: none; }
+
+    /* ── Caption cursor ── */
     #cursor {
       position: fixed;
       z-index: 100;
@@ -189,6 +200,130 @@
       transition: opacity 0.1s ease;
     }
     #cursor.visible { opacity: 1; }
+
+    /* ─────────────────────────────────────
+       Profile — click absorber
+    ───────────────────────────────────── */
+    #profile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+    #profile-overlay.active { pointer-events: auto; }
+
+    /* ─────────────────────────────────────
+       Profile text — every element is
+       position:fixed at body level so
+       mix-blend-mode:exclusion blends
+       directly against the page background.
+       No wrapper containers with opacity.
+    ───────────────────────────────────── */
+    #profile-bio,
+    .meta-col,
+    #player-art,
+    #player-annotation,
+    #player-caption {
+      position: fixed;
+      z-index: 6;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    body.profile-active #profile-bio,
+    body.profile-active .meta-col,
+    body.profile-active #player-art,
+    body.profile-active #player-annotation,
+    body.profile-active #player-caption {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Annotation + caption: dim to 0.5 by default, full on hover */
+    body.profile-active #player-annotation { opacity: 0.5; }
+    body.profile-active #player-annotation:hover { opacity: 1; transition: opacity 0.2s ease; }
+    body.profile-active #player-caption:hover { color: rgba(255,255,255,1); }
+
+    #profile-bio {
+      left: 33.9vw;
+      top: 9.35vh;
+      width: 24vw;
+      font-size: 16px;
+      line-height: normal;
+      mix-blend-mode: exclusion;
+      color: rgba(255,255,255,1);
+    }
+
+    .meta-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      mix-blend-mode: exclusion;
+      font-size: 12px;
+      line-height: normal;
+    }
+    #profile-contact     { left: 33.9vw; top: 44vh; }
+    #profile-recognition { left: 45.5vw; top: 44vh; }
+    #profile-devnotes    { left: 63.3vw; top: 44vh; }
+
+    .meta-label { color: rgba(255,255,255,1); margin-bottom: 0; }
+    .meta-col a,
+    .meta-col .meta-val {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+    }
+    .meta-col a:hover { color: rgba(255,255,255,1); }
+
+    body.profile-active #player-art { cursor: pointer; }
+
+    /* Player — bottom-anchored, 13px from viewport bottom (mirrors nav top: 13px) */
+    #player-art {
+      left: 63.3vw;
+      top: auto;
+      bottom: 53px;
+      width: calc(170 / 1440 * 100vw);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    #player-annotation {
+      left: 63.3vw;
+      top: auto;
+      bottom: 34px;
+      width: calc(170 / 1440 * 100vw);
+      mix-blend-mode: exclusion;
+      cursor: pointer;
+    }
+    #player-annotation svg {
+      width: 100%;
+      height: 8px;
+      display: block;
+      overflow: visible;
+    }
+
+    #player-caption {
+      left: 63.3vw;
+      top: auto;
+      bottom: 13px;
+      width: calc(170 / 1440 * 100vw);
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: nowrap;
+      mix-blend-mode: exclusion;
+      color: rgba(255,255,255,0.5);
+    }
+
+    #sc-widget {
+      position: fixed;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -198,26 +333,26 @@
     <video id="camera-video" autoplay muted playsinline></video>
   </div>
 
-  <!-- RGB blue flash for camera intro -->
+  <!-- RGB blue flash -->
   <div id="camera-blue"></div>
 
-  <!-- Fullbleed hover background (white BG mode only) -->
+  <!-- Fullbleed hover background -->
   <div id="bg-fullbleed">
     <img  id="bg-img" src="" alt="" style="display:none">
     <video id="bg-vid" autoplay muted loop playsinline style="display:none"></video>
   </div>
 
-  <!-- Nav links -->
-  <a href="/"  id="nav-name"         class="nav-item">Ryan Stewart</a>
-  <span        id="nav-work-studio"  class="nav-item">
-    <a href="/"       class="work"  style="text-decoration:none">Work</a><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Profile</span>
+  <!-- Nav -->
+  <span id="nav-name" class="nav-item">Ryan Stewart</span>
+  <span id="nav-work-studio" class="nav-item">
+    <span class="work">Work</span><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Profile</span>
   </span>
-  <span        id="nav-case-studies" class="nav-item">Full Case Studies Coming Soon</span>
+  <span id="nav-case-studies" class="nav-item">Full Case Studies Coming Soon</span>
 
   <!-- Camera toggle -->
   <div id="bg-toggle"><span>Camera</span></div>
 
-  <!-- Page -->
+  <!-- Page / grid -->
   <div id="page">
     <div id="grid-container">
 
@@ -420,8 +555,54 @@
     </div>
   </div>
 
-  <!-- Caption cursor (only visible over grid items) -->
+  <!-- Caption cursor -->
   <div id="cursor"></div>
+
+  <!-- Profile overlay — click-absorber only -->
+  <div id="profile-overlay">
+    <iframe id="sc-widget"
+      src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rbc-records/chief-keef-save-me&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"
+      scrolling="no" allow="autoplay"></iframe>
+  </div>
+
+  <!-- Profile elements — all position:fixed at body level,
+       no wrapper containers, so mix-blend-mode:exclusion
+       blends directly against the page background -->
+  <p id="profile-bio">Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication in 2020. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.<br><br>He collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.</p>
+
+  <div class="meta-col" id="profile-contact">
+    <p class="meta-label">Contact:</p>
+    <a href="mailto:yo@ryanforprez.org" target="_blank">yo@ryanforprez.org</a>
+    <a href="https://www.are.na/ryan-stewart/channels" target="_blank">Are.na</a>
+    <a href="https://www.instagram.com/ryanforprez/" target="_blank">Instagram</a>
+  </div>
+
+  <div class="meta-col" id="profile-recognition">
+    <p class="meta-label">Recognition:</p>
+    <a href="https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022" target="_blank">The Brand Identity - Put A Ring On It</a>
+    <a href="https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave" target="_blank">The Brand Identity - RUN2RAVE</a>
+    <a href="https://www.awwwards.com/sites/peterson-rich-office" target="_blank">Awwwards - Peterson Rich Office</a>
+  </div>
+
+  <div class="meta-col" id="profile-devnotes">
+    <p class="meta-label">Design + Development:</p>
+    <span class="meta-val">Ryan Stewart<br><br>Last Updated June 12, 5:37 AM</span>
+  </div>
+
+  <img id="player-art" src="Images/Save%20Me%20-%20Chief%20Keef.png" alt="Save Me - Chief Keef">
+
+  <div id="player-annotation">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207 8" preserveAspectRatio="none">
+      <polygon id="play-triangle" points="0,0 0,8 7,4" fill="white"/>
+      <rect id="stop-square" x="0" y="0" width="8" height="8" fill="white" style="display:none"/>
+      <line x1="15" y1="4" x2="206" y2="4" stroke="white" stroke-width="1" opacity="0.35"/>
+      <line x1="206" y1="0.5" x2="206" y2="7.5" stroke="white" stroke-width="1" opacity="0.35"/>
+      <line id="progress-fill" x1="15" y1="4" x2="15" y2="4" stroke="white" stroke-width="1"/>
+      <line id="playhead" x1="15" y1="0" x2="15" y2="8" stroke="white" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <p id="player-caption">Listening To: Save Me - Chief Keef</p>
 
   <script>
     const cursor      = document.getElementById('cursor');
@@ -440,10 +621,13 @@
         const j = Math.floor(Math.random() * (i + 1));
         [items[i], items[j]] = [items[j], items[i]];
       }
-      items.forEach(item => grid.appendChild(item));
+      items.forEach((item, i) => {
+        item.style.setProperty('--stagger', i * 40);
+        grid.appendChild(item);
+      });
     })();
 
-    // ── Image blur-in + auto orientation on load ──
+    // ── Image blur-in + auto orientation ──
     function applyOrientation(img) {
       const item = img.closest('.grid-item');
       const landscape = img.naturalWidth > img.naturalHeight;
@@ -505,9 +689,7 @@
       item.addEventListener('mouseenter', () => {
         cursor.textContent = item.dataset.caption;
         cursor.classList.add('visible');
-        if (!isCameraMode()) {
-          showFullbleed(item.dataset.hover || item.dataset.src);
-        }
+        if (!isCameraMode()) showFullbleed(item.dataset.hover || item.dataset.src);
       });
       item.addEventListener('mouseleave', () => {
         cursor.classList.remove('visible');
@@ -521,27 +703,20 @@
 
     async function activateCamera() {
       if (cameraStream) return;
-
-      // RGB blue flash
       cameraBlue.style.transition = 'none';
       cameraBlue.style.filter = 'none';
       cameraBlue.style.opacity = '1';
-
       try {
         cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         cameraVid.srcObject = cameraStream;
-
         await new Promise(res => {
           if (cameraVid.readyState >= 2) { res(); return; }
           cameraVid.oncanplay = res;
           setTimeout(res, 1500);
         });
-
-        // Blur out blue → reveal camera
         cameraBlue.style.transition = 'filter 0.6s ease, opacity 0.6s ease';
         cameraBlue.style.filter = 'blur(30px)';
         cameraBlue.style.opacity = '0';
-
       } catch (e) {
         cameraBlue.style.opacity = '0';
         document.body.classList.remove('bg-camera');
@@ -569,6 +744,165 @@
         document.body.classList.remove('bg-camera');
         deactivateCamera();
       }
+    });
+
+    // ── Last Updated timestamp (uses deploy/file modification time) ──
+    (() => {
+      const d = new Date(document.lastModified);
+      const months = ['January','February','March','April','May','June','July',
+                      'August','September','October','November','December'];
+      const h = d.getHours(), m = d.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12  = h % 12 || 12;
+      const label = `Last Updated ${months[d.getMonth()]} ${d.getDate()}, ${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+      document.querySelector('#profile-devnotes .meta-val').innerHTML =
+        'Ryan Stewart<br><br>' + label;
+    })();
+
+    // ── Profile layout: pin meta to bio.bottom + 84px (Figma gap) ──
+    function layoutProfile() {
+      const bio  = document.getElementById('profile-bio');
+      const top  = Math.round(bio.getBoundingClientRect().bottom) + 84;
+      ['profile-contact', 'profile-recognition', 'profile-devnotes'].forEach(id => {
+        document.getElementById(id).style.top = top + 'px';
+      });
+    }
+    document.fonts.ready.then(layoutProfile);
+    window.addEventListener('resize', layoutProfile);
+
+    // ── Profile navigation ──
+    const profileOverlay = document.getElementById('profile-overlay');
+    const workBtn        = document.querySelector('#nav-work-studio .work');
+    const profileBtn     = document.querySelector('#nav-work-studio .studio');
+    const navName        = document.getElementById('nav-name');
+    const navCaseStudies = document.getElementById('nav-case-studies');
+
+    function showProfile() {
+      document.body.classList.add('profile-active');
+      profileOverlay.classList.add('active');
+      navCaseStudies.textContent = 'Contact for Full Case Studies, Coming Soon';
+      hideFullbleed();
+      history.pushState({}, '', '#profile');
+      layoutProfile();
+    }
+
+    function showWork() {
+      document.body.classList.remove('profile-active');
+      profileOverlay.classList.remove('active');
+      navCaseStudies.textContent = 'Full Case Studies Coming Soon';
+      history.pushState({}, '', window.location.pathname);
+    }
+
+    profileBtn.addEventListener('click', showProfile);
+    workBtn.addEventListener('click', showWork);
+    navName.addEventListener('click', showWork);
+
+    if (window.location.hash === '#profile') showProfile();
+
+    // ── SoundCloud player ──
+    let scWidget      = null;
+    let scReady       = false;
+    let isPlaying     = false;
+    let progressTimer = null;
+    let trackDuration = 226000; // 3:46 — Chief Keef, Save Me (fallback if getDuration fails)
+    let playStartWall = 0;      // wall-clock ms when this play segment began
+    let playOffset    = 0;      // ms into track at the start of this play segment
+
+    function loadSCApi(cb) {
+      if (window.SC) { cb(); return; }
+      const s = document.createElement('script');
+      s.src = 'https://w.soundcloud.com/player/api.js';
+      s.onload = cb;
+      document.head.appendChild(s);
+    }
+
+    function initSC() {
+      scWidget = SC.Widget(document.getElementById('sc-widget'));
+      scWidget.bind(SC.Widget.Events.READY,  () => {
+        scReady = true;
+        scWidget.getDuration(d => { if (d > 0) trackDuration = d; });
+      });
+      scWidget.bind(SC.Widget.Events.FINISH, () => {
+        isPlaying = false; syncPlayBtn(); stopProgress();
+        playOffset = 0; setPlayhead(0);
+      });
+    }
+
+    function syncPlayBtn() {
+      document.getElementById('play-triangle').style.display = isPlaying ? 'none' : '';
+      document.getElementById('stop-square').style.display   = isPlaying ? ''     : 'none';
+    }
+
+    function setPlayhead(ratio) {
+      const x = 15 + ratio * 191;
+      const ph = document.getElementById('playhead');
+      const pf = document.getElementById('progress-fill');
+      ph.setAttribute('x1', x); ph.setAttribute('x2', x);
+      pf.setAttribute('x2', x);
+    }
+
+    function startProgress() {
+      stopProgress();
+      playStartWall = Date.now();
+      progressTimer = setInterval(() => {
+        const ms = playOffset + (Date.now() - playStartWall);
+        setPlayhead(Math.min(1, ms / trackDuration));
+      }, 200);
+    }
+
+    function stopProgress() {
+      if (progressTimer) {
+        playOffset += Date.now() - playStartWall;
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        scWidget.pause();
+        isPlaying = false;
+        syncPlayBtn();
+        stopProgress();
+      } else {
+        scWidget.play();
+        isPlaying = true;
+        syncPlayBtn();
+        startProgress();
+      }
+    }
+
+    function withWidget(cb) {
+      loadSCApi(() => {
+        if (!scWidget) initSC();
+        if (scReady) { cb(); return; }
+        let done = false;
+        const fire = () => { if (!done) { done = true; cb(); } };
+        const poll = setInterval(() => { if (scReady) { clearInterval(poll); fire(); } }, 50);
+        setTimeout(() => { clearInterval(poll); fire(); }, 800);
+      });
+    }
+
+    document.getElementById('player-art').addEventListener('click', () => {
+      withWidget(togglePlay);
+    });
+
+    document.getElementById('player-annotation').addEventListener('click', (e) => {
+      withWidget(() => {
+        const svg  = document.querySelector('#player-annotation svg');
+        const rect = svg.getBoundingClientRect();
+        const svgX = (e.clientX - rect.left) / rect.width * 207;
+        if (svgX <= 12) {
+          togglePlay();
+        } else {
+          const ratio = Math.max(0, Math.min(1, (svgX - 15) / 191));
+          const seekMs = ratio * trackDuration;
+          playOffset = seekMs;
+          if (isPlaying) playStartWall = Date.now();
+          setPlayhead(ratio);
+          scWidget.getDuration(dur => { scWidget.seekTo(Math.floor(ratio * dur)); });
+        }
+      });
     });
   </script>
 </body>

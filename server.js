@@ -9,7 +9,7 @@ const mime = {
   '.otf': 'font/otf', '.woff': 'font/woff', '.woff2': 'font/woff2'
 };
 http.createServer((req, res) => {
-  const p = path.join(root, req.url === '/' ? 'index.html' : req.url);
+  const p = path.join(root, req.url === '/' ? 'index.html' : decodeURIComponent(req.url));
   fs.readFile(p, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found'); return; }
     res.writeHead(200, { 'Content-Type': mime[path.extname(p)] || 'application/octet-stream' });
