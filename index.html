@@ -911,7 +911,14 @@
       let savedScrollY = 0;
 
       function showMobileFullbleed(item) {
-        // Measure each inline caption's exact viewport position BEFORE freezing scroll
+        // Freeze scroll first — mobile Safari shifts the viewport slightly when
+        // position:fixed fires, so we must measure AFTER the freeze is applied
+        savedScrollY = window.scrollY;
+        document.body.style.top      = `-${savedScrollY}px`;
+        document.body.style.position = 'fixed';
+        document.body.style.width    = '100%';
+
+        // Now measure caption positions with the frozen layout already in effect
         const captions = [...document.querySelectorAll('.grid-caption')];
         captions.forEach((cap, i) => {
           const rect = cap.getBoundingClientRect();
@@ -920,12 +927,6 @@
           cell.style.left  = rect.left + 'px';
           cell.style.width = rect.width + 'px';
         });
-
-        // Freeze body scroll so positions stay locked while fullbleed is shown
-        savedScrollY = window.scrollY;
-        document.body.style.top      = `-${savedScrollY}px`;
-        document.body.style.position = 'fixed';
-        document.body.style.width    = '100%';
 
         showFullbleed(item.dataset.hover || item.dataset.src);
         document.body.classList.add('mobile-fb-active');
