@@ -157,8 +157,8 @@
       cursor: none; /* system cursor hidden; caption follows mouse */
       position: relative;
     }
-    .grid-item.landscape { height: var(--landscape-h); }
     .grid-item.portrait  { height: var(--portrait-h); }
+    .grid-item.landscape { width: var(--portrait-h); height: var(--item-w); }
 
     .grid-item img,
     .grid-item video {
