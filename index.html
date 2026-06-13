@@ -8,8 +8,8 @@
   <meta name="description" content="Graphic Designer based in Brooklyn, NY. Specializing in branding, art direction, web design, motion graphics, and typography.">
   <meta property="og:title" content="Ryan Stewart — Graphic Designer, Brooklyn NY">
   <meta property="og:description" content="Graphic Designer based in Brooklyn, NY. Specializing in branding, art direction, web design, motion graphics, and typography.">
-  <meta property="og:image" content="https://ryanforprez.vercel.app/og-image.png">
-  <meta property="og:url" content="https://ryanforprez.vercel.app">
+  <meta property="og:image" content="https://ryanforprez.org/og-image.png">
+  <meta property="og:url" content="https://ryanforprez.org">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <style>
@@ -206,7 +206,7 @@
       opacity: 0;
       transition: opacity 0.5s ease;
     }
-    body.profile-active.bg-camera .grid-caption { opacity: 0 !important; }
+    body.profile-active.bg-camera .grid-caption { opacity: 0; }
 
     /* ── Caption cursor ── */
     #cursor {
@@ -913,7 +913,6 @@
       document.body.appendChild(overlay);
 
       let activeMobileItem = null;
-      let savedScrollY = 0;
 
       function showMobileFullbleed(item) {
         // Measure captions first while layout is undisturbed
@@ -927,7 +926,6 @@
         });
 
         // Lock scroll via overflow:hidden on html — no layout shift unlike position:fixed
-        savedScrollY = window.scrollY;
         document.documentElement.classList.add('scroll-locked');
 
         showFullbleed(item.dataset.hover || item.dataset.src);
