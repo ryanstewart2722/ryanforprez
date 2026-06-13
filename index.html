@@ -1080,8 +1080,8 @@
 
     const song  = songs[Math.floor(Math.random() * songs.length)];
     const audio = document.getElementById('audio-player');
-    audio.src = song.src;
-    document.getElementById('player-art').src         = song.art;
+    audio.src = encodeURI(song.src);
+    document.getElementById('player-art').src         = encodeURI(song.art);
     document.getElementById('player-art').alt         = song.caption;
     document.getElementById('player-caption').textContent = 'Listening To: ' + song.caption;
 
