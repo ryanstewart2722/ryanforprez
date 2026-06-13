@@ -437,9 +437,8 @@
       white-space: nowrap;
       display: block;
     }
-    .preview-change {
+    .preview-change, .preview-remove {
       font-size: 11px;
-      color: var(--accent);
       background: none;
       border: none;
       cursor: pointer;
@@ -447,6 +446,8 @@
       font-family: var(--font);
       text-decoration: underline;
     }
+    .preview-change { color: var(--accent); }
+    .preview-remove { color: var(--danger); margin-left: 8px; }
 
     /* Manual path input (fallback) */
     .path-input-row {
@@ -1124,7 +1125,7 @@ function makeProjectCard(p = {}, num = 1) {
               <img class="preview-thumb" src="${esc(p.src)}" onerror="this.src=''">
               <div class="preview-info">
                 <span class="preview-name">${esc(p.src ? p.src.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div class="${p.src ? 'upload-zone-inner' : 'upload-zone-inner'}" style="${p.src ? 'display:none' : ''}">
@@ -1145,7 +1146,7 @@ function makeProjectCard(p = {}, num = 1) {
               <img class="preview-thumb" src="${esc(p.hover)}" onerror="this.src=''">
               <div class="preview-info">
                 <span class="preview-name">${esc(p.hover ? p.hover.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div style="${p.hover ? 'display:none' : ''}">
@@ -1169,7 +1170,7 @@ function makeProjectCard(p = {}, num = 1) {
               <img class="preview-thumb" src="${esc(p.mobileHover)}" onerror="this.src=''">
               <div class="preview-info">
                 <span class="preview-name">${esc(p.mobileHover ? p.mobileHover.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div style="${p.mobileHover ? 'display:none' : ''}">
@@ -1190,7 +1191,7 @@ function makeProjectCard(p = {}, num = 1) {
               <img class="preview-thumb" src="${esc(p.thumbVideo)}" onerror="this.src=''">
               <div class="preview-info">
                 <span class="preview-name">${esc(p.thumbVideo ? p.thumbVideo.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div style="${p.thumbVideo ? 'display:none' : ''}">
@@ -1353,7 +1354,7 @@ function makeSongCard(s = {}) {
             <div class="upload-preview ${s.src ? 'show' : ''}">
               <div class="preview-info">
                 <span class="preview-name">${esc(s.src ? s.src.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div style="${s.src ? 'display:none' : ''}">
@@ -1374,7 +1375,7 @@ function makeSongCard(s = {}) {
               <img class="preview-thumb" src="${esc(s.art)}" onerror="this.src=''">
               <div class="preview-info">
                 <span class="preview-name">${esc(s.art ? s.art.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
               </div>
             </div>
             <div style="${s.art ? 'display:none' : ''}">
@@ -1476,8 +1477,17 @@ function setupUploadZone(zone, pathInput, folder) {
     fi.click();
   }
 
-  // Click on zone or "Change file" button
+  // Remove button — clears the field and resets zone to empty state
   zone.addEventListener('click', e => {
+    if (e.target.closest('.preview-remove')) {
+      e.stopPropagation();
+      pathInput.value = '';
+      const preview = zone.querySelector('.upload-preview');
+      const empty   = zone.querySelector('.upload-preview ~ div');
+      if (preview) preview.classList.remove('show');
+      if (empty)   empty.style.display = '';
+      return;
+    }
     if (e.target.closest('.btn-card-delete') || e.target.closest('.drag-handle')) return;
     triggerBrowse();
   });
