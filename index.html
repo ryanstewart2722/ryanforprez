@@ -889,9 +889,10 @@
           div.dataset.src     = p.src;
           div.dataset.hover   = p.hover;
           if (p.mobileHover) div.dataset.mobileHover = p.mobileHover;
-          if (p.thumbVideo) {
+          const isVidSrc = /\.(mp4|webm|ogg|mov)$/i.test(p.thumbVideo || p.src || '');
+          if (p.thumbVideo || isVidSrc) {
             const vid = document.createElement('video');
-            vid.src = p.thumbVideo;
+            vid.src = p.thumbVideo || p.src;
             vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true;
             vid.className = 'loaded';
             div.appendChild(vid);
