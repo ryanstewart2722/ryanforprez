@@ -684,8 +684,9 @@
       <div id="topbar-title">Profile</div>
       <div id="topbar-actions">
         <span id="save-status"></span>
-        <button class="btn" id="revert-btn">Revert changes</button>
-        <button class="btn btn-primary" id="save-btn">Publish changes</button>
+        <button class="btn" id="revert-btn">Revert</button>
+        <button class="btn" id="preview-btn">Deploy to Vercel</button>
+        <button class="btn btn-primary" id="save-btn">Go Live</button>
       </div>
     </header>
 
@@ -772,7 +773,8 @@
 
 <script>
 const REPO   = 'ryanstewart2722/ryanforprez';
-const BRANCH = 'main';
+const BRANCH_PREVIEW = 'dev';
+const BRANCH_LIVE    = 'main';
 const API    = 'https://api.github.com';
 
 let pat        = '';
@@ -888,7 +890,7 @@ async function launchApp() {
 
   try {
     const r = await fetch(
-      `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`,
+      `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH_LIVE}`,
       { headers: hdrs() }
     );
     if (r.status === 404) {
@@ -1394,14 +1396,14 @@ async function doUpload(file, zone, pathInput, folder) {
 
     let sha = null;
     try {
-      const c = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`, { headers: hdrs() });
+      const c = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH_LIVE}`, { headers: hdrs() });
       if (c.ok) sha = (await c.json()).sha;
     } catch {}
 
     const body = {
       message: `Upload ${file.name} via CMS`,
       content: b64,
-      branch:  BRANCH,
+      branch:  BRANCH_LIVE,
       ...(sha ? { sha } : {})
     };
 
@@ -1480,6 +1482,7 @@ function collectData() {
   };
 }
 
+document.getElementById('preview-btn').addEventListener('click', () => saveContent(BRANCH_PREVIEW));
 document.getElementById('revert-btn').addEventListener('click', async () => {
   if (!confirm('Discard all unsaved changes and reload from last published version?')) return;
   const btn = document.getElementById('revert-btn');
@@ -1491,22 +1494,29 @@ document.getElementById('revert-btn').addEventListener('click', async () => {
   document.getElementById('save-status').textContent = '';
 });
 
-document.getElementById('save-btn').addEventListener('click', saveContent);
+document.getElementById('save-btn').addEventListener('click', () => saveContent(BRANCH_LIVE));
 
-async function saveContent() {
-  const btn    = document.getElementById('save-btn');
-  const status = document.getElementById('save-status');
-  btn.textContent = 'Publishing…';
-  btn.disabled    = true;
-  status.textContent = '';
-  toast('Saving to GitHub…');
+async function saveContent(branch) {
+  const isLive   = branch === BRANCH_LIVE;
+  const saveBtn  = document.getElementById('save-btn');
+  const prevBtn  = document.getElementById('preview-btn');
+  const status   = document.getElementById('save-status');
+  const activeBtn = isLive ? saveBtn : prevBtn;
+
+  if (isLive && !confirm('This will update your live site at ryanforprez.org. Continue?')) return;
+
+  activeBtn.textContent = isLive ? 'Going live…' : 'Deploying…';
+  activeBtn.disabled    = true;
+  status.textContent    = '';
+  toast(isLive ? 'Pushing to main…' : 'Pushing to dev…');
 
   try {
-    // Refresh SHA
+    // Get current SHA for this branch
+    let sha = null;
     try {
-      const c = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`, { headers: hdrs() });
-      contentSha = c.ok ? (await c.json()).sha : null;
-    } catch { contentSha = null; }
+      const c = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${branch}`, { headers: hdrs() });
+      if (c.ok) sha = (await c.json()).sha;
+    } catch {}
 
     const data = collectData();
     const json = JSON.stringify(data, null, 2);
@@ -1516,27 +1526,28 @@ async function saveContent() {
       method: 'PUT',
       headers: hdrs(),
       body: JSON.stringify({
-        message: 'Update content via CMS',
+        message: isLive ? 'Go live via CMS' : 'Deploy preview via CMS',
         content: b64,
-        branch:  BRANCH,
-        ...(contentSha ? { sha: contentSha } : {})
+        branch,
+        ...(sha ? { sha } : {})
       })
     });
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Save failed (${res.status})`);
+      throw new Error(err.message || `Failed (${res.status})`);
     }
 
-    contentSha = (await res.json()).content.sha;
-    status.textContent = 'Published ✓';
-    toastOk('Published! Vercel is deploying…');
+    if (isLive) contentSha = (await res.json()).content.sha;
+
+    status.textContent = isLive ? 'Live ✓' : 'Preview deploying ✓';
+    toastOk(isLive ? 'Live! ryanforprez.org is updating…' : 'Deploying to Vercel preview…');
     setTimeout(() => { status.textContent = ''; }, 5000);
   } catch(e) {
-    toastErr(`Publish failed: ${e.message}`);
+    toastErr(`Failed: ${e.message}`);
   } finally {
-    btn.textContent = 'Publish changes';
-    btn.disabled    = false;
+    activeBtn.textContent = isLive ? 'Go Live' : 'Deploy to Vercel';
+    activeBtn.disabled    = false;
   }
 }
 </script>
