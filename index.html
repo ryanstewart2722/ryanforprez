@@ -983,7 +983,8 @@
         })();
 
         // Player — pick random song from content.json
-        const song = data.songs[Math.floor(Math.random() * data.songs.length)];
+        const songs = (data.shuffleSongs === false) ? data.songs : data.songs.slice().sort(() => Math.random() - 0.5);
+        const song = songs[Math.floor(Math.random() * songs.length)];
         audio.src = encodeURI(song.src);
         document.getElementById('player-art').src = encodeURI(song.art);
         document.getElementById('player-art').alt = song.caption;

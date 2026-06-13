@@ -666,10 +666,6 @@
         <span class="nav-icon">🖼</span> Projects
         <span class="nav-count" id="nav-count-projects">0</span>
       </div>
-      <div class="nav-item" data-section="songs">
-        <span class="nav-icon">🎵</span> Songs
-        <span class="nav-count" id="nav-count-songs">0</span>
-      </div>
       <div class="nav-label">Site</div>
       <div class="nav-item" data-section="settings">
         <span class="nav-icon">⚙️</span> Settings
@@ -719,6 +715,21 @@
             </div>
           </div>
         </div>
+
+        <div style="margin-top:28px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div>
+              <div style="font-size:16px;font-weight:600;color:var(--text);">Songs</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px;">Drag to reorder. One plays at random each load.</div>
+            </div>
+            <label class="toggle-switch" title="Shuffle songs randomly">
+              <input type="checkbox" id="shuffle-songs-toggle">
+              <div class="toggle-track"></div>
+            </label>
+          </div>
+          <div id="songs-list"></div>
+          <button class="btn-add-card" id="add-song-btn">+ Add song</button>
+        </div>
       </div>
 
       <!-- ── Projects ── -->
@@ -729,16 +740,6 @@
         </div>
         <div id="projects-list"></div>
         <button class="btn-add-card" id="add-project-btn">+ Add project</button>
-      </div>
-
-      <!-- ── Songs ── -->
-      <div id="section-songs" class="section">
-        <div class="page-header">
-          <h2>Songs</h2>
-          <p>One song is chosen at random each time the site loads.</p>
-        </div>
-        <div id="songs-list"></div>
-        <button class="btn-add-card" id="add-song-btn">+ Add song</button>
       </div>
 
       <!-- ── Settings ── -->
@@ -815,7 +816,7 @@ function toastErr(msg) {
 }
 
 // ── Nav ──────────────────────────────────────────────────────
-const sections = ['profile','projects','songs','settings'];
+const sections = ['profile','projects','settings'];
 
 document.querySelectorAll('.nav-item[data-section]').forEach(item => {
   item.addEventListener('click', () => {
@@ -917,7 +918,7 @@ function renderAll(data) {
   document.getElementById('shuffle-toggle').checked = !!data.shuffle;
   renderProfile(data.profile || defaultProfile());
   renderProjects(data.projects || []);
-  renderSongs(data.songs || []);
+  renderSongs(data.songs || [], data.shuffleSongs);
 }
 
 // ── Profile ──────────────────────────────────────────────────
@@ -1192,18 +1193,22 @@ document.getElementById('add-project-btn').addEventListener('click', () => {
 });
 
 // ── Songs ────────────────────────────────────────────────────
-function renderSongs(songs) {
+function renderSongs(songs, shuffleSongs) {
   const list = document.getElementById('songs-list');
   list.innerHTML = '';
   songs.forEach(s => list.appendChild(makeSongCard(s)));
-  updateCount('songs', songs.length);
+  document.getElementById('shuffle-songs-toggle').checked = !!shuffleSongs;
 }
+
+let dragSrcSong = null;
 
 function makeSongCard(s = {}) {
   const card = document.createElement('div');
   card.className = 'card';
+  card.draggable = true;
   card.innerHTML = `
     <div class="card-header">
+      <span class="drag-handle">⠿</span>
       <span class="card-title">${esc(s.caption) || 'Untitled song'}</span>
       <span class="card-chevron">▾</span>
       <button class="btn-card-delete" title="Remove">×</button>
@@ -1283,10 +1288,41 @@ function makeSongCard(s = {}) {
 
   card.querySelector('.btn-card-delete').addEventListener('click', e => {
     e.stopPropagation();
-    if (confirm('Remove this song?')) {
-      card.remove();
-      updateCount('songs', document.querySelectorAll('#songs-list .card').length);
+    if (confirm('Remove this song?')) card.remove();
+  });
+
+  // Drag reorder
+  card.addEventListener('dragstart', e => {
+    dragSrcSong = card;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { card.style.opacity = '0.4'; }, 0);
+  });
+  card.addEventListener('dragend', () => {
+    card.style.opacity = '';
+    document.querySelectorAll('#songs-list .card').forEach(c => c.classList.remove('drag-over'));
+  });
+  card.addEventListener('dragover', e => {
+    if (!dragSrcSong) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragSrcSong !== card) card.classList.add('drag-over');
+  });
+  card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+  card.addEventListener('drop', e => {
+    if (!dragSrcSong) return;
+    e.preventDefault();
+    e.stopPropagation();
+    card.classList.remove('drag-over');
+    if (dragSrcSong !== card) {
+      const list  = document.getElementById('songs-list');
+      const items = [...list.children];
+      const si    = items.indexOf(dragSrcSong);
+      const di    = items.indexOf(card);
+      if (si < di) list.insertBefore(dragSrcSong, card.nextSibling);
+      else         list.insertBefore(dragSrcSong, card);
     }
+    dragSrcSong = null;
   });
 
   return card;
@@ -1428,7 +1464,8 @@ function collectData() {
   }));
 
   return {
-    shuffle:  document.getElementById('shuffle-toggle').checked,
+    shuffle:      document.getElementById('shuffle-toggle').checked,
+    shuffleSongs: document.getElementById('shuffle-songs-toggle').checked,
     profile: {
       bio:         document.getElementById('profile-bio').value.trim(),
       contact:     collectLinks('contact-links'),
