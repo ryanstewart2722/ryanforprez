@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS — Ryan for Prez</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0e0e0e;
+      --surface: #181818;
+      --border:  #2b2b2b;
+      --text:    #d8d8d8;
+      --muted:   #5a5a5a;
+      --accent:  #2563eb;
+      --danger:  #b91c1c;
+      --success: #16a34a;
+      --font:    'Courier New', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      min-height: 100vh;
+    }
+
+    /* ── Login ── */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 14px;
+    }
+    #login-screen h1 {
+      font-size: 14px;
+      font-weight: normal;
+      letter-spacing: 0.12em;
+      color: var(--text);
+    }
+    #login-screen p {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+    #login-error {
+      color: var(--danger);
+      font-size: 12px;
+      display: none;
+    }
+    #pat-input {
+      width: 300px;
+    }
+
+    /* ── CMS ── */
+    #cms-screen { display: none; }
+
+    #cms-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #cms-header h1 {
+      font-size: 12px;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+
+    #cms-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 36px 24px 100px;
+    }
+
+    .cms-section { margin-bottom: 52px; }
+    .cms-section-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Settings ── */
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    /* ── Cards ── */
+    .project-card, .song-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      margin-bottom: 6px;
+      transition: border-color 0.15s;
+    }
+    .project-card.drag-over { border-color: var(--accent); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .drag-handle {
+      color: var(--muted);
+      cursor: grab;
+      font-size: 15px;
+      padding: 2px 3px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .drag-handle:active { cursor: grabbing; }
+
+    .card-title {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-toggle {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 3px 6px;
+      flex-shrink: 0;
+    }
+
+    .card-body {
+      padding: 0 12px 14px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+    .card-body.open { display: block; }
+
+    /* ── Fields ── */
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .field-label {
+      color: var(--muted);
+      font-size: 11px;
+      width: 100px;
+      flex-shrink: 0;
+    }
+
+    /* ── Orientation ── */
+    .orient-group { display: flex; }
+    .orient-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 4px 11px;
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .orient-btn:first-child { border-radius: 3px 0 0 3px; }
+    .orient-btn:last-child  { border-radius: 0 3px 3px 0; border-left: none; }
+    .orient-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Inputs ── */
+    input[type="text"],
+    input[type="password"] {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    input[type="password"] { width: 300px; flex: none; }
+
+    /* ── Buttons ── */
+    .btn {
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text);
+      transition: background 0.1s;
+    }
+    .btn:hover { background: #222; }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    .btn-ghost {
+      background: none;
+      border-color: transparent;
+      color: var(--muted);
+    }
+    .btn-ghost:hover { background: none; color: var(--text); }
+
+    .btn-danger-text {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 3px 8px;
+      cursor: pointer;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .btn-danger-text:hover { background: rgba(185,28,28,0.12); }
+
+    .btn-upload {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    .btn-upload:hover { color: var(--text); border-color: #444; }
+    .btn-upload:disabled { opacity: 0.4; cursor: default; }
+
+    .btn-add {
+      width: 100%;
+      background: none;
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    .btn-add:hover { color: var(--text); border-color: #444; background: none; }
+
+    /* ── Checkbox ── */
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--text);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 500;
+      max-width: 320px;
+    }
+    #toast.show  { opacity: 1; }
+    #toast.ok    { border-color: var(--success); color: var(--success); }
+    #toast.error { border-color: var(--danger);  color: var(--danger); }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <h1>RYAN FOR PREZ — CMS</h1>
+  <p>Enter your GitHub Personal Access Token.<br>Needs <code>repo</code> scope.</p>
+  <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxxxxxx" autocomplete="off">
+  <button class="btn btn-primary" id="login-btn">Login</button>
+  <span id="login-error"></span>
+</div>
+
+<!-- ── CMS ── -->
+<div id="cms-screen">
+  <div id="cms-header">
+    <h1>RYAN FOR PREZ — CMS</h1>
+    <div class="header-actions">
+      <button class="btn btn-primary" id="save-btn">Save &amp; Deploy</button>
+      <button class="btn btn-ghost" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div id="cms-content">
+
+    <!-- Settings -->
+    <div class="cms-section">
+      <div class="cms-section-title">Settings</div>
+      <div class="setting-row">
+        <input type="checkbox" id="shuffle-toggle">
+        <label for="shuffle-toggle">Shuffle projects on each load</label>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="cms-section">
+      <div class="cms-section-title">Projects</div>
+      <div id="projects-list"></div>
+      <button class="btn-add" id="add-project-btn">+ Add Project</button>
+    </div>
+
+    <!-- Songs -->
+    <div class="cms-section">
+      <div class="cms-section-title">Songs</div>
+      <div id="songs-list"></div>
+      <button class="btn-add" id="add-song-btn">+ Add Song</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'ryanstewart2722/ryanforprez';
+const BRANCH = 'main';
+const API    = 'https://api.github.com';
+
+let pat        = '';
+let contentSha = null;
+let dragSrc    = null;
+
+// ─── Helpers ────────────────────────────────────────────────
+function headers() {
+  return {
+    'Authorization': `token ${pat}`,
+    'Accept':        'application/vnd.github.v3+json',
+    'Content-Type':  'application/json'
+  };
+}
+
+function encodePath(p) {
+  return p.split('/').map(encodeURIComponent).join('/');
+}
+
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'show' + (type ? ' ' + type : '');
+}
+function toastHide() {
+  document.getElementById('toast').className = '';
+}
+
+function toBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+// ─── Auth ────────────────────────────────────────────────────
+async function doLogin() {
+  const val = document.getElementById('pat-input').value.trim();
+  if (!val) return;
+  pat = val;
+
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  btn.textContent = 'Checking…';
+  btn.disabled    = true;
+  err.style.display = 'none';
+
+  try {
+    const r = await fetch(`${API}/repos/${REPO}`, { headers: headers() });
+    if (!r.ok) throw new Error('Invalid token or no access to repo.');
+    localStorage.setItem('cms_pat', pat);
+    openCMS();
+  } catch (e) {
+    err.textContent   = e.message;
+    err.style.display = 'block';
+    btn.textContent   = 'Login';
+    btn.disabled      = false;
+    pat = '';
+  }
+}
+
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('pat-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('cms_pat');
+  pat = '';
+  document.getElementById('cms-screen').style.display  = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pat-input').value = '';
+});
+
+// Auto-login if saved
+(async function boot() {
+  const saved = localStorage.getItem('cms_pat');
+  if (!saved) return;
+  pat = saved;
+  try {
+    const r = await fetch(`${API}/repos/${REPO}`, { headers: headers() });
+    if (r.ok) { openCMS(); return; }
+  } catch {}
+  localStorage.removeItem('cms_pat');
+  pat = '';
+})();
+
+// ─── Load content ────────────────────────────────────────────
+async function openCMS() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('cms-screen').style.display   = 'block';
+  toast('Loading content…');
+
+  try {
+    const r = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`, { headers: headers() });
+
+    if (r.status === 404) {
+      // content.json doesn't exist on main yet — start empty
+      contentSha = null;
+      renderCMS({ shuffle: false, projects: [], songs: [] });
+      toastHide();
+      toast('content.json not found on main — save to create it.', 'error');
+      setTimeout(toastHide, 5000);
+      return;
+    }
+
+    if (!r.ok) throw new Error(`GitHub API error ${r.status}`);
+
+    const file = await r.json();
+    contentSha  = file.sha;
+    const data  = JSON.parse(atob(file.content.replace(/\n/g, '')));
+    renderCMS(data);
+    toastHide();
+  } catch (e) {
+    toast(e.message, 'error');
+  }
+}
+
+// ─── Render ──────────────────────────────────────────────────
+function renderCMS(data) {
+  document.getElementById('shuffle-toggle').checked = !!data.shuffle;
+  renderProjects(data.projects || []);
+  renderSongs(data.songs || []);
+}
+
+// ─── Projects ────────────────────────────────────────────────
+function renderProjects(projects) {
+  const list = document.getElementById('projects-list');
+  list.innerHTML = '';
+  projects.forEach(p => list.appendChild(makeProjectCard(p)));
+}
+
+function makeProjectCard(p = {}) {
+  const card = document.createElement('div');
+  card.className  = 'project-card';
+  card.draggable  = true;
+
+  const orient = p.orientation || 'landscape';
+
+  card.innerHTML = `
+    <div class="card-header">
+      <span class="drag-handle" title="Drag to reorder">⠿</span>
+      <span class="card-title">${esc(p.caption) || 'Untitled'}</span>
+      <button class="card-toggle">▾</button>
+      <button class="btn-danger-text js-delete">Remove</button>
+    </div>
+    <div class="card-body">
+      <div class="field-row">
+        <span class="field-label">Caption</span>
+        <input type="text" class="f-caption" value="${esc(p.caption)}">
+      </div>
+      <div class="field-row">
+        <span class="field-label">Thumbnail</span>
+        <input type="text" class="f-src" value="${esc(p.src)}">
+        <button class="btn-upload" data-field="src" data-folder="Images">Upload</button>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Hover</span>
+        <input type="text" class="f-hover" value="${esc(p.hover)}">
+        <button class="btn-upload" data-field="hover" data-folder="Images/hover">Upload</button>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Mobile Hover</span>
+        <input type="text" class="f-mobileHover" value="${esc(p.mobileHover)}">
+        <button class="btn-upload" data-field="mobileHover" data-folder="Images/hover">Upload</button>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Thumb Video</span>
+        <input type="text" class="f-thumbVideo" value="${esc(p.thumbVideo)}">
+        <button class="btn-upload" data-field="thumbVideo" data-folder="Images/hover">Upload</button>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Orientation</span>
+        <div class="orient-group">
+          <button class="orient-btn ${orient === 'portrait'  ? 'active' : ''}" data-val="portrait">Portrait</button>
+          <button class="orient-btn ${orient === 'landscape' ? 'active' : ''}" data-val="landscape">Landscape</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Expand / collapse
+  const header    = card.querySelector('.card-header');
+  const body      = card.querySelector('.card-body');
+  const toggleBtn = card.querySelector('.card-toggle');
+
+  header.addEventListener('click', e => {
+    if (e.target.closest('.js-delete') || e.target.closest('.drag-handle')) return;
+    const open = body.classList.toggle('open');
+    toggleBtn.textContent = open ? '▴' : '▾';
+  });
+
+  // Caption preview in header
+  card.querySelector('.f-caption').addEventListener('input', e => {
+    card.querySelector('.card-title').textContent = e.target.value || 'Untitled';
+  });
+
+  // Orientation toggle
+  card.querySelectorAll('.orient-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      card.querySelectorAll('.orient-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Upload buttons
+  card.querySelectorAll('.btn-upload').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const input = card.querySelector(`.f-${btn.dataset.field}`);
+      triggerUpload(btn, input, btn.dataset.folder);
+    });
+  });
+
+  // Delete
+  card.querySelector('.js-delete').addEventListener('click', e => {
+    e.stopPropagation();
+    const name = card.querySelector('.f-caption').value || 'this project';
+    if (confirm(`Remove "${name}"?`)) card.remove();
+  });
+
+  // Drag-to-reorder
+  card.addEventListener('dragstart', e => {
+    dragSrc = card;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { card.style.opacity = '0.35'; }, 0);
+  });
+  card.addEventListener('dragend', () => {
+    card.style.opacity = '';
+    document.querySelectorAll('.project-card').forEach(c => c.classList.remove('drag-over'));
+  });
+  card.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragSrc !== card) card.classList.add('drag-over');
+  });
+  card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+  card.addEventListener('drop', e => {
+    e.preventDefault();
+    card.classList.remove('drag-over');
+    if (!dragSrc || dragSrc === card) return;
+    const list  = document.getElementById('projects-list');
+    const items = [...list.children];
+    const si    = items.indexOf(dragSrc);
+    const di    = items.indexOf(card);
+    if (si < di) list.insertBefore(dragSrc, card.nextSibling);
+    else         list.insertBefore(dragSrc, card);
+    dragSrc = null;
+  });
+
+  return card;
+}
+
+document.getElementById('add-project-btn').addEventListener('click', () => {
+  const list = document.getElementById('projects-list');
+  const card = makeProjectCard({ caption: '', src: '', hover: '', mobileHover: null, thumbVideo: null, orientation: 'landscape' });
+  list.appendChild(card);
+  card.querySelector('.card-body').classList.add('open');
+  card.querySelector('.card-toggle').textContent = '▴';
+  card.querySelector('.f-caption').focus();
+});
+
+// ─── Songs ───────────────────────────────────────────────────
+function renderSongs(songs) {
+  const list = document.getElementById('songs-list');
+  list.innerHTML = '';
+  songs.forEach(s => list.appendChild(makeSongCard(s)));
+}
+
+function makeSongCard(s = {}) {
+  const card = document.createElement('div');
+  card.className = 'song-card';
+
+  card.innerHTML = `
+    <div class="card-header" style="cursor:default;">
+      <span class="card-title">${esc(s.caption) || 'Untitled Song'}</span>
+      <button class="btn-danger-text js-delete">Remove</button>
+    </div>
+    <div class="card-body open">
+      <div class="field-row">
+        <span class="field-label">Title</span>
+        <input type="text" class="f-caption" value="${esc(s.caption)}">
+      </div>
+      <div class="field-row">
+        <span class="field-label">Audio File</span>
+        <input type="text" class="f-src" value="${esc(s.src)}">
+        <button class="btn-upload" data-field="src" data-folder="Audio">Upload</button>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Album Art</span>
+        <input type="text" class="f-art" value="${esc(s.art)}">
+        <button class="btn-upload" data-field="art" data-folder="Images">Upload</button>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('.f-caption').addEventListener('input', e => {
+    card.querySelector('.card-title').textContent = e.target.value || 'Untitled Song';
+  });
+
+  card.querySelectorAll('.btn-upload').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = card.querySelector(`.f-${btn.dataset.field}`);
+      triggerUpload(btn, input, btn.dataset.folder);
+    });
+  });
+
+  card.querySelector('.js-delete').addEventListener('click', () => {
+    const name = card.querySelector('.f-caption').value || 'this song';
+    if (confirm(`Remove "${name}"?`)) card.remove();
+  });
+
+  return card;
+}
+
+document.getElementById('add-song-btn').addEventListener('click', () => {
+  document.getElementById('songs-list').appendChild(makeSongCard());
+});
+
+// ─── File Upload ─────────────────────────────────────────────
+function acceptFor(folder) {
+  if (folder === 'Audio')        return 'audio/*';
+  if (folder === 'Images/hover') return 'image/*,video/*';
+  return 'image/*';
+}
+
+async function triggerUpload(btn, targetInput, folder) {
+  const fi = document.createElement('input');
+  fi.type   = 'file';
+  fi.accept = acceptFor(folder);
+
+  fi.onchange = async () => {
+    const file = fi.files[0];
+    if (!file) return;
+
+    const path    = `${folder}/${file.name}`;
+    const origTxt = btn.textContent;
+    btn.textContent = 'Uploading…';
+    btn.disabled    = true;
+
+    try {
+      const b64 = await toBase64(file);
+
+      // Check if file already exists (need its SHA to overwrite)
+      let existingSha = null;
+      try {
+        const check = await fetch(
+          `${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`,
+          { headers: headers() }
+        );
+        if (check.ok) existingSha = (await check.json()).sha;
+      } catch {}
+
+      const body = {
+        message: `Upload ${file.name} via CMS`,
+        content: b64,
+        branch:  BRANCH,
+        ...(existingSha ? { sha: existingSha } : {})
+      };
+
+      const res = await fetch(
+        `${API}/repos/${REPO}/contents/${encodePath(path)}`,
+        { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
+      );
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Upload failed (${res.status})`);
+      }
+
+      targetInput.value = path;
+      toast(`Uploaded: ${file.name}`, 'ok');
+      setTimeout(toastHide, 3000);
+    } catch (e) {
+      toast(`Upload error: ${e.message}`, 'error');
+    } finally {
+      btn.textContent = origTxt;
+      btn.disabled    = false;
+    }
+  };
+
+  fi.click();
+}
+
+// ─── Collect & Save ──────────────────────────────────────────
+function collectData() {
+  const projects = [...document.querySelectorAll('.project-card')].map(card => ({
+    caption:     card.querySelector('.f-caption').value.trim(),
+    src:         card.querySelector('.f-src').value.trim(),
+    hover:       card.querySelector('.f-hover').value.trim(),
+    mobileHover: card.querySelector('.f-mobileHover').value.trim() || null,
+    thumbVideo:  card.querySelector('.f-thumbVideo').value.trim()  || null,
+    orientation: card.querySelector('.orient-btn.active')?.dataset.val || 'landscape'
+  }));
+
+  const songs = [...document.querySelectorAll('.song-card')].map(card => ({
+    caption: card.querySelector('.f-caption').value.trim(),
+    src:     card.querySelector('.f-src').value.trim(),
+    art:     card.querySelector('.f-art').value.trim()
+  }));
+
+  return {
+    shuffle: document.getElementById('shuffle-toggle').checked,
+    projects,
+    songs
+  };
+}
+
+document.getElementById('save-btn').addEventListener('click', saveContent);
+
+async function saveContent() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Saving…';
+  btn.disabled    = true;
+  toast('Saving to GitHub…');
+
+  try {
+    // Always refresh SHA before writing to avoid conflicts
+    try {
+      const check = await fetch(
+        `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`,
+        { headers: headers() }
+      );
+      if (check.ok) contentSha = (await check.json()).sha;
+      else contentSha = null;
+    } catch { contentSha = null; }
+
+    const data = collectData();
+    const json = JSON.stringify(data, null, 2);
+    // btoa with unicode support
+    const b64  = btoa(unescape(encodeURIComponent(json)));
+
+    const body = {
+      message: 'Update content via CMS',
+      content: b64,
+      branch:  BRANCH,
+      ...(contentSha ? { sha: contentSha } : {})
+    };
+
+    const res = await fetch(
+      `${API}/repos/${REPO}/contents/content.json`,
+      { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
+    );
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Save failed (${res.status})`);
+    }
+
+    const result = await res.json();
+    contentSha   = result.content.sha;
+
+    toast('Saved! Vercel is deploying…', 'ok');
+    setTimeout(toastHide, 5000);
+  } catch (e) {
+    toast(`Save failed: ${e.message}`, 'error');
+  } finally {
+    btn.textContent = 'Save & Deploy';
+    btn.disabled    = false;
+  }
+}
+</script>
+</body>
+</html>
