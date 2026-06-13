@@ -285,9 +285,9 @@
       font-size: 12px;
       line-height: normal;
     }
-    #profile-contact     { left: 33.9vw; top: 44vh; }
-    #profile-recognition { left: 45.5vw; top: 44vh; }
-    #profile-devnotes    { left: 63.3vw; top: 44vh; }
+    #profile-contact     { left: 33.9vw; top: 44vh; max-width: 10vw; }
+    #profile-recognition { left: 45.5vw; top: 44vh; max-width: 16vw; white-space: normal; word-break: break-word; }
+    #profile-devnotes    { left: 63.3vw; top: 44vh; max-width: 10vw; }
 
     .meta-label { color: rgba(255,255,255,1); margin-bottom: 0; }
     .meta-col a,
@@ -339,14 +339,6 @@
       color: rgba(255,255,255,0.5);
     }
 
-    #sc-widget {
-      position: fixed;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
-    }
 
     /* ══════════════════════════════════════
        MOBILE  ≤ 768px
@@ -741,11 +733,8 @@
   <div id="cursor"></div>
 
   <!-- Profile overlay — click-absorber only -->
-  <div id="profile-overlay">
-    <iframe id="sc-widget"
-      src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rbc-records/chief-keef-save-me&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"
-      scrolling="no" allow="autoplay"></iframe>
-  </div>
+  <div id="profile-overlay"></div>
+  <audio id="audio-player" preload="metadata"></audio>
 
   <!-- Profile elements — all position:fixed at body level,
        no wrapper containers, so mix-blend-mode:exclusion
@@ -1080,34 +1069,22 @@
 
     if (window.location.hash === '#profile') showProfile();
 
-    // ── SoundCloud player ──
-    let scWidget      = null;
-    let scReady       = false;
+    // ── Music player (random song each load) ──
+    const songs = [
+      { src: 'Audio/Save Me - Chief Keef.mp3',              art: 'Images/Save Me - Chief Keef.png',              caption: 'Save Me - Chief Keef' },
+      { src: 'Audio/Valerie BBC Radio-Amy Winehouse.mp3',   art: 'Images/Valerie BBC Radio-Amy Winehouse.png',   caption: 'Valerie BBC Radio - Amy Winehouse' },
+      { src: 'Audio/Choose U - Project Pat.mp3',            art: 'Images/Choose U - Project Pat.png',            caption: 'Choose U - Project Pat' }
+    ];
+
+    const song  = songs[Math.floor(Math.random() * songs.length)];
+    const audio = document.getElementById('audio-player');
+    audio.src = song.src;
+    document.getElementById('player-art').src         = song.art;
+    document.getElementById('player-art').alt         = song.caption;
+    document.getElementById('player-caption').textContent = 'Listening To: ' + song.caption;
+
     let isPlaying     = false;
     let progressTimer = null;
-    let trackDuration = 226000; // 3:46 — Chief Keef, Save Me (fallback if getDuration fails)
-    let playStartWall = 0;      // wall-clock ms when this play segment began
-    let playOffset    = 0;      // ms into track at the start of this play segment
-
-    function loadSCApi(cb) {
-      if (window.SC) { cb(); return; }
-      const s = document.createElement('script');
-      s.src = 'https://w.soundcloud.com/player/api.js';
-      s.onload = cb;
-      document.head.appendChild(s);
-    }
-
-    function initSC() {
-      scWidget = SC.Widget(document.getElementById('sc-widget'));
-      scWidget.bind(SC.Widget.Events.READY,  () => {
-        scReady = true;
-        scWidget.getDuration(d => { if (d > 0) trackDuration = d; });
-      });
-      scWidget.bind(SC.Widget.Events.FINISH, () => {
-        isPlaying = false; syncPlayBtn(); stopProgress();
-        playOffset = 0; setPlayhead(0);
-      });
-    }
 
     function syncPlayBtn() {
       document.getElementById('play-triangle').style.display = isPlaying ? 'none' : '';
@@ -1124,67 +1101,72 @@
 
     function startProgress() {
       stopProgress();
-      playStartWall = Date.now();
       progressTimer = setInterval(() => {
-        const ms = playOffset + (Date.now() - playStartWall);
-        setPlayhead(Math.min(1, ms / trackDuration));
+        if (audio.duration) setPlayhead(Math.min(1, audio.currentTime / audio.duration));
       }, 200);
     }
 
     function stopProgress() {
-      if (progressTimer) {
-        playOffset += Date.now() - playStartWall;
-        clearInterval(progressTimer);
-        progressTimer = null;
-      }
+      if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     }
+
+    audio.addEventListener('ended', () => {
+      isPlaying = false; syncPlayBtn(); stopProgress(); setPlayhead(0);
+    });
 
     function togglePlay() {
       if (isPlaying) {
-        scWidget.pause();
-        isPlaying = false;
-        syncPlayBtn();
-        stopProgress();
+        audio.pause();
+        isPlaying = false; syncPlayBtn(); stopProgress();
       } else {
-        scWidget.play();
-        isPlaying = true;
-        syncPlayBtn();
-        startProgress();
+        audio.play();
+        isPlaying = true; syncPlayBtn(); startProgress();
       }
     }
 
-    function withWidget(cb) {
-      loadSCApi(() => {
-        if (!scWidget) initSC();
-        if (scReady) { cb(); return; }
-        let done = false;
-        const fire = () => { if (!done) { done = true; cb(); } };
-        const poll = setInterval(() => { if (scReady) { clearInterval(poll); fire(); } }, 50);
-        setTimeout(() => { clearInterval(poll); fire(); }, 800);
-      });
-    }
+    document.getElementById('player-art').addEventListener('click', togglePlay);
 
-    document.getElementById('player-art').addEventListener('click', () => {
-      withWidget(togglePlay);
-    });
+    (() => {
+      const annotationEl = document.getElementById('player-annotation');
+      const svg = annotationEl.querySelector('svg');
+      let dragging = false;
 
-    document.getElementById('player-annotation').addEventListener('click', (e) => {
-      withWidget(() => {
-        const svg  = document.querySelector('#player-annotation svg');
+      function getSvgRatio(clientX) {
         const rect = svg.getBoundingClientRect();
-        const svgX = (e.clientX - rect.left) / rect.width * 207;
-        if (svgX <= 12) {
-          togglePlay();
-        } else {
-          const ratio = Math.max(0, Math.min(1, (svgX - 15) / 191));
-          const seekMs = ratio * trackDuration;
-          playOffset = seekMs;
-          if (isPlaying) playStartWall = Date.now();
-          setPlayhead(ratio);
-          scWidget.getDuration(dur => { scWidget.seekTo(Math.floor(ratio * dur)); });
-        }
+        const svgX = (clientX - rect.left) / rect.width * 207;
+        // Play button x=0–7, gap x=8–14, track starts at x=15
+        if (svgX < 15) return null;
+        return Math.max(0, Math.min(1, (svgX - 15) / 191));
+      }
+
+      function applySeek(ratio) {
+        if (!isFinite(audio.duration) || audio.duration <= 0) return;
+        audio.currentTime = ratio * audio.duration;
+        setPlayhead(ratio);
+      }
+
+      annotationEl.addEventListener('pointerdown', (e) => {
+        const ratio = getSvgRatio(e.clientX);
+        if (ratio === null) { togglePlay(); return; }
+        dragging = true;
+        annotationEl.setPointerCapture(e.pointerId);
+        applySeek(ratio);
+        e.preventDefault();
       });
-    });
+
+      annotationEl.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const ratio = getSvgRatio(e.clientX);
+        if (ratio !== null) applySeek(ratio);
+      });
+
+      annotationEl.addEventListener('pointerup', (e) => {
+        dragging = false;
+        annotationEl.releasePointerCapture(e.pointerId);
+      });
+
+      annotationEl.addEventListener('pointercancel', () => { dragging = false; });
+    })();
   </script>
 </body>
 </html>
