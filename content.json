@@ -43,11 +43,11 @@
     },
     {
       "caption": "Common Bond",
-      "src": "Images/02_common-bond.jpg",
-      "hover": "Images/hover/02_common-bond.mp4",
+      "src": "Images/02_common-bond.mp4",
+      "hover": "Images/hover/Studio-Loutsis-Website-Images-Future-Projects-0240.jpg",
       "mobileHover": null,
       "thumbVideo": null,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "Proof of Concept",
