@@ -1011,7 +1011,7 @@ async function launchApp() {
 
   try {
     const r = await fetch(
-      `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH_LIVE}`,
+      `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH_LIVE}&t=${Date.now()}`,
       { headers: hdrs() }
     );
     if (r.status === 404) {
@@ -1119,7 +1119,7 @@ function makeProjectCard(p = {}, num = 1) {
 
       <div class="field-group">
         <div class="field">
-          <label class="field-label">Thumbnail image</label>
+          <label class="field-label">Thumbnail (image or video)</label>
           <div class="upload-zone js-upload" data-field="src" data-folder="Images">
             <div class="upload-preview ${p.src ? 'show' : ''}">
               <img class="preview-thumb" src="${esc(p.src)}" onerror="this.src=''">
@@ -1131,7 +1131,7 @@ function makeProjectCard(p = {}, num = 1) {
             <div class="${p.src ? 'upload-zone-inner' : 'upload-zone-inner'}" style="${p.src ? 'display:none' : ''}">
               <div class="upload-zone-icon">↑</div>
               <div class="upload-zone-text">Drag file or <b>browse</b></div>
-              <div class="upload-zone-hint">JPG, PNG, GIF</div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
             </div>
           </div>
           <div class="path-input-row">
@@ -1463,9 +1463,8 @@ document.getElementById('add-song-btn').addEventListener('click', () => {
 
 // ── Upload zones ──────────────────────────────────────────────
 function acceptFor(folder) {
-  if (folder === 'Audio')        return 'audio/*';
-  if (folder === 'Images/hover') return 'image/*,video/*';
-  return 'image/*';
+  if (folder === 'Audio') return 'audio/*';
+  return 'image/*,video/*';
 }
 
 function setupUploadZone(zone, pathInput, folder) {
@@ -1526,7 +1525,7 @@ async function doUpload(file, zone, pathInput, folder) {
 
     let sha = null;
     try {
-      const c = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH_LIVE}`, { headers: hdrs() });
+      const c = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH_LIVE}&t=${Date.now()}`, { headers: hdrs() });
       if (c.ok) sha = (await c.json()).sha;
     } catch {}
 
@@ -1641,10 +1640,10 @@ async function saveContent(branch) {
   toast(isLive ? 'Pushing to main…' : 'Pushing to dev…');
 
   try {
-    // Get current SHA for this branch
+    // Get current SHA for this branch (cache-busted)
     let sha = null;
     try {
-      const c = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${branch}`, { headers: hdrs() });
+      const c = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${branch}&t=${Date.now()}`, { headers: hdrs() });
       if (c.ok) sha = (await c.json()).sha;
     } catch {}
 
