@@ -673,6 +673,10 @@
       <label for="pw-input">Password</label>
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password">
     </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);cursor:pointer;margin-bottom:4px">
+      <input type="checkbox" id="remember-me" checked style="width:14px;height:14px;cursor:pointer">
+      Remember this device for 30 days
+    </label>
     <button class="btn btn-primary" id="login-btn" style="width:100%;justify-content:center;">Continue</button>
     <span id="login-error" style="font-size:12px;color:var(--danger);display:none"></span>
     <p style="margin-top:12px;font-size:11px;color:var(--faint);text-align:center">
@@ -928,6 +932,7 @@ async function doLogin() {
   const pw  = document.getElementById('pw-input').value;
   const err = document.getElementById('login-error');
   const btn = document.getElementById('login-btn');
+  const remember = document.getElementById('remember-me').checked;
   err.style.display='none';
   if (!pw) return;
   btn.textContent='Checking…'; btn.disabled=true;
@@ -939,6 +944,10 @@ async function doLogin() {
     pat = await decryptPAT(pw, encPAT);
     const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
     if (!r.ok) throw new Error('Token expired — reset and enter a new one.');
+    if (remember) {
+      localStorage.setItem('cms_remember_until', Date.now() + 30 * 24 * 60 * 60 * 1000);
+      localStorage.setItem('cms_pat_session', pat);
+    }
     launchApp();
   } catch(e) {
     err.textContent=e.message; err.style.display='block';
@@ -965,6 +974,8 @@ document.getElementById('reset-link').addEventListener('click', e => {
 });
 document.getElementById('logout-btn').addEventListener('click', () => {
   pat = '';
+  localStorage.removeItem('cms_remember_until');
+  localStorage.removeItem('cms_pat_session');
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('pw-input').value = '';
@@ -974,7 +985,20 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 (async function boot() {
   const hasCreds = localStorage.getItem('cms_pw_hash') && localStorage.getItem('cms_pat_enc');
   if (!hasCreds) { showSetup(); return; }
-  // Try auto-login if we can (no password stored — just show signin)
+  // Auto-login if remembered
+  const rememberUntil = parseInt(localStorage.getItem('cms_remember_until') || '0');
+  const sessionPAT    = localStorage.getItem('cms_pat_session');
+  if (sessionPAT && Date.now() < rememberUntil) {
+    pat = sessionPAT;
+    try {
+      const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
+      if (r.ok) { launchApp(); return; }
+    } catch {}
+    // Session invalid — fall through to password screen
+    localStorage.removeItem('cms_remember_until');
+    localStorage.removeItem('cms_pat_session');
+    pat = '';
+  }
   showSignin();
 })();
 
