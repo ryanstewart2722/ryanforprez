@@ -645,15 +645,39 @@
 <!-- ── Login ── -->
 <div id="login-screen">
   <div id="login-logo">Ryan Stewart <span>Content Management</span></div>
-  <div id="login-box">
-    <h2>Sign in</h2>
-    <p>Use your GitHub Personal Access Token with <code>repo</code> scope.</p>
+
+  <!-- Setup: shown only first time -->
+  <div id="login-box" id="setup-box" style="display:none">
+    <h2>Set a password</h2>
+    <p>You'll use this password every time you sign in. Your GitHub token is only needed once.</p>
     <div class="field">
-      <label for="pat-input">GitHub Token</label>
-      <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+      <label for="setup-pw">Choose a password</label>
+      <input type="password" id="setup-pw" placeholder="••••••••" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label for="setup-pw2">Confirm password</label>
+      <input type="password" id="setup-pw2" placeholder="••••••••" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label for="setup-pat">GitHub Token</label>
+      <input type="password" id="setup-pat" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    </div>
+    <button class="btn btn-primary" id="setup-btn" style="width:100%;justify-content:center;">Save &amp; Sign In</button>
+    <span id="setup-error" style="font-size:12px;color:var(--danger);display:none"></span>
+  </div>
+
+  <!-- Normal sign-in -->
+  <div id="signin-box" class="login-box" style="display:none">
+    <h2>Sign in</h2>
+    <div class="field">
+      <label for="pw-input">Password</label>
+      <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password">
     </div>
     <button class="btn btn-primary" id="login-btn" style="width:100%;justify-content:center;">Continue</button>
-    <span id="login-error"></span>
+    <span id="login-error" style="font-size:12px;color:var(--danger);display:none"></span>
+    <p style="margin-top:12px;font-size:11px;color:var(--faint);text-align:center">
+      <a href="#" id="reset-link" style="color:var(--faint)">Reset &amp; enter new token</a>
+    </p>
   </div>
 </div>
 
@@ -837,49 +861,121 @@ document.querySelectorAll('.nav-item[data-section]').forEach(item => {
   });
 });
 
+// ── Crypto helpers ────────────────────────────────────────────
+async function sha256hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function deriveKey(password, saltHex) {
+  const salt = new Uint8Array(saltHex.match(/.{2}/g).map(h => parseInt(h,16)));
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:100000, hash:'SHA-256' },
+    base, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
+}
+async function encryptPAT(password, plaintext) {
+  const saltArr = crypto.getRandomValues(new Uint8Array(16));
+  const ivArr   = crypto.getRandomValues(new Uint8Array(12));
+  const saltHex = Array.from(saltArr).map(b=>b.toString(16).padStart(2,'0')).join('');
+  const ivHex   = Array.from(ivArr).map(b=>b.toString(16).padStart(2,'0')).join('');
+  const key     = await deriveKey(password, saltHex);
+  const enc     = await crypto.subtle.encrypt({name:'AES-GCM',iv:ivArr}, key, new TextEncoder().encode(plaintext));
+  const encHex  = Array.from(new Uint8Array(enc)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  return JSON.stringify({ saltHex, ivHex, encHex });
+}
+async function decryptPAT(password, stored) {
+  const { saltHex, ivHex, encHex } = JSON.parse(stored);
+  const iv  = new Uint8Array(ivHex.match(/.{2}/g).map(h=>parseInt(h,16)));
+  const enc = new Uint8Array(encHex.match(/.{2}/g).map(h=>parseInt(h,16)));
+  const key = await deriveKey(password, saltHex);
+  const dec = await crypto.subtle.decrypt({name:'AES-GCM',iv}, key, enc);
+  return new TextDecoder().decode(dec);
+}
+
 // ── Auth ─────────────────────────────────────────────────────
-async function doLogin() {
-  const val = document.getElementById('pat-input').value.trim();
-  if (!val) return;
-  pat = val;
-  const btn = document.getElementById('login-btn');
-  const err = document.getElementById('login-error');
-  btn.textContent = 'Checking…';
-  btn.disabled    = true;
+function showSetup()  { document.getElementById('login-box').style.display='block'; document.getElementById('signin-box').style.display='none'; }
+function showSignin() { document.getElementById('signin-box').style.display='block'; document.getElementById('login-box').style.display='none'; setTimeout(()=>document.getElementById('pw-input').focus(),50); }
+
+async function doSetup() {
+  const pw   = document.getElementById('setup-pw').value;
+  const pw2  = document.getElementById('setup-pw2').value;
+  const token= document.getElementById('setup-pat').value.trim();
+  const err  = document.getElementById('setup-error');
+  const btn  = document.getElementById('setup-btn');
   err.style.display = 'none';
+  if (!pw)           { err.textContent='Enter a password.'; err.style.display='block'; return; }
+  if (pw !== pw2)    { err.textContent='Passwords do not match.'; err.style.display='block'; return; }
+  if (!token)        { err.textContent='Enter your GitHub token.'; err.style.display='block'; return; }
+  btn.textContent='Saving…'; btn.disabled=true;
   try {
+    pat = token;
     const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
-    if (!r.ok) throw new Error('Invalid token or no access to this repo.');
-    localStorage.setItem('cms_pat', pat);
+    if (!r.ok) throw new Error('Invalid GitHub token or no repo access.');
+    const hash      = await sha256hex(pw);
+    const encrypted = await encryptPAT(pw, token);
+    localStorage.setItem('cms_pw_hash', hash);
+    localStorage.setItem('cms_pat_enc', encrypted);
     launchApp();
   } catch(e) {
-    err.textContent   = e.message;
-    err.style.display = 'block';
-    btn.textContent   = 'Continue';
-    btn.disabled      = false;
-    pat = '';
+    err.textContent=e.message; err.style.display='block';
+    btn.textContent='Save & Sign In'; btn.disabled=false;
+    pat='';
   }
 }
+
+async function doLogin() {
+  const pw  = document.getElementById('pw-input').value;
+  const err = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+  err.style.display='none';
+  if (!pw) return;
+  btn.textContent='Checking…'; btn.disabled=true;
+  try {
+    const hash    = await sha256hex(pw);
+    const stored  = localStorage.getItem('cms_pw_hash');
+    if (hash !== stored) throw new Error('Incorrect password.');
+    const encPAT  = localStorage.getItem('cms_pat_enc');
+    pat = await decryptPAT(pw, encPAT);
+    const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
+    if (!r.ok) throw new Error('Token expired — reset and enter a new one.');
+    launchApp();
+  } catch(e) {
+    err.textContent=e.message; err.style.display='block';
+    btn.textContent='Continue'; btn.disabled=false;
+    pat='';
+  }
+}
+
+document.getElementById('setup-btn').addEventListener('click', doSetup);
+document.getElementById('setup-pw2').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('setup-pat').focus(); });
+document.getElementById('setup-pat').addEventListener('keydown',  e => { if (e.key==='Enter') doSetup(); });
 document.getElementById('login-btn').addEventListener('click', doLogin);
-document.getElementById('pat-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('logout-btn').addEventListener('click', () => {
+document.getElementById('pw-input').addEventListener('keydown',   e => { if (e.key==='Enter') doLogin(); });
+document.getElementById('reset-link').addEventListener('click', e => {
+  e.preventDefault();
+  if (!confirm('This will clear your stored password and token. You\'ll need to re-enter your GitHub token.')) return;
+  localStorage.removeItem('cms_pw_hash');
+  localStorage.removeItem('cms_pat_enc');
   localStorage.removeItem('cms_pat');
+  document.getElementById('setup-pw').value='';
+  document.getElementById('setup-pw2').value='';
+  document.getElementById('setup-pat').value='';
+  showSetup();
+});
+document.getElementById('logout-btn').addEventListener('click', () => {
   pat = '';
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('pat-input').value = '';
+  document.getElementById('pw-input').value = '';
+  showSignin();
 });
 
 (async function boot() {
-  const saved = localStorage.getItem('cms_pat');
-  if (!saved) return;
-  pat = saved;
-  try {
-    const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
-    if (r.ok) { launchApp(); return; }
-  } catch {}
-  localStorage.removeItem('cms_pat');
-  pat = '';
+  const hasCreds = localStorage.getItem('cms_pw_hash') && localStorage.getItem('cms_pat_enc');
+  if (!hasCreds) { showSetup(); return; }
+  // Try auto-login if we can (no password stored — just show signin)
+  showSignin();
 })();
 
 // ── Load content ─────────────────────────────────────────────
