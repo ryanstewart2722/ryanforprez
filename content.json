@@ -1,5 +1,18 @@
 {
   "shuffle": false,
+  "profile": {
+    "bio": "Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.\n\nHe collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.",
+    "contact": [
+      { "label": "yo@ryanforprez.org", "href": "mailto:yo@ryanforprez.org" },
+      { "label": "Are.na", "href": "https://www.are.na/ryan-stewart/channels" },
+      { "label": "Instagram", "href": "https://www.instagram.com/ryanforprez/" }
+    ],
+    "recognition": [
+      { "label": "The Brand Identity — Common Bond", "href": "https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022" },
+      { "label": "The Brand Identity — RUN2RAVE", "href": "https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave" },
+      { "label": "Awwwards — Peterson Rich Office", "href": "https://www.awwwards.com/sites/peterson-rich-office" }
+    ]
+  },
   "projects": [
     { "caption": "Future Projects",           "src": "Images/01_future-projects.jpg",          "hover": "Images/hover/01_future-projects.jpg",          "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
     { "caption": "Common Bond",               "src": "Images/02_common-bond.jpg",              "hover": "Images/hover/02_common-bond.mp4",              "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
