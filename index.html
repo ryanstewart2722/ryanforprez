@@ -197,6 +197,9 @@
     }
     body.profile-active .grid-item { pointer-events: none; }
 
+    /* On desktop, make .grid-cell invisible to grid layout so .grid-item
+       remains a direct grid child even if JS wrapped it at mobile width */
+    .grid-cell { display: contents; }
     .grid-caption { display: none; }
 
     body.profile-active .grid-caption {
