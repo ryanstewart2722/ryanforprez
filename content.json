@@ -1,51 +1,278 @@
 {
   "shuffle": false,
+  "shuffleSongs": false,
   "profile": {
     "bio": "Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.\n\nHe collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.",
     "contact": [
-      { "label": "yo@ryanforprez.org", "href": "mailto:yo@ryanforprez.org" },
-      { "label": "Are.na", "href": "https://www.are.na/ryan-stewart/channels" },
-      { "label": "Instagram", "href": "https://www.instagram.com/ryanforprez/" }
+      {
+        "label": "yo@ryanforprez.org",
+        "href": "mailto:yo@ryanforprez.org"
+      },
+      {
+        "label": "Are.na",
+        "href": "https://www.are.na/ryan-stewart/channels"
+      },
+      {
+        "label": "Instagram",
+        "href": "https://www.instagram.com/ryanforprez/"
+      }
     ],
     "recognition": [
-      { "label": "The Brand Identity — Common Bond", "href": "https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022" },
-      { "label": "The Brand Identity — RUN2RAVE", "href": "https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave" },
-      { "label": "Awwwards — Peterson Rich Office", "href": "https://www.awwwards.com/sites/peterson-rich-office" }
+      {
+        "label": "The Brand Identity â Common Bond",
+        "href": "https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022"
+      },
+      {
+        "label": "The Brand Identity â RUN2RAVE",
+        "href": "https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave"
+      },
+      {
+        "label": "Awwwards â Peterson Rich Office",
+        "href": "https://www.awwwards.com/sites/peterson-rich-office"
+      }
     ]
   },
   "projects": [
-    { "caption": "Future Projects",           "src": "Images/01_future-projects.jpg",          "hover": "Images/hover/01_future-projects.jpg",          "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Common Bond",               "src": "Images/02_common-bond.jpg",              "hover": "Images/hover/02_common-bond.mp4",              "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Proof of Concept",          "src": "Images/03_proof-of-concept.jpeg",        "hover": "Images/hover/03_proof-of-concept.jpg",         "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Jugger Brand ID",           "src": "Images/04_jugger-brand-id.jpg",          "hover": "Images/hover/04_jugger-brand-id.mp4",          "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "L'Entrata Wine",            "src": "Images/05_lentrata-wine.jpg",            "hover": "Images/hover/05_lentrata-wine.jpg",            "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Beadle",                    "src": "Images/06_beadle.png",                   "hover": "Images/hover/06_beadle.jpg",                   "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Stunt Devil",               "src": "Images/07_stunt-devil.jpg",              "hover": "Images/hover/07_stunt-devil.mp4",              "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "CMFTZN",                    "src": "Images/08_cmftzn.jpg",                   "hover": "Images/hover/08_cmftzn.mov",                   "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Puppet Master",             "src": "Images/09_puppet-master.jpg",            "hover": "Images/hover/09_puppet-master.mp4",            "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "RUN2RAVE",                  "src": "Images/10_run2rave.jpg",                 "hover": "Images/hover/10_run2rave.jpg",                 "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Wesley Knight",             "src": "Images/11_wesley-knight.jpg",            "hover": "Images/hover/11_wesley-knight.jpeg",           "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Standard Issue",            "src": "Images/12_standard-issue.jpg",           "hover": "Images/hover/12_standard-issue.jpg",           "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "NFT Youngboy",              "src": "Images/13_nft-youngboy.jpg",             "hover": "Images/hover/13_nft-youngboy.mp4",             "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Spoiler Alert",             "src": "Images/14_spoiler-alert.jpg",            "hover": "Images/hover/14_spoiler-alert.mp4",            "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Look at This Photograph",   "src": "Images/15_look-at-this-photograph.jpg",  "hover": "Images/hover/15_look-at-this-photograph.mp4", "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Cassettes",                 "src": "Images/16_cassettes.jpg",                "hover": "Images/hover/16_cassettes.jpg",                "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Elements Vol 1",            "src": "Images/17_elements-vol-1.jpg",           "hover": "Images/hover/17_elements-vol-1.jpg",           "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Sound OFF",                 "src": "Images/18_sound-off.jpg",                "hover": "Images/hover/18_sound-off.jpg",                "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "CWKTSOF",                   "src": "Images/19_cwktsof.jpg",                  "hover": "Images/hover/19_cwktsof.jpg",                  "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "South + West",              "src": "Images/20_south-west.jpg",               "hover": "Images/hover/20_south-west.jpg",               "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "The Canvas 2.0",            "src": "Images/21_the-canvas-2-0.jpg",           "hover": "Images/hover/21_the-canvas-2-0.jpg",           "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "The Canvas Web",            "src": "Images/22_the-canvas-web.jpg",           "hover": "Images/hover/22_the-canvas-web.mp4",           "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Bean Sans",                 "src": "Images/23_bean-sans.jpg",                "hover": "Images/hover/23_bean-sans.jpg",                "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "No More Noise",             "src": "Images/24_no-more-noise.jpg",            "hover": "Images/hover/24_no-more-noise.jpg",            "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  },
-    { "caption": "Peterson Rich Office",      "src": "Images/25_Peterson-Rich-Office.jpg",     "hover": "Images/hover/25_Peterson-Rich-Office.jpg",     "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Pill Poppers",              "src": "Images/26_Pill-Poppers.png",             "hover": "Images/hover/26_Pill-Poppers.jpg",             "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Tendencies",               "src": "Images/27_Tendencies.png",               "hover": "Images/hover/27_Tendencies.jpg",               "mobileHover": null, "thumbVideo": null, "orientation": "landscape" },
-    { "caption": "Edible Landscapes",         "src": "Images/28_Edible-Landscapes.png",        "hover": "Images/hover/28_Edible-Landscapes.jpg",        "mobileHover": null, "thumbVideo": null, "orientation": "portrait"  }
+    {
+      "caption": "Future Projects",
+      "src": "Images/01_future-projects.jpg",
+      "hover": "Images/hover/01_future-projects.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Common Bond",
+      "src": "Images/02_common-bond.jpg",
+      "hover": "Images/hover/02_common-bond.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Proof of Concept",
+      "src": "Images/03_proof-of-concept.jpeg",
+      "hover": "Images/hover/03_proof-of-concept.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Jugger Brand ID",
+      "src": "Images/04_jugger-brand-id.jpg",
+      "hover": "Images/hover/04_jugger-brand-id.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "L'Entrata Wine",
+      "src": "Images/05_lentrata-wine.jpg",
+      "hover": "Images/hover/05_lentrata-wine.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Beadle",
+      "src": "Images/06_beadle.png",
+      "hover": "Images/hover/06_beadle.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Stunt Devil",
+      "src": "Images/07_stunt-devil.jpg",
+      "hover": "Images/hover/07_stunt-devil.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "CMFTZN",
+      "src": "Images/08_cmftzn.jpg",
+      "hover": "Images/hover/08_cmftzn.mov",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Puppet Master",
+      "src": "Images/09_puppet-master.jpg",
+      "hover": "Images/hover/09_puppet-master.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "RUN2RAVE",
+      "src": "Images/10_run2rave.jpg",
+      "hover": "Images/hover/10_run2rave.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Wesley Knight",
+      "src": "Images/11_wesley-knight.jpg",
+      "hover": "Images/hover/11_wesley-knight.jpeg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Standard Issue",
+      "src": "Images/12_standard-issue.jpg",
+      "hover": "Images/hover/12_standard-issue.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "NFT Youngboy",
+      "src": "Images/13_nft-youngboy.jpg",
+      "hover": "Images/hover/13_nft-youngboy.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Spoiler Alert",
+      "src": "Images/14_spoiler-alert.jpg",
+      "hover": "Images/hover/14_spoiler-alert.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Look at This Photograph",
+      "src": "Images/15_look-at-this-photograph.jpg",
+      "hover": "Images/hover/15_look-at-this-photograph.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Cassettes",
+      "src": "Images/16_cassettes.jpg",
+      "hover": "Images/hover/16_cassettes.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Elements Vol 1",
+      "src": "Images/17_elements-vol-1.jpg",
+      "hover": "Images/hover/17_elements-vol-1.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Sound OFF",
+      "src": "Images/18_sound-off.jpg",
+      "hover": "Images/hover/18_sound-off.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "CWKTSOF",
+      "src": "Images/19_cwktsof.jpg",
+      "hover": "Images/hover/19_cwktsof.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "South + West",
+      "src": "Images/20_south-west.jpg",
+      "hover": "Images/hover/20_south-west.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "The Canvas 2.0",
+      "src": "Images/21_the-canvas-2-0.jpg",
+      "hover": "Images/hover/21_the-canvas-2-0.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "The Canvas Web",
+      "src": "Images/22_the-canvas-web.jpg",
+      "hover": "Images/hover/22_the-canvas-web.mp4",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Bean Sans",
+      "src": "Images/23_bean-sans.jpg",
+      "hover": "Images/hover/23_bean-sans.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "No More Noise",
+      "src": "Images/24_no-more-noise.jpg",
+      "hover": "Images/hover/24_no-more-noise.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Peterson Rich Office",
+      "src": "Images/25_Peterson-Rich-Office.jpg",
+      "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Pill Poppers",
+      "src": "Images/26_Pill-Poppers.png",
+      "hover": "Images/hover/26_Pill-Poppers.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Tendencies",
+      "src": "Images/27_Tendencies.png",
+      "hover": "Images/hover/27_Tendencies.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Edible Landscapes",
+      "src": "Images/28_Edible-Landscapes.png",
+      "hover": "Images/hover/28_Edible-Landscapes.jpg",
+      "mobileHover": null,
+      "thumbVideo": null,
+      "orientation": "portrait"
+    }
   ],
   "songs": [
-    { "src": "Audio/Save Me - Chief Keef.mp3",            "art": "Images/Save Me - Chief Keef.png",            "caption": "Save Me - Chief Keef" },
-    { "src": "Audio/Valerie BBC Radio-Amy Winehouse.mp3", "art": "Images/Valerie BBC Radio-Amy Winehouse.png", "caption": "Valerie BBC Radio - Amy Winehouse" },
-    { "src": "Audio/Choose U - Project Pat.mp3",          "art": "Images/Choose U - Project Pat.png",          "caption": "Choose U - Project Pat" }
+    {
+      "caption": "Save Me - Chief Keef",
+      "src": "Audio/Save Me - Chief Keef.mp3",
+      "art": "Images/Save Me - Chief Keef.png"
+    },
+    {
+      "caption": "Valerie BBC Radio - Amy Winehouse",
+      "src": "Audio/Valerie BBC Radio-Amy Winehouse.mp3",
+      "art": "Images/Valerie BBC Radio-Amy Winehouse.png"
+    },
+    {
+      "caption": "Choose U - Project Pat",
+      "src": "Audio/Choose U - Project Pat.mp3",
+      "art": "Images/Choose U - Project Pat.png"
+    }
   ]
 }
