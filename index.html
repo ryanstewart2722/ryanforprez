@@ -197,10 +197,9 @@
     }
     body.profile-active .grid-item { pointer-events: none; }
 
-    /* On desktop, make .grid-cell invisible to grid layout so .grid-item
-       remains a direct grid child even if JS wrapped it at mobile width */
-    .grid-cell { display: contents; }
+    .grid-cell { align-self: center; }
     .grid-caption { display: none; }
+    #mobile-caption-overlay { display: none; }
 
     body.profile-active .grid-caption {
       opacity: 0;
@@ -885,20 +884,18 @@
     (() => {
       const gridItems = [...document.querySelectorAll('.grid-item')];
 
-      // Mobile only: wrap each grid-item in a .grid-cell flex container so
-      // the caption (appended after grid-item) is always strictly below the image
-      if (window.innerWidth <= 768) {
-        gridItems.forEach(item => {
-          const wrap = document.createElement('div');
-          wrap.className = 'grid-cell';
-          item.parentNode.insertBefore(wrap, item);
-          wrap.appendChild(item);
-          const cap = document.createElement('span');
-          cap.className = 'grid-caption';
-          cap.textContent = item.dataset.caption;
-          wrap.appendChild(cap);
-        });
-      }
+      // Always wrap grid-item in .grid-cell so structure is consistent at any
+      // screen size. CSS controls visibility: hidden on desktop, visible on mobile.
+      gridItems.forEach(item => {
+        const wrap = document.createElement('div');
+        wrap.className = 'grid-cell';
+        item.parentNode.insertBefore(wrap, item);
+        wrap.appendChild(item);
+        const cap = document.createElement('span');
+        cap.className = 'grid-caption';
+        cap.textContent = item.dataset.caption;
+        wrap.appendChild(cap);
+      });
 
       // Build caption overlay (matches shuffled grid order)
       const overlay = document.createElement('div');
