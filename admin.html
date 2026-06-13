@@ -684,6 +684,7 @@
       <div id="topbar-title">Profile</div>
       <div id="topbar-actions">
         <span id="save-status"></span>
+        <button class="btn" id="revert-btn">Revert changes</button>
         <button class="btn btn-primary" id="save-btn">Publish changes</button>
       </div>
     </header>
@@ -1478,6 +1479,17 @@ function collectData() {
     songs
   };
 }
+
+document.getElementById('revert-btn').addEventListener('click', async () => {
+  if (!confirm('Discard all unsaved changes and reload from last published version?')) return;
+  const btn = document.getElementById('revert-btn');
+  btn.textContent = 'Reverting…';
+  btn.disabled = true;
+  await launchApp();
+  btn.textContent = 'Revert changes';
+  btn.disabled = false;
+  document.getElementById('save-status').textContent = '';
+});
 
 document.getElementById('save-btn').addEventListener('click', saveContent);
 
