@@ -139,8 +139,8 @@
     },
     {
       "caption": "Spoiler Alert",
-      "src": "Images/14_spoiler-alert.jpg",
-      "hover": "Images/hover/14_spoiler-alert.mp4",
+      "src": "Images/14_spoiler-alert.mp4",
+      "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
       "mobileHover": null,
       "thumbVideo": null,
       "orientation": "landscape"
