@@ -74,6 +74,7 @@
     /* Desktop: z-index:2 keeps grid above the fullbleed hover background (z-index:1).
        background:#fff makes mix-blend-mode:exclusion render as black on white. */
     #page { position: relative; z-index: 2; background: #fff; }
+    body.bg-camera #page { background: transparent; }
 
     /* ─────────────────────────────────────
        Nav — mix-blend-mode: exclusion.
