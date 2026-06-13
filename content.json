@@ -131,10 +131,10 @@
     },
     {
       "caption": "NFT Youngboy",
-      "src": "Images/13_nft-youngboy.jpg",
-      "hover": "Images/hover/13_nft-youngboy.mp4",
+      "src": "",
+      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
       "mobileHover": null,
-      "thumbVideo": null,
+      "thumbVideo": "Images/hover/13_nft-youngboy.mp4",
       "orientation": "landscape"
     },
     {
