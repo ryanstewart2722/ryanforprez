@@ -8,22 +8,31 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #0e0e0e;
-      --surface: #181818;
-      --border:  #2b2b2b;
-      --text:    #d8d8d8;
-      --muted:   #5a5a5a;
-      --accent:  #2563eb;
-      --danger:  #b91c1c;
-      --success: #16a34a;
-      --font:    'Courier New', monospace;
+      --sidebar-w:  220px;
+      --topbar-h:   56px;
+      --bg:         #f2f2f2;
+      --surface:    #ffffff;
+      --border:     #e2e2e2;
+      --border-mid: #d0d0d0;
+      --text:       #111111;
+      --muted:      #888888;
+      --faint:      #c4c4c4;
+      --accent:     #2563eb;
+      --accent-bg:  #eff6ff;
+      --danger:     #dc2626;
+      --success:    #16a34a;
+      --sidebar-bg: #111111;
+      --sidebar-txt:#b0b0b0;
+      --sidebar-act:#ffffff;
+      --font:       -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono:       'SF Mono', 'Fira Code', 'Courier New', monospace;
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
       font-family: var(--font);
-      font-size: 13px;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
       min-height: 100vh;
     }
 
@@ -34,198 +43,449 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      gap: 14px;
+      gap: 16px;
+      background: var(--surface);
     }
-    #login-screen h1 {
-      font-size: 14px;
-      font-weight: normal;
+    #login-logo {
+      font-size: 13px;
+      font-weight: 600;
       letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    #login-screen h2 {
+      font-size: 22px;
+      font-weight: 600;
       color: var(--text);
     }
     #login-screen p {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       text-align: center;
-      max-width: 280px;
+      max-width: 300px;
       line-height: 1.6;
     }
-    #login-error {
-      color: var(--danger);
+    #login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px;
+      width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    #login-box label {
       font-size: 12px;
-      display: none;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
     #pat-input {
-      width: 300px;
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+    }
+    #pat-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    #login-error { font-size: 12px; color: var(--danger); display: none; }
+
+    /* ── App shell ── */
+    #app { display: none; min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+    }
+    #sidebar-logo {
+      padding: 20px 18px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sidebar-act);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    #sidebar-logo span {
+      display: block;
+      font-weight: 400;
+      color: var(--sidebar-txt);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+    #sidebar-nav {
+      flex: 1;
+      padding: 10px 8px;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      padding: 14px 10px 6px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--sidebar-txt);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+      user-select: none;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--sidebar-act); }
+    .nav-item.active { background: rgba(255,255,255,0.1); color: var(--sidebar-act); }
+    .nav-item .nav-icon { font-size: 15px; opacity: 0.7; width: 18px; text-align: center; }
+    .nav-item .nav-count {
+      margin-left: auto;
+      font-size: 10px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.4);
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+    #sidebar-footer {
+      padding: 12px 8px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    #logout-btn {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.3);
+      font-family: var(--font);
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      text-align: left;
+      transition: background 0.1s, color 0.1s;
+    }
+    #logout-btn:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.7); }
+
+    /* ── Main area ── */
+    #main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ── CMS ── */
-    #cms-screen { display: none; }
-
-    #cms-header {
+    /* ── Topbar ── */
+    #topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: var(--bg);
+      z-index: 40;
+      height: var(--topbar-h);
+      background: rgba(242,242,242,0.9);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 11px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 28px;
     }
-    #cms-header h1 {
-      font-size: 12px;
-      font-weight: normal;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-    }
-    .header-actions { display: flex; gap: 10px; align-items: center; }
-
-    #cms-content {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 36px 24px 100px;
-    }
-
-    .cms-section { margin-bottom: 52px; }
-    .cms-section-title {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── Settings ── */
-    .setting-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
+    #topbar-title {
+      font-size: 15px;
+      font-weight: 600;
       color: var(--text);
-      font-size: 13px;
+    }
+    #topbar-actions { display: flex; gap: 10px; align-items: center; }
+    #save-status {
+      font-size: 12px;
+      color: var(--muted);
     }
 
-    /* ── Cards ── */
-    .project-card, .song-card {
+    /* ── Content ── */
+    #content {
+      padding: 32px 28px 80px;
+      max-width: 840px;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ── Page title ── */
+    .page-header { margin-bottom: 28px; }
+    .page-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .page-header p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Card ── */
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 3px;
-      margin-bottom: 6px;
-      transition: border-color 0.15s;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
     }
-    .project-card.drag-over { border-color: var(--accent); }
-
     .card-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 12px;
+      padding: 13px 16px;
       cursor: pointer;
       user-select: none;
+      transition: background 0.1s;
     }
-
+    .card-header:hover { background: #fafafa; }
     .drag-handle {
-      color: var(--muted);
+      color: var(--faint);
       cursor: grab;
-      font-size: 15px;
-      padding: 2px 3px;
+      font-size: 16px;
       flex-shrink: 0;
       line-height: 1;
     }
     .drag-handle:active { cursor: grabbing; }
-
-    .card-title {
-      flex: 1;
-      font-size: 13px;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .card-toggle {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-family: var(--font);
+    .card-num {
       font-size: 11px;
-      cursor: pointer;
-      padding: 3px 6px;
+      font-weight: 500;
+      color: var(--faint);
+      width: 22px;
       flex-shrink: 0;
     }
+    .card-title {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .card-thumb {
+      width: 36px;
+      height: 24px;
+      object-fit: cover;
+      border-radius: 3px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .card-chevron {
+      color: var(--faint);
+      font-size: 12px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .card-chevron.open { transform: rotate(180deg); }
+    .btn-card-delete {
+      background: none;
+      border: none;
+      color: var(--faint);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      transition: color 0.1s, background 0.1s;
+    }
+    .btn-card-delete:hover { color: var(--danger); background: #fef2f2; }
 
     .card-body {
-      padding: 0 12px 14px;
-      border-top: 1px solid var(--border);
       display: none;
+      padding: 0 16px 20px;
+      border-top: 1px solid var(--border);
     }
     .card-body.open { display: block; }
 
     /* ── Fields ── */
-    .field-row {
+    .field-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .field-group.full { grid-template-columns: 1fr; }
+    .field-group.thirds { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
+      flex-direction: column;
+      gap: 6px;
     }
     .field-label {
-      color: var(--muted);
       font-size: 11px;
-      width: 100px;
-      flex-shrink: 0;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .field-hint {
+      font-size: 11px;
+      color: var(--faint);
+      margin-top: 2px;
     }
 
-    /* ── Orientation ── */
-    .orient-group { display: flex; }
-    .orient-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: var(--font);
-      font-size: 11px;
-      padding: 4px 11px;
-      cursor: pointer;
-      transition: background 0.1s, color 0.1s;
-    }
-    .orient-btn:first-child { border-radius: 3px 0 0 3px; }
-    .orient-btn:last-child  { border-radius: 0 3px 3px 0; border-left: none; }
-    .orient-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-    /* ── Inputs ── */
     input[type="text"],
-    input[type="password"] {
-      background: var(--bg);
+    input[type="url"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
       border: 1px solid var(--border);
-      color: var(--text);
+      border-radius: 6px;
       font-family: var(--font);
-      font-size: 12px;
-      padding: 5px 9px;
-      border-radius: 3px;
-      flex: 1;
-      min-width: 0;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      resize: none;
     }
     input[type="text"]:focus,
-    input[type="password"]:focus {
-      outline: none;
+    input[type="url"]:focus,
+    textarea:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
     }
-    input[type="password"] { width: 300px; flex: none; }
+    textarea { min-height: 100px; line-height: 1.6; resize: vertical; }
+
+    /* ── Orientation ── */
+    .orient-group { display: flex; gap: 0; }
+    .orient-btn {
+      padding: 7px 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .orient-btn:first-child { border-radius: 6px 0 0 6px; }
+    .orient-btn:last-child  { border-radius: 0 6px 6px 0; border-left: none; }
+    .orient-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+
+    /* ── Upload zone ── */
+    .upload-zone {
+      border: 2px dashed var(--border-mid);
+      border-radius: 8px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+    }
+    .upload-zone:hover,
+    .upload-zone.dz-over {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .upload-zone.dz-over { border-style: solid; }
+    .upload-zone-icon { font-size: 22px; color: var(--faint); margin-bottom: 6px; }
+    .upload-zone-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .upload-zone-text b { color: var(--accent); font-weight: 500; }
+    .upload-zone-hint { font-size: 11px; color: var(--faint); margin-top: 4px; }
+
+    .upload-preview {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .upload-preview.show { display: flex; }
+    .preview-thumb {
+      width: 48px;
+      height: 36px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    .preview-info { flex: 1; min-width: 0; }
+    .preview-name {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .preview-change {
+      font-size: 11px;
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: var(--font);
+      text-decoration: underline;
+    }
+
+    /* Manual path input (fallback) */
+    .path-input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .path-input-row input { flex: 1; font-family: var(--mono); font-size: 11px; }
+    .path-label { font-size: 10px; color: var(--faint); }
+
+    /* ── Add button ── */
+    .btn-add-card {
+      width: 100%;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px dashed var(--border-mid);
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.1s;
+    }
+    .btn-add-card:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
 
     /* ── Buttons ── */
     .btn {
-      font-family: var(--font);
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
       border: 1px solid var(--border);
-      cursor: pointer;
       background: var(--surface);
       color: var(--text);
-      transition: background 0.1s;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.1s;
+      white-space: nowrap;
     }
-    .btn:hover { background: #222; }
+    .btn:hover { background: #f5f5f5; }
     .btn:disabled { opacity: 0.5; cursor: default; }
 
     .btn-primary {
@@ -235,147 +495,271 @@
     }
     .btn-primary:hover { background: #1d4ed8; }
 
-    .btn-ghost {
+    .btn-sm {
+      padding: 5px 11px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+
+    .btn-danger {
       background: none;
       border-color: transparent;
-      color: var(--muted);
+      color: var(--danger);
+      font-size: 12px;
+      padding: 5px 10px;
     }
-    .btn-ghost:hover { background: none; color: var(--text); }
+    .btn-danger:hover { background: #fef2f2; }
 
-    .btn-danger-text {
+    /* ── Links list (contact/recognition) ── */
+    .links-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .link-row input {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      font-size: 13px;
+    }
+    .link-row input:focus { box-shadow: none; border: none; }
+    .link-row .link-label { flex: 1; min-width: 0; }
+    .link-row .link-url { flex: 2; min-width: 0; color: var(--muted); }
+    .link-sep { color: var(--border); font-size: 16px; flex-shrink: 0; }
+    .btn-link-delete {
       background: none;
       border: none;
-      color: var(--danger);
-      font-family: var(--font);
-      font-size: 11px;
-      padding: 3px 8px;
+      color: var(--faint);
+      font-size: 14px;
       cursor: pointer;
+      padding: 2px 4px;
       border-radius: 3px;
       flex-shrink: 0;
     }
-    .btn-danger-text:hover { background: rgba(185,28,28,0.12); }
-
-    .btn-upload {
+    .btn-link-delete:hover { color: var(--danger); }
+    .btn-add-link {
       background: none;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: var(--font);
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: color 0.1s, border-color 0.1s;
-    }
-    .btn-upload:hover { color: var(--text); border-color: #444; }
-    .btn-upload:disabled { opacity: 0.4; cursor: default; }
-
-    /* ── Drop zones ── */
-    .drop-zone {
-      border: 1px dashed transparent;
-      border-radius: 3px;
-      padding: 4px 6px;
-      margin: 6px -6px 0;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .drop-zone.dz-over {
-      border-color: var(--accent);
-      background: rgba(37, 99, 235, 0.07);
-    }
-
-    .btn-add {
-      width: 100%;
-      background: none;
-      border: 1px dashed var(--border);
-      color: var(--muted);
+      border: 1px dashed var(--border-mid);
+      border-radius: 6px;
+      padding: 7px 12px;
       font-family: var(--font);
       font-size: 12px;
-      padding: 10px;
-      margin-top: 8px;
-      border-radius: 3px;
+      color: var(--muted);
       cursor: pointer;
-      text-align: center;
-      transition: color 0.1s, border-color 0.1s;
+      transition: all 0.1s;
+      text-align: left;
     }
-    .btn-add:hover { color: var(--text); border-color: #444; background: none; }
+    .btn-add-link:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ── Checkbox ── */
-    input[type="checkbox"] {
-      accent-color: var(--accent);
-      width: 14px;
-      height: 14px;
+    /* ── Settings toggle ── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .toggle-info h4 { font-size: 14px; font-weight: 500; color: var(--text); }
+    .toggle-info p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .toggle-switch {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--border-mid);
+      border-radius: 12px;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-switch input:checked + .toggle-track { background: var(--accent); }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); }
+
+    /* ── Drag over card ── */
+    .card.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+
+    /* ── Divider ── */
+    .section-divider {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 24px 0 10px;
     }
 
     /* ── Toast ── */
     #toast {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      bottom: 24px;
+      right: 24px;
+      background: var(--text);
+      color: #fff;
       padding: 10px 18px;
-      border-radius: 3px;
-      font-size: 12px;
-      color: var(--text);
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s;
-      z-index: 500;
-      max-width: 320px;
+      transition: opacity 0.2s, transform 0.2s;
+      transform: translateY(8px);
+      z-index: 999;
     }
-    #toast.show  { opacity: 1; }
-    #toast.ok    { border-color: var(--success); color: var(--success); }
-    #toast.error { border-color: var(--danger);  color: var(--danger); }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.ok  { background: var(--success); }
+    #toast.err { background: var(--danger); }
   </style>
 </head>
 <body>
 
 <!-- ── Login ── -->
 <div id="login-screen">
-  <h1>RYAN FOR PREZ — CMS</h1>
-  <p>Enter your GitHub Personal Access Token.<br>Needs <code>repo</code> scope.</p>
-  <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxxxxxx" autocomplete="off">
-  <button class="btn btn-primary" id="login-btn">Login</button>
-  <span id="login-error"></span>
+  <div id="login-logo">Ryan for Prez <span>Content Management</span></div>
+  <div id="login-box">
+    <h2>Sign in</h2>
+    <p>Use your GitHub Personal Access Token with <code>repo</code> scope.</p>
+    <div class="field">
+      <label for="pat-input">GitHub Token</label>
+      <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    </div>
+    <button class="btn btn-primary" id="login-btn" style="width:100%;justify-content:center;">Continue</button>
+    <span id="login-error"></span>
+  </div>
 </div>
 
-<!-- ── CMS ── -->
-<div id="cms-screen">
-  <div id="cms-header">
-    <h1>RYAN FOR PREZ — CMS</h1>
-    <div class="header-actions">
-      <button class="btn btn-primary" id="save-btn">Save &amp; Deploy</button>
-      <button class="btn btn-ghost" id="logout-btn">Logout</button>
-    </div>
-  </div>
+<!-- ── App ── -->
+<div id="app">
 
-  <div id="cms-content">
-
-    <!-- Settings -->
-    <div class="cms-section">
-      <div class="cms-section-title">Settings</div>
-      <div class="setting-row">
-        <input type="checkbox" id="shuffle-toggle">
-        <label for="shuffle-toggle">Shuffle projects on each load</label>
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <div id="sidebar-logo">Ryan for Prez <span>CMS</span></div>
+    <nav id="sidebar-nav">
+      <div class="nav-label">Content</div>
+      <div class="nav-item active" data-section="profile">
+        <span class="nav-icon">👤</span> Profile
       </div>
+      <div class="nav-item" data-section="projects">
+        <span class="nav-icon">🖼</span> Projects
+        <span class="nav-count" id="nav-count-projects">0</span>
+      </div>
+      <div class="nav-item" data-section="songs">
+        <span class="nav-icon">🎵</span> Songs
+        <span class="nav-count" id="nav-count-songs">0</span>
+      </div>
+      <div class="nav-label">Site</div>
+      <div class="nav-item" data-section="settings">
+        <span class="nav-icon">⚙️</span> Settings
+      </div>
+    </nav>
+    <div id="sidebar-footer">
+      <button id="logout-btn">Sign out</button>
     </div>
+  </aside>
 
-    <!-- Projects -->
-    <div class="cms-section">
-      <div class="cms-section-title">Projects</div>
-      <div id="projects-list"></div>
-      <button class="btn-add" id="add-project-btn">+ Add Project</button>
+  <!-- Main -->
+  <div id="main">
+    <header id="topbar">
+      <div id="topbar-title">Profile</div>
+      <div id="topbar-actions">
+        <span id="save-status"></span>
+        <button class="btn btn-primary" id="save-btn">Publish changes</button>
+      </div>
+    </header>
+
+    <div id="content">
+
+      <!-- ── Profile ── -->
+      <div id="section-profile" class="section active">
+        <div class="page-header">
+          <h2>Profile</h2>
+          <p>Edit your bio, contact info, and recognition links.</p>
+        </div>
+
+        <div class="card">
+          <div style="padding:16px 16px 0;">
+            <div class="field">
+              <label class="field-label">Bio</label>
+              <textarea id="profile-bio" rows="5" placeholder="Write something about yourself…"></textarea>
+            </div>
+          </div>
+          <div class="field-group" style="padding:0 16px 16px;margin-top:16px;">
+            <div class="field">
+              <label class="field-label">Contact Links</label>
+              <div class="links-list" id="contact-links"></div>
+              <button class="btn-add-link" id="add-contact-link">+ Add link</button>
+            </div>
+            <div class="field">
+              <label class="field-label">Recognition Links</label>
+              <div class="links-list" id="recognition-links"></div>
+              <button class="btn-add-link" id="add-recognition-link">+ Add link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Projects ── -->
+      <div id="section-projects" class="section">
+        <div class="page-header">
+          <h2>Projects</h2>
+          <p>Drag to reorder. Click a project to edit its details.</p>
+        </div>
+        <div id="projects-list"></div>
+        <button class="btn-add-card" id="add-project-btn">+ Add project</button>
+      </div>
+
+      <!-- ── Songs ── -->
+      <div id="section-songs" class="section">
+        <div class="page-header">
+          <h2>Songs</h2>
+          <p>One song is chosen at random each time the site loads.</p>
+        </div>
+        <div id="songs-list"></div>
+        <button class="btn-add-card" id="add-song-btn">+ Add song</button>
+      </div>
+
+      <!-- ── Settings ── -->
+      <div id="section-settings" class="section">
+        <div class="page-header">
+          <h2>Settings</h2>
+          <p>Site-wide configuration options.</p>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <h4>Shuffle projects</h4>
+            <p>Randomize the project grid order on each page load.</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="shuffle-toggle">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+
     </div>
-
-    <!-- Songs -->
-    <div class="cms-section">
-      <div class="cms-section-title">Songs</div>
-      <div id="songs-list"></div>
-      <button class="btn-add" id="add-song-btn">+ Add Song</button>
-    </div>
-
   </div>
 </div>
 
@@ -390,36 +774,20 @@ let pat        = '';
 let contentSha = null;
 let dragSrc    = null;
 
-// ─── Helpers ────────────────────────────────────────────────
-function headers() {
+// ── Helpers ──────────────────────────────────────────────────
+function hdrs() {
   return {
     'Authorization': `token ${pat}`,
     'Accept':        'application/vnd.github.v3+json',
     'Content-Type':  'application/json'
   };
 }
-
 function encodePath(p) {
   return p.split('/').map(encodeURIComponent).join('/');
 }
-
-function esc(str) {
-  return String(str ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+function esc(v) {
+  return String(v ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
-function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className   = 'show' + (type ? ' ' + type : '');
-}
-function toastHide() {
-  document.getElementById('toast').className = '';
-}
-
 function toBase64(file) {
   return new Promise((res, rej) => {
     const r = new FileReader();
@@ -428,168 +796,317 @@ function toBase64(file) {
     r.readAsDataURL(file);
   });
 }
+function isImage(name) { return /\.(jpe?g|png|gif|webp|svg)$/i.test(name); }
 
-// ─── Auth ────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+}
+function toastOk(msg) {
+  toast(msg, 'ok');
+  toastTimer = setTimeout(() => document.getElementById('toast').className = '', 3500);
+}
+function toastErr(msg) {
+  toast(msg, 'err');
+  toastTimer = setTimeout(() => document.getElementById('toast').className = '', 6000);
+}
+
+// ── Nav ──────────────────────────────────────────────────────
+const sections = ['profile','projects','songs','settings'];
+
+document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+  item.addEventListener('click', () => {
+    const sec = item.dataset.section;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    sections.forEach(s => {
+      document.getElementById('section-' + s).classList.toggle('active', s === sec);
+    });
+    document.getElementById('topbar-title').textContent =
+      item.textContent.trim().replace(/\d+/g, '').trim();
+  });
+});
+
+// ── Auth ─────────────────────────────────────────────────────
 async function doLogin() {
   const val = document.getElementById('pat-input').value.trim();
   if (!val) return;
   pat = val;
-
   const btn = document.getElementById('login-btn');
   const err = document.getElementById('login-error');
   btn.textContent = 'Checking…';
   btn.disabled    = true;
   err.style.display = 'none';
-
   try {
-    const r = await fetch(`${API}/repos/${REPO}`, { headers: headers() });
-    if (!r.ok) throw new Error('Invalid token or no access to repo.');
+    const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
+    if (!r.ok) throw new Error('Invalid token or no access to this repo.');
     localStorage.setItem('cms_pat', pat);
-    openCMS();
-  } catch (e) {
+    launchApp();
+  } catch(e) {
     err.textContent   = e.message;
     err.style.display = 'block';
-    btn.textContent   = 'Login';
+    btn.textContent   = 'Continue';
     btn.disabled      = false;
     pat = '';
   }
 }
-
 document.getElementById('login-btn').addEventListener('click', doLogin);
 document.getElementById('pat-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
 document.getElementById('logout-btn').addEventListener('click', () => {
   localStorage.removeItem('cms_pat');
   pat = '';
-  document.getElementById('cms-screen').style.display  = 'none';
+  document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('pat-input').value = '';
 });
 
-// Auto-login if saved
 (async function boot() {
   const saved = localStorage.getItem('cms_pat');
   if (!saved) return;
   pat = saved;
   try {
-    const r = await fetch(`${API}/repos/${REPO}`, { headers: headers() });
-    if (r.ok) { openCMS(); return; }
+    const r = await fetch(`${API}/repos/${REPO}`, { headers: hdrs() });
+    if (r.ok) { launchApp(); return; }
   } catch {}
   localStorage.removeItem('cms_pat');
   pat = '';
 })();
 
-// ─── Load content ────────────────────────────────────────────
-async function openCMS() {
+// ── Load content ─────────────────────────────────────────────
+async function launchApp() {
   document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('cms-screen').style.display   = 'block';
+  document.getElementById('app').style.display          = 'block';
   toast('Loading content…');
 
   try {
-    const r = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`, { headers: headers() });
-
+    const r = await fetch(
+      `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`,
+      { headers: hdrs() }
+    );
     if (r.status === 404) {
-      // content.json doesn't exist on main yet — start empty
       contentSha = null;
-      renderCMS({ shuffle: false, projects: [], songs: [] });
-      toastHide();
-      toast('content.json not found on main — save to create it.', 'error');
-      setTimeout(toastHide, 5000);
+      renderAll({ shuffle: false, projects: [], songs: [], profile: defaultProfile() });
+      document.getElementById('toast').className = '';
       return;
     }
-
-    if (!r.ok) throw new Error(`GitHub API error ${r.status}`);
-
+    if (!r.ok) throw new Error(`GitHub error ${r.status}`);
     const file = await r.json();
-    contentSha  = file.sha;
-    const data  = JSON.parse(atob(file.content.replace(/\n/g, '')));
-    renderCMS(data);
-    toastHide();
-  } catch (e) {
-    toast(e.message, 'error');
+    contentSha = file.sha;
+    const data = JSON.parse(atob(file.content.replace(/\n/g,'')));
+    if (!data.profile) data.profile = defaultProfile();
+    renderAll(data);
+    document.getElementById('toast').className = '';
+  } catch(e) {
+    toastErr(e.message);
   }
 }
 
-// ─── Render ──────────────────────────────────────────────────
-function renderCMS(data) {
+function defaultProfile() {
+  return {
+    bio: '',
+    contact: [],
+    recognition: []
+  };
+}
+
+// ── Render all ───────────────────────────────────────────────
+function renderAll(data) {
   document.getElementById('shuffle-toggle').checked = !!data.shuffle;
+  renderProfile(data.profile || defaultProfile());
   renderProjects(data.projects || []);
   renderSongs(data.songs || []);
 }
 
-// ─── Projects ────────────────────────────────────────────────
+// ── Profile ──────────────────────────────────────────────────
+function renderProfile(p) {
+  document.getElementById('profile-bio').value = p.bio || '';
+  renderLinkList('contact-links', p.contact || []);
+  renderLinkList('recognition-links', p.recognition || []);
+}
+
+function renderLinkList(containerId, links) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  links.forEach(l => el.appendChild(makeLinkRow(l)));
+}
+
+function makeLinkRow(link = {}) {
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `
+    <input type="text" class="link-label" placeholder="Label" value="${esc(link.label)}">
+    <span class="link-sep">|</span>
+    <input type="url" class="link-url" placeholder="https://…" value="${esc(link.href)}">
+    <button class="btn-link-delete" title="Remove">×</button>
+  `;
+  row.querySelector('.btn-link-delete').addEventListener('click', () => row.remove());
+  return row;
+}
+
+document.getElementById('add-contact-link').addEventListener('click', () => {
+  document.getElementById('contact-links').appendChild(makeLinkRow());
+});
+document.getElementById('add-recognition-link').addEventListener('click', () => {
+  document.getElementById('recognition-links').appendChild(makeLinkRow());
+});
+
+// ── Projects ─────────────────────────────────────────────────
 function renderProjects(projects) {
   const list = document.getElementById('projects-list');
   list.innerHTML = '';
-  projects.forEach(p => list.appendChild(makeProjectCard(p)));
+  projects.forEach((p, i) => list.appendChild(makeProjectCard(p, i + 1)));
+  updateCount('projects', projects.length);
 }
 
-function makeProjectCard(p = {}) {
+function updateCount(type, n) {
+  document.getElementById(`nav-count-${type}`).textContent = n;
+}
+
+function makeProjectCard(p = {}, num = 1) {
   const card = document.createElement('div');
-  card.className  = 'project-card';
-  card.draggable  = true;
+  card.className = 'card';
+  card.draggable = true;
 
   const orient = p.orientation || 'landscape';
 
   card.innerHTML = `
     <div class="card-header">
-      <span class="drag-handle" title="Drag to reorder">⠿</span>
-      <span class="card-title">${esc(p.caption) || 'Untitled'}</span>
-      <button class="card-toggle">▾</button>
-      <button class="btn-danger-text js-delete">Remove</button>
+      <span class="drag-handle">⠿</span>
+      <span class="card-num">${String(num).padStart(2,'0')}</span>
+      <span class="card-title">${esc(p.caption) || 'Untitled project'}</span>
+      ${p.src ? `<img class="card-thumb" src="${esc(p.src)}" onerror="this.style.display='none'">` : ''}
+      <span class="card-chevron">▾</span>
+      <button class="btn-card-delete" title="Remove">×</button>
     </div>
     <div class="card-body">
-      <div class="field-row">
-        <span class="field-label">Caption</span>
-        <input type="text" class="f-caption" value="${esc(p.caption)}">
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">Caption</label>
+          <input type="text" class="f-caption" value="${esc(p.caption)}" placeholder="Project name">
+        </div>
       </div>
-      <div class="field-row">
-        <span class="field-label">Thumbnail</span>
-        <input type="text" class="f-src" value="${esc(p.src)}">
-        <button class="btn-upload" data-field="src" data-folder="Images">Upload</button>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Thumbnail image</label>
+          <div class="upload-zone js-upload" data-field="src" data-folder="Images">
+            <div class="upload-preview ${p.src ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.src)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.src ? p.src.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div class="${p.src ? 'upload-zone-inner' : 'upload-zone-inner'}" style="${p.src ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, GIF</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-src" value="${esc(p.src)}" placeholder="Images/file.jpg">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Hover (desktop fullbleed)</label>
+          <div class="upload-zone js-upload" data-field="hover" data-folder="Images/hover">
+            <div class="upload-preview ${p.hover ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.hover)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.hover ? p.hover.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div style="${p.hover ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-hover" value="${esc(p.hover)}" placeholder="Images/hover/file.jpg">
+          </div>
+        </div>
       </div>
-      <div class="field-row">
-        <span class="field-label">Hover</span>
-        <input type="text" class="f-hover" value="${esc(p.hover)}">
-        <button class="btn-upload" data-field="hover" data-folder="Images/hover">Upload</button>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Mobile hover <span style="font-weight:400;color:var(--faint);">(optional)</span></label>
+          <div class="upload-zone js-upload" data-field="mobileHover" data-folder="Images/hover">
+            <div class="upload-preview ${p.mobileHover ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.mobileHover)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.mobileHover ? p.mobileHover.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div style="${p.mobileHover ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-mobileHover" value="${esc(p.mobileHover)}" placeholder="Optional">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Thumb video <span style="font-weight:400;color:var(--faint);">(optional)</span></label>
+          <div class="upload-zone js-upload" data-field="thumbVideo" data-folder="Images/hover">
+            <div class="upload-preview ${p.thumbVideo ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.thumbVideo)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.thumbVideo ? p.thumbVideo.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div style="${p.thumbVideo ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">MP4, MOV, WEBM</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-thumbVideo" value="${esc(p.thumbVideo)}" placeholder="Optional">
+          </div>
+        </div>
       </div>
-      <div class="field-row">
-        <span class="field-label">Mobile Hover</span>
-        <input type="text" class="f-mobileHover" value="${esc(p.mobileHover)}">
-        <button class="btn-upload" data-field="mobileHover" data-folder="Images/hover">Upload</button>
-      </div>
-      <div class="field-row">
-        <span class="field-label">Thumb Video</span>
-        <input type="text" class="f-thumbVideo" value="${esc(p.thumbVideo)}">
-        <button class="btn-upload" data-field="thumbVideo" data-folder="Images/hover">Upload</button>
-      </div>
-      <div class="field-row">
-        <span class="field-label">Orientation</span>
-        <div class="orient-group">
-          <button class="orient-btn ${orient === 'portrait'  ? 'active' : ''}" data-val="portrait">Portrait</button>
-          <button class="orient-btn ${orient === 'landscape' ? 'active' : ''}" data-val="landscape">Landscape</button>
+
+      <div class="field-group" style="align-items:flex-end;">
+        <div class="field">
+          <label class="field-label">Orientation</label>
+          <div class="orient-group">
+            <button class="orient-btn ${orient==='portrait'?'active':''}" data-val="portrait">Portrait</button>
+            <button class="orient-btn ${orient==='landscape'?'active':''}" data-val="landscape">Landscape</button>
+          </div>
         </div>
       </div>
     </div>
   `;
 
-  // Expand / collapse
-  const header    = card.querySelector('.card-header');
-  const body      = card.querySelector('.card-body');
-  const toggleBtn = card.querySelector('.card-toggle');
-
+  // Expand/collapse
+  const header  = card.querySelector('.card-header');
+  const body    = card.querySelector('.card-body');
+  const chevron = card.querySelector('.card-chevron');
   header.addEventListener('click', e => {
-    if (e.target.closest('.js-delete') || e.target.closest('.drag-handle')) return;
+    if (e.target.closest('.btn-card-delete') || e.target.closest('.drag-handle')) return;
     const open = body.classList.toggle('open');
-    toggleBtn.textContent = open ? '▴' : '▾';
+    chevron.classList.toggle('open', open);
   });
 
-  // Caption preview in header
+  // Caption sync
   card.querySelector('.f-caption').addEventListener('input', e => {
-    card.querySelector('.card-title').textContent = e.target.value || 'Untitled';
+    card.querySelector('.card-title').textContent = e.target.value || 'Untitled project';
   });
 
-  // Orientation toggle
+  // Orientation
   card.querySelectorAll('.orient-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -598,209 +1115,304 @@ function makeProjectCard(p = {}) {
     });
   });
 
-  // Upload buttons + drop zones
-  card.querySelectorAll('.btn-upload').forEach(btn => {
-    const input = card.querySelector(`.f-${btn.dataset.field}`);
-    const row   = btn.closest('.field-row');
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      triggerUpload(btn, input, btn.dataset.folder);
-    });
-    addDropZone(row, btn, input, btn.dataset.folder);
+  // Upload zones
+  card.querySelectorAll('.js-upload').forEach(zone => {
+    const field  = zone.dataset.field;
+    const folder = zone.dataset.folder;
+    const input  = card.querySelector(`.f-${field}`);
+    setupUploadZone(zone, input, folder);
   });
 
   // Delete
-  card.querySelector('.js-delete').addEventListener('click', e => {
+  card.querySelector('.btn-card-delete').addEventListener('click', e => {
     e.stopPropagation();
-    const name = card.querySelector('.f-caption').value || 'this project';
-    if (confirm(`Remove "${name}"?`)) card.remove();
+    const name = card.querySelector('.f-caption')?.value || 'this project';
+    if (confirm(`Remove "${name}"?`)) {
+      card.remove();
+      renumberProjects();
+    }
   });
 
-  // Drag-to-reorder
+  // Drag reorder
   card.addEventListener('dragstart', e => {
     dragSrc = card;
     e.dataTransfer.effectAllowed = 'move';
-    setTimeout(() => { card.style.opacity = '0.35'; }, 0);
+    setTimeout(() => { card.style.opacity = '0.4'; }, 0);
   });
   card.addEventListener('dragend', () => {
     card.style.opacity = '';
-    document.querySelectorAll('.project-card').forEach(c => c.classList.remove('drag-over'));
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+    renumberProjects();
   });
   card.addEventListener('dragover', e => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    if (dragSrc !== card) card.classList.add('drag-over');
+    if (!e.dataTransfer.types.includes('text/plain') &&
+        !e.dataTransfer.types.includes('application/x-moz-node') &&
+        dragSrc) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (dragSrc !== card) card.classList.add('drag-over');
+    }
   });
   card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
   card.addEventListener('drop', e => {
+    if (!dragSrc) return;
     e.preventDefault();
     card.classList.remove('drag-over');
-    if (!dragSrc || dragSrc === card) return;
-    const list  = document.getElementById('projects-list');
-    const items = [...list.children];
-    const si    = items.indexOf(dragSrc);
-    const di    = items.indexOf(card);
-    if (si < di) list.insertBefore(dragSrc, card.nextSibling);
-    else         list.insertBefore(dragSrc, card);
+    if (dragSrc !== card) {
+      const list  = document.getElementById('projects-list');
+      const items = [...list.children];
+      const si    = items.indexOf(dragSrc);
+      const di    = items.indexOf(card);
+      if (si < di) list.insertBefore(dragSrc, card.nextSibling);
+      else         list.insertBefore(dragSrc, card);
+    }
     dragSrc = null;
   });
 
   return card;
 }
 
+function renumberProjects() {
+  document.querySelectorAll('#projects-list .card').forEach((card, i) => {
+    const n = card.querySelector('.card-num');
+    if (n) n.textContent = String(i + 1).padStart(2, '0');
+  });
+  updateCount('projects', document.querySelectorAll('#projects-list .card').length);
+}
+
 document.getElementById('add-project-btn').addEventListener('click', () => {
   const list = document.getElementById('projects-list');
-  const card = makeProjectCard({ caption: '', src: '', hover: '', mobileHover: null, thumbVideo: null, orientation: 'landscape' });
+  const num  = list.children.length + 1;
+  const card = makeProjectCard({}, num);
   list.appendChild(card);
   card.querySelector('.card-body').classList.add('open');
-  card.querySelector('.card-toggle').textContent = '▴';
+  card.querySelector('.card-chevron').classList.add('open');
   card.querySelector('.f-caption').focus();
+  updateCount('projects', num);
 });
 
-// ─── Songs ───────────────────────────────────────────────────
+// ── Songs ────────────────────────────────────────────────────
 function renderSongs(songs) {
   const list = document.getElementById('songs-list');
   list.innerHTML = '';
   songs.forEach(s => list.appendChild(makeSongCard(s)));
+  updateCount('songs', songs.length);
 }
 
 function makeSongCard(s = {}) {
   const card = document.createElement('div');
-  card.className = 'song-card';
-
+  card.className = 'card';
   card.innerHTML = `
-    <div class="card-header" style="cursor:default;">
-      <span class="card-title">${esc(s.caption) || 'Untitled Song'}</span>
-      <button class="btn-danger-text js-delete">Remove</button>
+    <div class="card-header">
+      <span class="card-title">${esc(s.caption) || 'Untitled song'}</span>
+      <span class="card-chevron">▾</span>
+      <button class="btn-card-delete" title="Remove">×</button>
     </div>
     <div class="card-body open">
-      <div class="field-row">
-        <span class="field-label">Title</span>
-        <input type="text" class="f-caption" value="${esc(s.caption)}">
+      <div class="field-group full" style="margin-top:16px;">
+        <div class="field">
+          <label class="field-label">Song title</label>
+          <input type="text" class="f-caption" value="${esc(s.caption)}" placeholder="Artist – Track">
+        </div>
       </div>
-      <div class="field-row">
-        <span class="field-label">Audio File</span>
-        <input type="text" class="f-src" value="${esc(s.src)}">
-        <button class="btn-upload" data-field="src" data-folder="Audio">Upload</button>
-      </div>
-      <div class="field-row">
-        <span class="field-label">Album Art</span>
-        <input type="text" class="f-art" value="${esc(s.art)}">
-        <button class="btn-upload" data-field="art" data-folder="Images">Upload</button>
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Audio file</label>
+          <div class="upload-zone js-upload" data-field="src" data-folder="Audio">
+            <div class="upload-preview ${s.src ? 'show' : ''}">
+              <div class="preview-info">
+                <span class="preview-name">${esc(s.src ? s.src.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div style="${s.src ? 'display:none' : ''}">
+              <div class="upload-zone-icon">♪</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">MP3, WAV, M4A</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-src" value="${esc(s.src)}" placeholder="Audio/track.mp3">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Album art</label>
+          <div class="upload-zone js-upload" data-field="art" data-folder="Images">
+            <div class="upload-preview ${s.art ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(s.art)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(s.art ? s.art.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button>
+              </div>
+            </div>
+            <div style="${s.art ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-art" value="${esc(s.art)}" placeholder="Images/art.png">
+          </div>
+        </div>
       </div>
     </div>
   `;
 
+  const header  = card.querySelector('.card-header');
+  const body    = card.querySelector('.card-body');
+  const chevron = card.querySelector('.card-chevron');
+  header.addEventListener('click', e => {
+    if (e.target.closest('.btn-card-delete')) return;
+    const open = body.classList.toggle('open');
+    chevron.classList.toggle('open', open);
+  });
+
   card.querySelector('.f-caption').addEventListener('input', e => {
-    card.querySelector('.card-title').textContent = e.target.value || 'Untitled Song';
+    card.querySelector('.card-title').textContent = e.target.value || 'Untitled song';
   });
 
-  card.querySelectorAll('.btn-upload').forEach(btn => {
-    const input = card.querySelector(`.f-${btn.dataset.field}`);
-    const row   = btn.closest('.field-row');
-    btn.addEventListener('click', () => triggerUpload(btn, input, btn.dataset.folder));
-    addDropZone(row, btn, input, btn.dataset.folder);
+  card.querySelectorAll('.js-upload').forEach(zone => {
+    const field  = zone.dataset.field;
+    const folder = zone.dataset.folder;
+    const input  = card.querySelector(`.f-${field}`);
+    setupUploadZone(zone, input, folder);
   });
 
-  card.querySelector('.js-delete').addEventListener('click', () => {
-    const name = card.querySelector('.f-caption').value || 'this song';
-    if (confirm(`Remove "${name}"?`)) card.remove();
+  card.querySelector('.btn-card-delete').addEventListener('click', e => {
+    e.stopPropagation();
+    if (confirm('Remove this song?')) {
+      card.remove();
+      updateCount('songs', document.querySelectorAll('#songs-list .card').length);
+    }
   });
 
   return card;
 }
 
 document.getElementById('add-song-btn').addEventListener('click', () => {
-  document.getElementById('songs-list').appendChild(makeSongCard());
+  const list = document.getElementById('songs-list');
+  list.appendChild(makeSongCard());
+  updateCount('songs', list.children.length);
 });
 
-// ─── File Upload ─────────────────────────────────────────────
+// ── Upload zones ──────────────────────────────────────────────
 function acceptFor(folder) {
   if (folder === 'Audio')        return 'audio/*';
   if (folder === 'Images/hover') return 'image/*,video/*';
   return 'image/*';
 }
 
-async function uploadFile(file, btn, targetInput, folder) {
+function setupUploadZone(zone, pathInput, folder) {
+  function triggerBrowse() {
+    const fi  = document.createElement('input');
+    fi.type   = 'file';
+    fi.accept = acceptFor(folder);
+    fi.onchange = () => { if (fi.files[0]) doUpload(fi.files[0], zone, pathInput, folder); };
+    fi.click();
+  }
+
+  // Click on zone or "Change file" button
+  zone.addEventListener('click', e => {
+    if (e.target.closest('.btn-card-delete') || e.target.closest('.drag-handle')) return;
+    triggerBrowse();
+  });
+
+  // Drag over
+  zone.addEventListener('dragover', e => {
+    if (!e.dataTransfer.types.includes('Files')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.add('dz-over');
+  });
+  zone.addEventListener('dragleave', e => {
+    if (!zone.contains(e.relatedTarget)) zone.classList.remove('dz-over');
+  });
+  zone.addEventListener('drop', e => {
+    if (!e.dataTransfer.types.includes('Files')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.remove('dz-over');
+    const file = e.dataTransfer.files[0];
+    if (file) doUpload(file, zone, pathInput, folder);
+  });
+}
+
+async function doUpload(file, zone, pathInput, folder) {
   const path    = `${folder}/${file.name}`;
-  const origTxt = btn.textContent;
-  btn.textContent = 'Uploading…';
-  btn.disabled    = true;
+  const preview = zone.querySelector('.upload-preview');
+  const inner   = zone.querySelector('[style]');
+  const origTxt = zone.querySelector('.upload-zone-text');
+
+  if (origTxt) origTxt.innerHTML = 'Uploading…';
+  zone.style.pointerEvents = 'none';
 
   try {
     const b64 = await toBase64(file);
 
-    let existingSha = null;
+    let sha = null;
     try {
-      const check = await fetch(
-        `${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`,
-        { headers: headers() }
-      );
-      if (check.ok) existingSha = (await check.json()).sha;
+      const c = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`, { headers: hdrs() });
+      if (c.ok) sha = (await c.json()).sha;
     } catch {}
 
     const body = {
       message: `Upload ${file.name} via CMS`,
       content: b64,
       branch:  BRANCH,
-      ...(existingSha ? { sha: existingSha } : {})
+      ...(sha ? { sha } : {})
     };
 
-    const res = await fetch(
-      `${API}/repos/${REPO}/contents/${encodePath(path)}`,
-      { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
-    );
+    const res = await fetch(`${API}/repos/${REPO}/contents/${encodePath(path)}`, {
+      method: 'PUT', headers: hdrs(), body: JSON.stringify(body)
+    });
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || `Upload failed (${res.status})`);
     }
 
-    targetInput.value = path;
-    toast(`Uploaded: ${file.name}`, 'ok');
-    setTimeout(toastHide, 3000);
-  } catch (e) {
-    toast(`Upload error: ${e.message}`, 'error');
+    // Update path input
+    pathInput.value = path;
+
+    // Show preview
+    if (preview) {
+      const thumb = preview.querySelector('.preview-thumb');
+      if (thumb) {
+        if (isImage(file.name)) {
+          thumb.src = URL.createObjectURL(file);
+          thumb.style.display = '';
+        } else {
+          thumb.style.display = 'none';
+        }
+      }
+      const nameEl = preview.querySelector('.preview-name');
+      if (nameEl) nameEl.textContent = file.name;
+      preview.classList.add('show');
+      if (inner) inner.style.display = 'none';
+    }
+
+    toastOk(`Uploaded: ${file.name}`);
+  } catch(e) {
+    toastErr(`Upload failed: ${e.message}`);
+    if (origTxt) origTxt.innerHTML = 'Drag file or <b>browse</b>';
   } finally {
-    btn.textContent = origTxt;
-    btn.disabled    = false;
+    zone.style.pointerEvents = '';
   }
 }
 
-function triggerUpload(btn, targetInput, folder) {
-  const fi  = document.createElement('input');
-  fi.type   = 'file';
-  fi.accept = acceptFor(folder);
-  fi.onchange = () => { if (fi.files[0]) uploadFile(fi.files[0], btn, targetInput, folder); };
-  fi.click();
+// ── Collect & Save ────────────────────────────────────────────
+function collectLinks(containerId) {
+  return [...document.querySelectorAll(`#${containerId} .link-row`)].map(row => ({
+    label: row.querySelector('.link-label').value.trim(),
+    href:  row.querySelector('.link-url').value.trim()
+  })).filter(l => l.label || l.href);
 }
 
-function addDropZone(row, btn, targetInput, folder) {
-  row.classList.add('drop-zone');
-
-  row.addEventListener('dragover', e => {
-    if (!e.dataTransfer.types.includes('Files')) return;
-    e.preventDefault();
-    e.stopPropagation();
-    row.classList.add('dz-over');
-  });
-
-  row.addEventListener('dragleave', e => {
-    if (!row.contains(e.relatedTarget)) row.classList.remove('dz-over');
-  });
-
-  row.addEventListener('drop', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    row.classList.remove('dz-over');
-    const file = e.dataTransfer.files[0];
-    if (file) uploadFile(file, btn, targetInput, folder);
-  });
-}
-
-// ─── Collect & Save ──────────────────────────────────────────
 function collectData() {
-  const projects = [...document.querySelectorAll('.project-card')].map(card => ({
+  const projects = [...document.querySelectorAll('#projects-list .card')].map(card => ({
     caption:     card.querySelector('.f-caption').value.trim(),
     src:         card.querySelector('.f-src').value.trim(),
     hover:       card.querySelector('.f-hover').value.trim(),
@@ -809,14 +1421,19 @@ function collectData() {
     orientation: card.querySelector('.orient-btn.active')?.dataset.val || 'landscape'
   }));
 
-  const songs = [...document.querySelectorAll('.song-card')].map(card => ({
+  const songs = [...document.querySelectorAll('#songs-list .card')].map(card => ({
     caption: card.querySelector('.f-caption').value.trim(),
     src:     card.querySelector('.f-src').value.trim(),
     art:     card.querySelector('.f-art').value.trim()
   }));
 
   return {
-    shuffle: document.getElementById('shuffle-toggle').checked,
+    shuffle:  document.getElementById('shuffle-toggle').checked,
+    profile: {
+      bio:         document.getElementById('profile-bio').value.trim(),
+      contact:     collectLinks('contact-links'),
+      recognition: collectLinks('recognition-links')
+    },
     projects,
     songs
   };
@@ -825,53 +1442,48 @@ function collectData() {
 document.getElementById('save-btn').addEventListener('click', saveContent);
 
 async function saveContent() {
-  const btn = document.getElementById('save-btn');
-  btn.textContent = 'Saving…';
+  const btn    = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+  btn.textContent = 'Publishing…';
   btn.disabled    = true;
+  status.textContent = '';
   toast('Saving to GitHub…');
 
   try {
-    // Always refresh SHA before writing to avoid conflicts
+    // Refresh SHA
     try {
-      const check = await fetch(
-        `${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`,
-        { headers: headers() }
-      );
-      if (check.ok) contentSha = (await check.json()).sha;
-      else contentSha = null;
+      const c = await fetch(`${API}/repos/${REPO}/contents/content.json?ref=${BRANCH}`, { headers: hdrs() });
+      contentSha = c.ok ? (await c.json()).sha : null;
     } catch { contentSha = null; }
 
     const data = collectData();
     const json = JSON.stringify(data, null, 2);
-    // btoa with unicode support
     const b64  = btoa(unescape(encodeURIComponent(json)));
 
-    const body = {
-      message: 'Update content via CMS',
-      content: b64,
-      branch:  BRANCH,
-      ...(contentSha ? { sha: contentSha } : {})
-    };
-
-    const res = await fetch(
-      `${API}/repos/${REPO}/contents/content.json`,
-      { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
-    );
+    const res = await fetch(`${API}/repos/${REPO}/contents/content.json`, {
+      method: 'PUT',
+      headers: hdrs(),
+      body: JSON.stringify({
+        message: 'Update content via CMS',
+        content: b64,
+        branch:  BRANCH,
+        ...(contentSha ? { sha: contentSha } : {})
+      })
+    });
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || `Save failed (${res.status})`);
     }
 
-    const result = await res.json();
-    contentSha   = result.content.sha;
-
-    toast('Saved! Vercel is deploying…', 'ok');
-    setTimeout(toastHide, 5000);
-  } catch (e) {
-    toast(`Save failed: ${e.message}`, 'error');
+    contentSha = (await res.json()).content.sha;
+    status.textContent = 'Published ✓';
+    toastOk('Published! Vercel is deploying…');
+    setTimeout(() => { status.textContent = ''; }, 5000);
+  } catch(e) {
+    toastErr(`Publish failed: ${e.message}`);
   } finally {
-    btn.textContent = 'Save & Deploy';
+    btn.textContent = 'Publish changes';
     btn.disabled    = false;
   }
 }

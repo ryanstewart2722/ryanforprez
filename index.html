@@ -543,20 +543,14 @@
   <!-- Profile elements — all position:fixed at body level,
        no wrapper containers, so mix-blend-mode:exclusion
        blends directly against the page background -->
-  <p id="profile-bio">Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.<br><br>He collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.</p>
+  <p id="profile-bio"></p>
 
   <div class="meta-col" id="profile-contact">
     <p class="meta-label">Contact:</p>
-    <a href="mailto:yo@ryanforprez.org" target="_blank">yo@ryanforprez.org</a>
-    <a href="https://www.are.na/ryan-stewart/channels" target="_blank">Are.na</a>
-    <a href="https://www.instagram.com/ryanforprez/" target="_blank">Instagram</a>
   </div>
 
   <div class="meta-col" id="profile-recognition">
     <p class="meta-label">Recognition:</p>
-    <a href="https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022" target="_blank">The Brand Identity - Common Bond</a>
-    <a href="https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave" target="_blank">The Brand Identity - RUN2RAVE</a>
-    <a href="https://www.awwwards.com/sites/peterson-rich-office" target="_blank">Awwwards - Peterson Rich Office</a>
   </div>
 
   <div class="meta-col" id="profile-devnotes">
@@ -851,6 +845,34 @@
     fetch('content.json')
       .then(r => r.json())
       .then(data => {
+        // Populate profile from content.json
+        if (data.profile) {
+          const bio = document.getElementById('profile-bio');
+          if (bio && data.profile.bio) {
+            bio.innerHTML = data.profile.bio.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+          }
+          const contact = document.getElementById('profile-contact');
+          if (contact && data.profile.contact) {
+            data.profile.contact.forEach(l => {
+              const a = document.createElement('a');
+              a.href = l.href;
+              a.target = '_blank';
+              a.textContent = l.label;
+              contact.appendChild(a);
+            });
+          }
+          const recognition = document.getElementById('profile-recognition');
+          if (recognition && data.profile.recognition) {
+            data.profile.recognition.forEach(l => {
+              const a = document.createElement('a');
+              a.href = l.href;
+              a.target = '_blank';
+              a.textContent = l.label;
+              recognition.appendChild(a);
+            });
+          }
+        }
+
         // Build grid
         const grid = document.getElementById('grid-container');
         let projects = data.projects.slice();
