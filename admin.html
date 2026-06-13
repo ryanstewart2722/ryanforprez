@@ -271,6 +271,19 @@
     .btn-upload:hover { color: var(--text); border-color: #444; }
     .btn-upload:disabled { opacity: 0.4; cursor: default; }
 
+    /* ── Drop zones ── */
+    .drop-zone {
+      border: 1px dashed transparent;
+      border-radius: 3px;
+      padding: 4px 6px;
+      margin: 6px -6px 0;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .drop-zone.dz-over {
+      border-color: var(--accent);
+      background: rgba(37, 99, 235, 0.07);
+    }
+
     .btn-add {
       width: 100%;
       background: none;
@@ -585,13 +598,15 @@ function makeProjectCard(p = {}) {
     });
   });
 
-  // Upload buttons
+  // Upload buttons + drop zones
   card.querySelectorAll('.btn-upload').forEach(btn => {
+    const input = card.querySelector(`.f-${btn.dataset.field}`);
+    const row   = btn.closest('.field-row');
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      const input = card.querySelector(`.f-${btn.dataset.field}`);
       triggerUpload(btn, input, btn.dataset.folder);
     });
+    addDropZone(row, btn, input, btn.dataset.folder);
   });
 
   // Delete
@@ -681,10 +696,10 @@ function makeSongCard(s = {}) {
   });
 
   card.querySelectorAll('.btn-upload').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const input = card.querySelector(`.f-${btn.dataset.field}`);
-      triggerUpload(btn, input, btn.dataset.folder);
-    });
+    const input = card.querySelector(`.f-${btn.dataset.field}`);
+    const row   = btn.closest('.field-row');
+    btn.addEventListener('click', () => triggerUpload(btn, input, btn.dataset.folder));
+    addDropZone(row, btn, input, btn.dataset.folder);
   });
 
   card.querySelector('.js-delete').addEventListener('click', () => {
@@ -706,62 +721,81 @@ function acceptFor(folder) {
   return 'image/*';
 }
 
-async function triggerUpload(btn, targetInput, folder) {
-  const fi = document.createElement('input');
+async function uploadFile(file, btn, targetInput, folder) {
+  const path    = `${folder}/${file.name}`;
+  const origTxt = btn.textContent;
+  btn.textContent = 'Uploading…';
+  btn.disabled    = true;
+
+  try {
+    const b64 = await toBase64(file);
+
+    let existingSha = null;
+    try {
+      const check = await fetch(
+        `${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`,
+        { headers: headers() }
+      );
+      if (check.ok) existingSha = (await check.json()).sha;
+    } catch {}
+
+    const body = {
+      message: `Upload ${file.name} via CMS`,
+      content: b64,
+      branch:  BRANCH,
+      ...(existingSha ? { sha: existingSha } : {})
+    };
+
+    const res = await fetch(
+      `${API}/repos/${REPO}/contents/${encodePath(path)}`,
+      { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
+    );
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Upload failed (${res.status})`);
+    }
+
+    targetInput.value = path;
+    toast(`Uploaded: ${file.name}`, 'ok');
+    setTimeout(toastHide, 3000);
+  } catch (e) {
+    toast(`Upload error: ${e.message}`, 'error');
+  } finally {
+    btn.textContent = origTxt;
+    btn.disabled    = false;
+  }
+}
+
+function triggerUpload(btn, targetInput, folder) {
+  const fi  = document.createElement('input');
   fi.type   = 'file';
   fi.accept = acceptFor(folder);
-
-  fi.onchange = async () => {
-    const file = fi.files[0];
-    if (!file) return;
-
-    const path    = `${folder}/${file.name}`;
-    const origTxt = btn.textContent;
-    btn.textContent = 'Uploading…';
-    btn.disabled    = true;
-
-    try {
-      const b64 = await toBase64(file);
-
-      // Check if file already exists (need its SHA to overwrite)
-      let existingSha = null;
-      try {
-        const check = await fetch(
-          `${API}/repos/${REPO}/contents/${encodePath(path)}?ref=${BRANCH}`,
-          { headers: headers() }
-        );
-        if (check.ok) existingSha = (await check.json()).sha;
-      } catch {}
-
-      const body = {
-        message: `Upload ${file.name} via CMS`,
-        content: b64,
-        branch:  BRANCH,
-        ...(existingSha ? { sha: existingSha } : {})
-      };
-
-      const res = await fetch(
-        `${API}/repos/${REPO}/contents/${encodePath(path)}`,
-        { method: 'PUT', headers: headers(), body: JSON.stringify(body) }
-      );
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || `Upload failed (${res.status})`);
-      }
-
-      targetInput.value = path;
-      toast(`Uploaded: ${file.name}`, 'ok');
-      setTimeout(toastHide, 3000);
-    } catch (e) {
-      toast(`Upload error: ${e.message}`, 'error');
-    } finally {
-      btn.textContent = origTxt;
-      btn.disabled    = false;
-    }
-  };
-
+  fi.onchange = () => { if (fi.files[0]) uploadFile(fi.files[0], btn, targetInput, folder); };
   fi.click();
+}
+
+function addDropZone(row, btn, targetInput, folder) {
+  row.classList.add('drop-zone');
+
+  row.addEventListener('dragover', e => {
+    if (!e.dataTransfer.types.includes('Files')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    row.classList.add('dz-over');
+  });
+
+  row.addEventListener('dragleave', e => {
+    if (!row.contains(e.relatedTarget)) row.classList.remove('dz-over');
+  });
+
+  row.addEventListener('drop', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    row.classList.remove('dz-over');
+    const file = e.dataTransfer.files[0];
+    if (file) uploadFile(file, btn, targetInput, folder);
+  });
 }
 
 // ─── Collect & Save ──────────────────────────────────────────
