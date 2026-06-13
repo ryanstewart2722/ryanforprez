@@ -1,6 +1,6 @@
 {
   "shuffle": false,
-  "shuffleSongs": false,
+  "shuffleSongs": true,
   "profile": {
     "bio": "Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.\n\nHe collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.",
     "contact": [
@@ -19,15 +19,15 @@
     ],
     "recognition": [
       {
-        "label": "The Brand Identity — Common Bond",
+        "label": "The Brand Identity â Common Bond",
         "href": "https://the-brandidentity.com/project/put-a-ring-on-it-a-silver-ring-seals-the-deal-in-studio-loutsis-identity-for-common-bond-2022"
       },
       {
-        "label": "The Brand Identity — RUN2RAVE",
+        "label": "The Brand Identity â RUN2RAVE",
         "href": "https://the-brandidentity.com/project/how-do-running-and-raving-come-together-studio-loutsis-had-some-ideas-for-running-orders-run2rave"
       },
       {
-        "label": "Awwwards — Peterson Rich Office",
+        "label": "Awwwards â Peterson Rich Office",
         "href": "https://www.awwwards.com/sites/peterson-rich-office"
       }
     ]
