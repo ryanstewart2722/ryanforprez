@@ -1187,21 +1187,5 @@
       });
     });
   </script>
-  <script>
-    // Preload hover images after page is idle so initial load isn't affected
-    function preloadHoverImages() {
-      document.querySelectorAll('.grid-item[data-hover]').forEach(item => {
-        const src = item.dataset.hover;
-        if (/\.(jpg|jpeg|png|gif|webp)$/i.test(src)) {
-          new Image().src = src;
-        }
-      });
-    }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(preloadHoverImages);
-    } else {
-      setTimeout(preloadHoverImages, 2000);
-    }
-  </script>
 </body>
 </html>
