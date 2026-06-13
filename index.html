@@ -871,6 +871,8 @@
               recognition.appendChild(a);
             });
           }
+          // Re-run layout now that bio text is populated
+          requestAnimationFrame(layoutProfile);
         }
 
         // Build grid
