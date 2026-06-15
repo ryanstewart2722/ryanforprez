@@ -1184,27 +1184,6 @@ function makeProjectCard(p = {}, num = 1) {
             <input type="text" class="f-mobileHover" value="${esc(p.mobileHover)}" placeholder="Optional">
           </div>
         </div>
-        <div class="field">
-          <label class="field-label">Thumb video <span style="font-weight:400;color:var(--faint);">(optional)</span></label>
-          <div class="upload-zone js-upload" data-field="thumbVideo" data-folder="Images/hover">
-            <div class="upload-preview ${p.thumbVideo ? 'show' : ''}">
-              <img class="preview-thumb" src="${esc(p.thumbVideo)}" onerror="this.src=''">
-              <div class="preview-info">
-                <span class="preview-name">${esc(p.thumbVideo ? p.thumbVideo.split('/').pop() : '')}</span>
-                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
-              </div>
-            </div>
-            <div style="${p.thumbVideo ? 'display:none' : ''}">
-              <div class="upload-zone-icon">↑</div>
-              <div class="upload-zone-text">Drag file or <b>browse</b></div>
-              <div class="upload-zone-hint">MP4, MOV, WEBM</div>
-            </div>
-          </div>
-          <div class="path-input-row">
-            <span class="path-label">Path:</span>
-            <input type="text" class="f-thumbVideo" value="${esc(p.thumbVideo)}" placeholder="Optional">
-          </div>
-        </div>
       </div>
 
       <div class="field-group" style="align-items:flex-end;">
@@ -1214,6 +1193,13 @@ function makeProjectCard(p = {}, num = 1) {
             <button class="orient-btn ${orient==='portrait'?'active':''}" data-val="portrait">Portrait</button>
             <button class="orient-btn ${orient==='landscape'?'active':''}" data-val="landscape">Landscape</button>
           </div>
+        </div>
+        <div class="field" style="flex:0">
+          <label class="field-label">Visibility</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px 0">
+            <input type="checkbox" class="f-hidden" ${p.hidden ? 'checked' : ''} style="width:14px;height:14px;cursor:pointer">
+            Hide from site
+          </label>
         </div>
       </div>
     </div>
@@ -1588,7 +1574,7 @@ function collectData() {
     src:         card.querySelector('.f-src').value.trim(),
     hover:       card.querySelector('.f-hover').value.trim(),
     mobileHover: card.querySelector('.f-mobileHover').value.trim() || null,
-    thumbVideo:  card.querySelector('.f-thumbVideo').value.trim()  || null,
+    hidden:      card.querySelector('.f-hidden').checked || false,
     orientation: card.querySelector('.orient-btn.active')?.dataset.val || 'landscape'
   }));
 

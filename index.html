@@ -877,7 +877,7 @@
 
         // Build grid
         const grid = document.getElementById('grid-container');
-        let projects = data.projects.slice();
+        let projects = data.projects.filter(p => !p.hidden);
         if (data.shuffle) {
           for (let i = projects.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
