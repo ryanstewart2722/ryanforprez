@@ -50,6 +50,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Peterson Rich Office",
+      "src": "Images/2.png",
+      "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
+      "mobileHover": "Images/hover/3.png",
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Proof of Concept",
       "src": "Images/03_proof-of-concept.jpeg",
       "hover": "Images/hover/03_proof-of-concept.jpg",
@@ -64,14 +72,6 @@
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
-    },
-    {
-      "caption": "Peterson Rich Office",
-      "src": "Images/2.png",
-      "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
-      "mobileHover": "Images/hover/3.png",
-      "hidden": false,
-      "orientation": "portrait"
     },
     {
       "caption": "Beadle",
