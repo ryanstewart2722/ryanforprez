@@ -283,19 +283,29 @@
       "art": "Images/Screenshot 2026-06-17 at 7.07.18 AM.webp"
     },
     {
-      "caption": "Sublime - Garden Grove",
-      "src": "Audio/Sublime - Garden Grove.mp3",
-      "art": "Images/sublime.webp"
-    },
-    {
-      "caption": "Choose U - Project Pat",
-      "src": "Audio/Choose U - Project Pat.mp3",
-      "art": "Images/Choose U - Project Pat.png"
+      "caption": "Otis Redding - Cigarettes and Coffee",
+      "src": "Audio/Otis Redding - Cigarrettes and Coffee  Soul Sunday.mp3",
+      "art": "Images/81yv9x53rYL._UF1000,1000_QL80_.jpg"
     },
     {
       "caption": "Turnstile - Mystery",
       "src": "Audio/TURNSTILE - MYSTERY (Audio).mp3",
       "art": "Images/Turnstile-Glow-On.webp"
+    },
+    {
+      "caption": "DOPE LEMON - Dope & Smoke",
+      "src": "Audio/DOPE LEMON - Dope & Smoke (Official Audio).mp3",
+      "art": "Images/ab67616d0000b2738775ad8a2b68f96f454b580a.jpeg"
+    },
+    {
+      "caption": "Keyshia Cole - Love",
+      "src": "Audio/Keyshia Cole - Love (Lyrics).mp3",
+      "art": "Images/ab67616d0000b2732cc2323c681b3f84cdc8379a.jpeg"
+    },
+    {
+      "caption": "Sahbabii - Step In The Name Of Love",
+      "src": "Audio/SahBabii - Step In The Name of Love (Official Lyric Video).mp3",
+      "art": "Images/0x1900-000000-80-0-0.jpg"
     },
     {
       "caption": "Duwap Kaine - Mad",
@@ -308,14 +318,14 @@
       "art": "Images/41hq7XrM83L._UF1000,1000_QL80_.jpg"
     },
     {
-      "caption": "Sahbabii - Step In The Name Of Love",
-      "src": "Audio/SahBabii - Step In The Name of Love (Official Lyric Video).mp3",
-      "art": "Images/0x1900-000000-80-0-0.jpg"
+      "caption": "Sublime - Garden Grove",
+      "src": "Audio/Sublime - Garden Grove.mp3",
+      "art": "Images/sublime.webp"
     },
     {
-      "caption": "Save Me - Chief Keef",
-      "src": "Audio/Save Me - Chief Keef.mp3",
-      "art": "Images/Save Me - Chief Keef.png"
+      "caption": "Choose U - Project Pat",
+      "src": "Audio/Choose U - Project Pat.mp3",
+      "art": "Images/Choose U - Project Pat.png"
     }
   ]
 }
