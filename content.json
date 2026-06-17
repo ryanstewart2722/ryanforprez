@@ -90,6 +90,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Wesley Knight",
+      "src": "Images/11_wesley-knight.jpeg",
+      "hover": "Images/hover/07_Wesley-Knight.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "L'Entrata Wine",
       "src": "Images/05_lentrata-wine.jpg",
       "hover": "Images/hover/05_lentrata-wine.jpg",
@@ -98,17 +106,17 @@
       "orientation": "portrait"
     },
     {
+      "caption": "Spoiler Alert",
+      "src": "Images/14_spoiler-alert.mp4",
+      "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
+      "mobileHover": "Images/hover/Standard_Issue_Scans3.jpg",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Puppet Master",
       "src": "Images/09_puppet-master.jpg",
       "hover": "Images/hover/09_puppet-master.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
-      "caption": "RUN2RAVE",
-      "src": "Images/10_run2rave.jpg",
-      "hover": "Images/hover/RUN2RAVE_4200x3000.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
@@ -120,14 +128,6 @@
       "mobileHover": "Images/hover/supercut_2.mp4",
       "hidden": false,
       "orientation": "portrait"
-    },
-    {
-      "caption": "Wesley Knight",
-      "src": "Images/11_wesley-knight.jpeg",
-      "hover": "Images/hover/07_Wesley-Knight.jpg",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
     },
     {
       "caption": "CMFTZN",
@@ -154,12 +154,12 @@
       "orientation": "landscape"
     },
     {
-      "caption": "Spoiler Alert",
-      "src": "Images/14_spoiler-alert.mp4",
-      "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
-      "mobileHover": "Images/hover/Standard_Issue_Scans3.jpg",
+      "caption": "RUN2RAVE",
+      "src": "Images/10_run2rave.jpg",
+      "hover": "Images/hover/RUN2RAVE_4200x3000.mp4",
+      "mobileHover": null,
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Look at This Photograph",
@@ -280,7 +280,7 @@
     {
       "caption": "Chief Keef - Citgo",
       "src": "Audio/Citgo.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 7.07.18 AM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18â¯AM.webp"
     },
     {
       "caption": "Valerie BBC Radio - Amy Winehouse",
