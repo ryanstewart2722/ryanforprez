@@ -278,9 +278,9 @@
       "art": "Images/Valerie BBC Radio-Amy Winehouse.png"
     },
     {
-      "caption": "Save Me - Chief Keef",
-      "src": "Audio/Save Me - Chief Keef.mp3",
-      "art": "Images/Save Me - Chief Keef.png"
+      "caption": "Chief Keef - Citgo",
+      "src": "Audio/Citgo.mp3",
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18 AM.webp"
     },
     {
       "caption": "Sublime - Garden Grove",
@@ -291,6 +291,31 @@
       "caption": "Choose U - Project Pat",
       "src": "Audio/Choose U - Project Pat.mp3",
       "art": "Images/Choose U - Project Pat.png"
+    },
+    {
+      "caption": "Turnstile - Mystery",
+      "src": "Audio/TURNSTILE - MYSTERY (Audio).mp3",
+      "art": "Images/Turnstile-Glow-On.webp"
+    },
+    {
+      "caption": "Duwap Kaine - Mad",
+      "src": "Audio/Mad.mp3",
+      "art": "Images/duwap.jpg"
+    },
+    {
+      "caption": "Fantasia - When I See U",
+      "src": "Audio/Fantasia - When I See U (Lyrics).mp3",
+      "art": "Images/41hq7XrM83L._UF1000,1000_QL80_.jpg"
+    },
+    {
+      "caption": "Sahbabii - Step In The Name Of Love",
+      "src": "Audio/SahBabii - Step In The Name of Love (Official Lyric Video).mp3",
+      "art": "Images/0x1900-000000-80-0-0.jpg"
+    },
+    {
+      "caption": "Save Me - Chief Keef",
+      "src": "Audio/Save Me - Chief Keef.mp3",
+      "art": "Images/Save Me - Chief Keef.png"
     }
   ]
 }
