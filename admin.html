@@ -1497,8 +1497,35 @@ function setupUploadZone(zone, pathInput, folder) {
   });
 }
 
+function isVideo(name) { return /\.(mp4|mov|webm|avi|mkv)$/i.test(name); }
+
+async function compressImage(file, maxPx = 1920, quality = 0.85) {
+  // Skip GIFs (animation), SVGs (vector), and already-small files
+  if (/\.(gif|svg)$/i.test(file.name) || file.size < 300_000) return file;
+  return new Promise(resolve => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.naturalWidth, h = img.naturalHeight;
+      if (w > maxPx || h > maxPx) {
+        if (w >= h) { h = Math.round(h * maxPx / w); w = maxPx; }
+        else        { w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => {
+        const webpName = file.name.replace(/\.[^.]+$/, '.webp');
+        resolve(new File([blob], webpName, { type: 'image/webp' }));
+      }, 'image/webp', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
 async function doUpload(file, zone, pathInput, folder) {
-  const path    = `${folder}/${file.name}`;
   const preview = zone.querySelector('.upload-preview');
   const inner   = zone.querySelector('[style]');
   const origTxt = zone.querySelector('.upload-zone-text');
@@ -1506,8 +1533,17 @@ async function doUpload(file, zone, pathInput, folder) {
   if (origTxt) origTxt.innerHTML = 'Uploading…';
   zone.style.pointerEvents = 'none';
 
+  // Warn about large videos (can't compress client-side)
+  if (isVideo(file.name) && file.size > 20_000_000) {
+    toastErr(`Video is ${(file.size/1_000_000).toFixed(0)}MB — consider compressing before uploading for faster load times.`);
+  }
+
   try {
-    const b64 = await toBase64(file);
+    const uploadFile = isImage(file.name) ? await compressImage(file) : file;
+    const origMB = (file.size / 1_000_000).toFixed(1);
+    const newMB  = (uploadFile.size / 1_000_000).toFixed(1);
+    const path   = `${folder}/${uploadFile.name}`;
+    const b64    = await toBase64(uploadFile);
 
     let sha = null;
     try {
@@ -1516,7 +1552,7 @@ async function doUpload(file, zone, pathInput, folder) {
     } catch {}
 
     const body = {
-      message: `Upload ${file.name} via CMS`,
+      message: `Upload ${uploadFile.name} via CMS`,
       content: b64,
       branch:  BRANCH_LIVE,
       ...(sha ? { sha } : {})
@@ -1538,20 +1574,21 @@ async function doUpload(file, zone, pathInput, folder) {
     if (preview) {
       const thumb = preview.querySelector('.preview-thumb');
       if (thumb) {
-        if (isImage(file.name)) {
-          thumb.src = URL.createObjectURL(file);
+        if (isImage(uploadFile.name)) {
+          thumb.src = URL.createObjectURL(uploadFile);
           thumb.style.display = '';
         } else {
           thumb.style.display = 'none';
         }
       }
       const nameEl = preview.querySelector('.preview-name');
-      if (nameEl) nameEl.textContent = file.name;
+      if (nameEl) nameEl.textContent = uploadFile.name;
       preview.classList.add('show');
       if (inner) inner.style.display = 'none';
     }
 
-    toastOk(`Uploaded: ${file.name}`);
+    const saved = uploadFile !== file ? ` (${origMB}MB → ${newMB}MB WebP)` : '';
+    toastOk(`Uploaded: ${uploadFile.name}${saved}`);
   } catch(e) {
     toastErr(`Upload failed: ${e.message}`);
     if (origTxt) origTxt.innerHTML = 'Drag file or <b>browse</b>';
