@@ -171,11 +171,11 @@
     },
     {
       "caption": "Cassettes",
-      "src": "Images/16_cassettes.jpg",
+      "src": "Images/Cassettes_B.webp",
       "hover": "Images/hover/16_cassettes.jpg",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/Cassettes_A.webp",
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "Elements Vol 1",
