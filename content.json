@@ -35,11 +35,11 @@
   "projects": [
     {
       "caption": "Future Projects",
-      "src": "Images/01_future-projects.jpg",
-      "hover": "Images/hover/01_future-projects.jpg",
-      "mobileHover": null,
+      "src": "Images/Future Projects_A.jpg",
+      "hover": "Images/hover/1.mp4",
+      "mobileHover": "Images/hover/Future Projects_A.jpg",
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Common Bond",
@@ -85,7 +85,7 @@
       "caption": "Stunt Devil",
       "src": "Images/07_stunt-devil.mp4",
       "hover": "Images/hover/Stunt Devil_Album Visualizer.mp4",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/Stunt-Devil-MV-IG_5.jpg",
       "hidden": false,
       "orientation": "landscape"
     },
@@ -108,14 +108,14 @@
     {
       "caption": "RUN2RAVE",
       "src": "Images/10_run2rave.jpg",
-      "hover": "Images/hover/10_run2rave.jpg",
+      "hover": "Images/hover/RUN2RAVE_4200x3000.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
     },
     {
       "caption": "Wesley Knight",
-      "src": "Images/11_wesley-knight.jpg",
+      "src": "Images/IMG_0807.gif",
       "hover": "Images/hover/11_wesley-knight.jpeg",
       "mobileHover": null,
       "hidden": false,
@@ -149,7 +149,7 @@
       "caption": "Spoiler Alert",
       "src": "Images/14_spoiler-alert.mp4",
       "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/Standard_Issue_Scans3.jpg",
       "hidden": false,
       "orientation": "landscape"
     },
@@ -157,7 +157,7 @@
       "caption": "Look at This Photograph",
       "src": "Images/15_look-at-this-photograph.jpg",
       "hover": "Images/hover/15_look-at-this-photograph.mp4",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/lookat.jpg",
       "hidden": false,
       "orientation": "landscape"
     },
@@ -179,9 +179,9 @@
     },
     {
       "caption": "Sound OFF",
-      "src": "Images/18_sound-off.jpg",
+      "src": "Images/Desktop---626.jpg",
       "hover": "Images/hover/18_sound-off.jpg",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/IMG_8972_2000x2800-1.png",
       "hidden": false,
       "orientation": "landscape"
     },
@@ -204,8 +204,8 @@
     {
       "caption": "The Canvas 2.0",
       "src": "Images/21_the-canvas-2-0.jpg",
-      "hover": "Images/hover/21_the-canvas-2-0.jpg",
-      "mobileHover": null,
+      "hover": "Images/hover/canvas2.png",
+      "mobileHover": "Images/hover/28_The-Canvas--Issue-2.0.jpg",
       "hidden": false,
       "orientation": "landscape"
     },
