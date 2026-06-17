@@ -66,10 +66,10 @@
       "orientation": "landscape"
     },
     {
-      "caption": "L'Entrata Wine",
-      "src": "Images/05_lentrata-wine.jpg",
-      "hover": "Images/hover/05_lentrata-wine.jpg",
-      "mobileHover": null,
+      "caption": "Peterson Rich Office",
+      "src": "Images/2.png",
+      "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
+      "mobileHover": "Images/hover/3.png",
       "hidden": false,
       "orientation": "portrait"
     },
@@ -90,12 +90,12 @@
       "orientation": "landscape"
     },
     {
-      "caption": "CMFTZN",
-      "src": "Images/08_cmftzn.jpg",
-      "hover": "Images/hover/08_cmftzn.mov",
+      "caption": "L'Entrata Wine",
+      "src": "Images/05_lentrata-wine.jpg",
+      "hover": "Images/hover/05_lentrata-wine.jpg",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Puppet Master",
@@ -117,6 +117,14 @@
       "caption": "Wesley Knight",
       "src": "Images/11_wesley-knight.jpg",
       "hover": "Images/hover/11_wesley-knight.jpeg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "CMFTZN",
+      "src": "Images/08_cmftzn.jpg",
+      "hover": "Images/hover/08_cmftzn.mov",
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
@@ -222,14 +230,6 @@
       "src": "Images/24_no-more-noise.jpg",
       "hover": "Images/hover/24_no-more-noise.jpg",
       "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
-      "caption": "Peterson Rich Office",
-      "src": "Images/2.png",
-      "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
-      "mobileHover": "Images/hover/3.png",
       "hidden": false,
       "orientation": "portrait"
     },
