@@ -227,11 +227,11 @@
     },
     {
       "caption": "Peterson Rich Office",
-      "src": "Images/25_Peterson-Rich-Office.jpg",
+      "src": "Images/2.png",
       "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
-      "mobileHover": null,
+      "mobileHover": "Images/hover/3.png",
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Pill Poppers",
