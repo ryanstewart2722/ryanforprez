@@ -114,6 +114,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "NFT Youngboy",
+      "src": "Images/13_nft-youngboy.mp4",
+      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Puppet Master",
       "src": "Images/09_puppet-master.jpg",
       "hover": "Images/hover/09_puppet-master.mp4",
@@ -130,28 +138,12 @@
       "orientation": "portrait"
     },
     {
-      "caption": "CMFTZN",
-      "src": "Images/08_cmftzn.jpg",
-      "hover": "Images/hover/08_cmftzn.mov",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
       "caption": "Standard Issue",
       "src": "Images/12_standard-issue.jpg",
       "hover": "Images/hover/12_standard-issue.jpg",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
-    },
-    {
-      "caption": "NFT Youngboy",
-      "src": "Images/13_nft-youngboy.mp4",
-      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
     },
     {
       "caption": "RUN2RAVE",
@@ -202,6 +194,14 @@
       "orientation": "portrait"
     },
     {
+      "caption": "CMFTZN",
+      "src": "Images/08_cmftzn.jpg",
+      "hover": "Images/hover/08_cmftzn.mov",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "South + West",
       "src": "Images/20_south-west.jpg",
       "hover": "Images/hover/20_south-west.jpg",
@@ -211,9 +211,9 @@
     },
     {
       "caption": "The Canvas 2.0",
-      "src": "Images/21_the-canvas-2-0.jpg",
+      "src": "Images/28_The-Canvas--Issue-2.0.webp",
       "hover": "Images/hover/canvas2.png",
-      "mobileHover": "Images/hover/28_The-Canvas--Issue-2.0.jpg",
+      "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
     },
