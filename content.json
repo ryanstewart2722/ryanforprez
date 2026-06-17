@@ -268,14 +268,14 @@
   ],
   "songs": [
     {
-      "caption": "Stevie Wonder - My Cherie Amour",
-      "src": "Audio/My Cherie Amour (1).mp3",
-      "art": "Images/My Cherie Amour.png"
+      "caption": "Delegation - Oh Honey",
+      "src": "Audio/Delegation - Oh Honey.mp3",
+      "art": "Images/ab67616d0000b27376858369f08ec31eb3b36209.jpeg"
     },
     {
-      "caption": "Valerie BBC Radio - Amy Winehouse",
-      "src": "Audio/Valerie BBC Radio-Amy Winehouse.mp3",
-      "art": "Images/Valerie BBC Radio-Amy Winehouse.png"
+      "caption": "Otis Redding - Cigarettes and Coffee",
+      "src": "Audio/Otis Redding - Cigarrettes and Coffee  Soul Sunday.mp3",
+      "art": "Images/81yv9x53rYL._UF1000,1000_QL80_.jpg"
     },
     {
       "caption": "Chief Keef - Citgo",
@@ -283,9 +283,9 @@
       "art": "Images/Screenshot 2026-06-17 at 7.07.18 AM.webp"
     },
     {
-      "caption": "Otis Redding - Cigarettes and Coffee",
-      "src": "Audio/Otis Redding - Cigarrettes and Coffee  Soul Sunday.mp3",
-      "art": "Images/81yv9x53rYL._UF1000,1000_QL80_.jpg"
+      "caption": "Valerie BBC Radio - Amy Winehouse",
+      "src": "Audio/Valerie BBC Radio-Amy Winehouse.mp3",
+      "art": "Images/Valerie BBC Radio-Amy Winehouse.png"
     },
     {
       "caption": "Turnstile - Mystery",
@@ -296,6 +296,11 @@
       "caption": "DOPE LEMON - Dope & Smoke",
       "src": "Audio/DOPE LEMON - Dope & Smoke (Official Audio).mp3",
       "art": "Images/ab67616d0000b2738775ad8a2b68f96f454b580a.jpeg"
+    },
+    {
+      "caption": "Stevie Wonder - My Cherie Amour",
+      "src": "Audio/My Cherie Amour (1).mp3",
+      "art": "Images/My Cherie Amour.png"
     },
     {
       "caption": "Keyshia Cole - Love",
