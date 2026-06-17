@@ -1138,7 +1138,7 @@
 
         // Player — populate songs list and load random starting track
         songsList = (data.shuffleSongs === false) ? data.songs : data.songs.slice().sort(() => Math.random() - 0.5);
-        songIndex = Math.floor(Math.random() * songsList.length);
+        songIndex = (data.shuffleSongs === false) ? 0 : Math.floor(Math.random() * songsList.length);
         loadSong(songIndex);
       });
   </script>
