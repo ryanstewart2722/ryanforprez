@@ -694,11 +694,11 @@
     <div id="sidebar-logo">Ryan Stewart <span>CMS</span></div>
     <nav id="sidebar-nav">
       <div class="nav-label">Content</div>
-      <div class="nav-item active" data-section="profile">Profile</div>
-      <div class="nav-item" data-section="projects">
+      <div class="nav-item active" data-section="projects">
         Projects
         <span class="nav-count" id="nav-count-projects">0</span>
       </div>
+      <div class="nav-item" data-section="profile">Profile</div>
       <div class="nav-label">Site</div>
       <div class="nav-item" data-section="settings">Settings</div>
     </nav>
@@ -710,7 +710,7 @@
   <!-- Main -->
   <div id="main">
     <header id="topbar">
-      <div id="topbar-title">Profile</div>
+      <div id="topbar-title">Projects</div>
       <div id="topbar-actions">
         <span id="save-status"></span>
         <button class="btn" id="revert-btn">Revert</button>
@@ -722,7 +722,7 @@
     <div id="content">
 
       <!-- ── Profile ── -->
-      <div id="section-profile" class="section active">
+      <div id="section-profile" class="section">
         <div class="page-header">
           <h2>Profile</h2>
           <p>Edit your bio, contact info, and recognition links.</p>
@@ -767,10 +767,20 @@
       </div>
 
       <!-- ── Projects ── -->
-      <div id="section-projects" class="section">
+      <div id="section-projects" class="section active">
         <div class="page-header">
           <h2>Projects</h2>
           <p>Drag to reorder. Click a project to edit its details.</p>
+        </div>
+        <div class="toggle-row" style="margin-bottom:20px;">
+          <div class="toggle-info">
+            <h4>Shuffle projects</h4>
+            <p>Randomize the project grid order on each page load.</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="shuffle-toggle">
+            <div class="toggle-track"></div>
+          </label>
         </div>
         <div id="projects-list"></div>
         <button class="btn-add-card" id="add-project-btn">+ Add project</button>
@@ -781,16 +791,6 @@
         <div class="page-header">
           <h2>Settings</h2>
           <p>Site-wide configuration options.</p>
-        </div>
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <h4>Shuffle projects</h4>
-            <p>Randomize the project grid order on each page load.</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="shuffle-toggle">
-            <div class="toggle-track"></div>
-          </label>
         </div>
       </div>
 
