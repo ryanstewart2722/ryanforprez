@@ -243,10 +243,7 @@
        No wrapper containers with opacity.
     ───────────────────────────────────── */
     #profile-bio,
-    .meta-col,
-    #player-art,
-    #player-annotation,
-    #player-caption {
+    .meta-col {
       position: fixed;
       z-index: 6;
       opacity: 0;
@@ -254,18 +251,10 @@
       transition: opacity 0.5s ease;
     }
     body.profile-active #profile-bio,
-    body.profile-active .meta-col,
-    body.profile-active #player-art,
-    body.profile-active #player-annotation,
-    body.profile-active #player-caption {
+    body.profile-active .meta-col {
       opacity: 1;
       pointer-events: auto;
     }
-
-    /* Annotation + caption: dim to 0.5 by default, full on hover */
-    body.profile-active #player-annotation { opacity: 0.5; }
-    body.profile-active #player-annotation:hover { opacity: 1; transition: opacity 0.2s ease; }
-    body.profile-active #player-caption:hover { color: rgba(255,255,255,1); }
 
     #profile-bio {
       left: 33.9vw;
@@ -299,45 +288,94 @@
     }
     .meta-col a:hover { color: rgba(255,255,255,1); }
 
-    body.profile-active #player-art { cursor: pointer; }
-
-    /* Player — bottom-anchored, 13px from viewport bottom (mirrors nav top: 13px) */
-    #player-art {
+    /* Player wrapper — flex column, bottom-anchored */
+    #player-wrap {
+      position: fixed;
+      z-index: 6;
       left: 63.3vw;
-      top: auto;
-      bottom: 53px;
+      bottom: 13px;
       width: calc(170 / 1440 * 100vw);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    body.profile-active #player-wrap {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* "Now Playing" label */
+    #player-now-playing {
+      font-size: 12px;
+      line-height: 1;
+      color: rgba(0,0,0,0.5);
+    }
+
+    /* Vinyl record art */
+    @keyframes vinyl-spin {
+      to { transform: rotate(360deg); }
+    }
+    #player-art {
+      width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       display: block;
+      border-radius: 50%;
+      mask-image: radial-gradient(circle at 50% 50%, transparent 5px, black 5px);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 5px, black 5px);
+      cursor: grab;
+      animation: vinyl-spin 6s linear infinite;
+      animation-play-state: paused;
+      transform-origin: center;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
     }
+    #player-art.playing { animation-play-state: running; }
+    #player-art:active { cursor: grabbing; }
 
-    #player-annotation {
-      left: 63.3vw;
-      top: auto;
-      bottom: 34px;
-      width: calc(170 / 1440 * 100vw);
-      mix-blend-mode: exclusion;
-      cursor: pointer;
+    /* Controls row: buttons + scrub bar */
+    #player-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    #player-annotation svg {
+    #player-controls button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    #player-controls button:hover { color: black; }
+    #player-scrub {
+      flex: 1;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    #player-scrub svg {
       width: 100%;
       height: 8px;
       display: block;
       overflow: visible;
     }
 
+    /* Track caption */
     #player-caption {
-      left: 63.3vw;
-      top: auto;
-      bottom: 13px;
-      width: calc(170 / 1440 * 100vw);
       font-size: 12px;
       line-height: 1.4;
       white-space: nowrap;
-      mix-blend-mode: exclusion;
-      color: rgba(255,255,255,0.5);
+      color: rgba(0,0,0,0.5);
+      cursor: default;
     }
+    #player-caption:hover { color: rgba(0,0,0,1); }
 
 
     /* ══════════════════════════════════════
@@ -480,24 +518,10 @@
       }
 
       /* Player mobile: left-anchored */
-      #player-art {
+      #player-wrap {
         left: 15px !important;
-        right: auto !important;
-        width: 130px !important;
-        bottom: 53px !important;
-      }
-      #player-annotation {
-        left: 15px !important;
-        right: auto !important;
-        width: 130px !important;
-        bottom: 34px !important;
-      }
-      #player-caption {
-        left: 15px !important;
-        right: auto !important;
         width: 130px !important;
         bottom: 13px !important;
-        white-space: nowrap !important;
       }
     }
   </style>
@@ -558,20 +582,37 @@
     <span class="meta-val">Ryan Stewart<br><br>Last Updated June 12, 5:37 AM</span>
   </div>
 
-  <img id="player-art" src="Images/Save%20Me%20-%20Chief%20Keef.png" alt="Save Me - Chief Keef">
-
-  <div id="player-annotation">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207 8" preserveAspectRatio="none">
-      <polygon id="play-triangle" points="0,0 0,8 7,4" fill="white"/>
-      <rect id="stop-square" x="0" y="0" width="8" height="8" fill="white" style="display:none"/>
-      <line x1="15" y1="4" x2="206" y2="4" stroke="white" stroke-width="1" opacity="0.35"/>
-      <line x1="206" y1="0.5" x2="206" y2="7.5" stroke="white" stroke-width="1" opacity="0.35"/>
-      <line id="progress-fill" x1="15" y1="4" x2="15" y2="4" stroke="white" stroke-width="1"/>
-      <line id="playhead" x1="15" y1="0" x2="15" y2="8" stroke="white" stroke-width="1"/>
-    </svg>
+  <div id="player-wrap">
+    <p id="player-now-playing">Now Playing</p>
+    <img id="player-art" src="Images/Save%20Me%20-%20Chief%20Keef.png" alt="Save Me - Chief Keef">
+    <div id="player-controls">
+      <button id="prev-btn" title="Previous">
+        <svg width="11" height="8" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.16067e-07 4L5.5 8L5.5 0L2.16067e-07 4Z" fill="currentColor"/>
+          <path d="M5.5 4L11 8L11 0L5.5 4Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button id="play-pause-btn" title="Play/Pause">
+        <span id="play-icon"><svg width="7" height="8" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 4L0 8L3.53315e-07 0L7 4Z" fill="currentColor"/></svg></span>
+        <span id="pause-icon" style="display:none"><svg width="7" height="8" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="8" fill="currentColor"/></svg></span>
+      </button>
+      <button id="next-btn" title="Next">
+        <svg width="11" height="8" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 4L5.5 8L5.5 0L11 4Z" fill="currentColor"/>
+          <path d="M5.5 4L0 8L2.77605e-07 0L5.5 4Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div id="player-scrub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 8" preserveAspectRatio="none">
+          <line x1="0" y1="3.5" x2="100" y2="3.5" stroke="black" stroke-width="1" opacity="0.35"/>
+          <line x1="100" y1="0.5" x2="100" y2="7.5" stroke="black" stroke-width="1" opacity="0.35"/>
+          <line id="progress-fill" x1="0" y1="3.5" x2="0" y2="3.5" stroke="black" stroke-width="1"/>
+          <line id="playhead" x1="0" y1="0.5" x2="0" y2="7.5" stroke="black" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+    <p id="player-caption">Save Me - Chief Keef</p>
   </div>
-
-  <p id="player-caption">Listening To: Save Me - Chief Keef</p>
 
   <script>
     const cursor      = document.getElementById('cursor');
@@ -759,18 +800,23 @@
     const audio = document.getElementById('audio-player');
     let isPlaying     = false;
     let progressTimer = null;
+    let songsList     = [];
+    let songIndex     = 0;
 
     function syncPlayBtn() {
-      document.getElementById('play-triangle').style.display = isPlaying ? 'none' : '';
-      document.getElementById('stop-square').style.display   = isPlaying ? ''     : 'none';
+      document.getElementById('play-icon').style.display  = isPlaying ? 'none' : '';
+      document.getElementById('pause-icon').style.display = isPlaying ? ''     : 'none';
+      const art = document.getElementById('player-art');
+      if (isPlaying) art.classList.add('playing');
+      else           art.classList.remove('playing');
     }
 
     function setPlayhead(ratio) {
-      const x = 15 + ratio * 191;
+      const x = ratio * 100;
       const ph = document.getElementById('playhead');
       const pf = document.getElementById('progress-fill');
       ph.setAttribute('x1', x); ph.setAttribute('x2', x);
-      pf.setAttribute('x2', x);
+      pf.setAttribute('x1', '0'); pf.setAttribute('x2', x);
     }
 
     function startProgress() {
@@ -784,8 +830,30 @@
       if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     }
 
+    function loadSong(idx) {
+      const song = songsList[idx];
+      if (!song) return;
+      const wasPlaying = isPlaying;
+      audio.src = encodeURI(song.src);
+      document.getElementById('player-art').src = encodeURI(song.art);
+      document.getElementById('player-art').alt = song.caption;
+      document.getElementById('player-caption').textContent = song.caption;
+      setPlayhead(0);
+      if (wasPlaying) audio.play().catch(() => {});
+    }
+
+    function nextTrack() {
+      songIndex = (songIndex + 1) % songsList.length;
+      loadSong(songIndex);
+    }
+
+    function prevTrack() {
+      songIndex = (songIndex - 1 + songsList.length) % songsList.length;
+      loadSong(songIndex);
+    }
+
     audio.addEventListener('ended', () => {
-      isPlaying = false; syncPlayBtn(); stopProgress(); setPlayhead(0);
+      stopProgress(); nextTrack();
     });
 
     function togglePlay() {
@@ -793,23 +861,24 @@
         audio.pause();
         isPlaying = false; syncPlayBtn(); stopProgress();
       } else {
-        audio.play();
+        audio.play().catch(() => {});
         isPlaying = true; syncPlayBtn(); startProgress();
       }
     }
 
-    document.getElementById('player-art').addEventListener('click', togglePlay);
+    document.getElementById('play-pause-btn').addEventListener('click', togglePlay);
+    document.getElementById('prev-btn').addEventListener('click', prevTrack);
+    document.getElementById('next-btn').addEventListener('click', nextTrack);
 
+    // ── Scrub bar ──
     (() => {
-      const annotationEl = document.getElementById('player-annotation');
-      const svg = annotationEl.querySelector('svg');
+      const scrub = document.getElementById('player-scrub');
+      const svg = scrub.querySelector('svg');
       let dragging = false;
 
       function getSvgRatio(clientX) {
         const rect = svg.getBoundingClientRect();
-        const svgX = (clientX - rect.left) / rect.width * 207;
-        if (svgX < 15) return null;
-        return Math.max(0, Math.min(1, (svgX - 15) / 191));
+        return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       }
 
       function applySeek(ratio) {
@@ -818,27 +887,85 @@
         setPlayhead(ratio);
       }
 
-      annotationEl.addEventListener('pointerdown', (e) => {
-        const ratio = getSvgRatio(e.clientX);
-        if (ratio === null) { togglePlay(); return; }
+      scrub.addEventListener('pointerdown', (e) => {
         dragging = true;
-        annotationEl.setPointerCapture(e.pointerId);
-        applySeek(ratio);
+        scrub.setPointerCapture(e.pointerId);
+        applySeek(getSvgRatio(e.clientX));
+        e.preventDefault();
+      });
+      scrub.addEventListener('pointermove', (e) => {
+        if (dragging) applySeek(getSvgRatio(e.clientX));
+      });
+      scrub.addEventListener('pointerup', (e) => {
+        dragging = false;
+        scrub.releasePointerCapture(e.pointerId);
+      });
+      scrub.addEventListener('pointercancel', () => { dragging = false; });
+    })();
+
+    // ── Vinyl drag-to-scrub ──
+    (() => {
+      const art = document.getElementById('player-art');
+      let vinylDragging = false;
+      let lastAngle = 0;
+      let totalRotation = 0;
+      let manualRotation = 0;
+
+      function getAngle(e) {
+        const rect = art.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        return Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI;
+      }
+
+      function getComputedRotation() {
+        const matrix = new DOMMatrix(getComputedStyle(art).transform);
+        return Math.atan2(matrix.b, matrix.a) * 180 / Math.PI;
+      }
+
+      art.addEventListener('pointerdown', (e) => {
+        vinylDragging = true;
+        lastAngle = getAngle(e);
+        totalRotation = 0;
+        manualRotation = getComputedRotation();
+        art.style.animationPlayState = 'paused';
+        art.style.transform = `rotate(${manualRotation}deg)`;
+        art.setPointerCapture(e.pointerId);
         e.preventDefault();
       });
 
-      annotationEl.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-        const ratio = getSvgRatio(e.clientX);
-        if (ratio !== null) applySeek(ratio);
+      art.addEventListener('pointermove', (e) => {
+        if (!vinylDragging) return;
+        const angle = getAngle(e);
+        let delta = angle - lastAngle;
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+        lastAngle = angle;
+        totalRotation += Math.abs(delta);
+        manualRotation += delta;
+        art.style.transform = `rotate(${manualRotation}deg)`;
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          // 360° = 20 seconds
+          const timeDelta = (delta / 360) * 20;
+          audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + timeDelta));
+          setPlayhead(audio.currentTime / audio.duration);
+        }
       });
 
-      annotationEl.addEventListener('pointerup', (e) => {
-        dragging = false;
-        annotationEl.releasePointerCapture(e.pointerId);
+      art.addEventListener('pointerup', (e) => {
+        if (!vinylDragging) return;
+        vinylDragging = false;
+        art.releasePointerCapture(e.pointerId);
+        art.style.transform = '';
+        art.style.animationPlayState = '';
+        if (totalRotation < 5) togglePlay();
       });
 
-      annotationEl.addEventListener('pointercancel', () => { dragging = false; });
+      art.addEventListener('pointercancel', () => {
+        vinylDragging = false;
+        art.style.transform = '';
+        art.style.animationPlayState = '';
+      });
     })();
 
     // ── Load content.json and init grid + player ──
@@ -983,13 +1110,10 @@
           overlay.addEventListener('click', hideMobileFullbleed);
         })();
 
-        // Player — pick random song from content.json
-        const songs = (data.shuffleSongs === false) ? data.songs : data.songs.slice().sort(() => Math.random() - 0.5);
-        const song = songs[Math.floor(Math.random() * songs.length)];
-        audio.src = encodeURI(song.src);
-        document.getElementById('player-art').src = encodeURI(song.art);
-        document.getElementById('player-art').alt = song.caption;
-        document.getElementById('player-caption').textContent = 'Listening To: ' + song.caption;
+        // Player — populate songs list and load random starting track
+        songsList = (data.shuffleSongs === false) ? data.songs : data.songs.slice().sort(() => Math.random() - 0.5);
+        songIndex = Math.floor(Math.random() * songsList.length);
+        loadSong(songIndex);
       });
   </script>
 </body>
