@@ -298,12 +298,11 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      opacity: 0;
+      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.5s ease;
     }
     body.profile-active #player-wrap {
-      opacity: 1;
+      visibility: visible;
       pointer-events: auto;
     }
 
@@ -311,7 +310,8 @@
     #player-now-playing {
       font-size: 12px;
       line-height: 1;
-      color: rgba(0,0,0,1);
+      color: white;
+      mix-blend-mode: exclusion;
       margin-bottom: 5px;
     }
 
@@ -349,13 +349,14 @@
       border: none;
       padding: 0;
       cursor: pointer;
-      color: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.35);
+      mix-blend-mode: exclusion;
       display: flex;
       align-items: center;
       flex-shrink: 0;
       transition: color 0.15s;
     }
-    #player-controls button:hover { color: black; }
+    #player-controls button:hover { color: white; }
     #player-scrub {
       flex: 1;
       cursor: pointer;
@@ -373,10 +374,11 @@
       font-size: 12px;
       line-height: 1.4;
       white-space: nowrap;
-      color: rgba(0,0,0,0.5);
+      color: rgba(255,255,255,0.5);
+      mix-blend-mode: exclusion;
       cursor: default;
     }
-    #player-caption:hover { color: rgba(0,0,0,1); }
+    #player-caption:hover { color: white; }
 
 
     /* ══════════════════════════════════════
