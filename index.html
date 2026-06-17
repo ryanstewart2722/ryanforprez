@@ -289,41 +289,41 @@
     .meta-col a:hover { color: rgba(255,255,255,1); }
 
     /* Player wrapper — flex column, bottom-anchored */
-    #player-wrap {
+    /* Player wrapper has no box — each child is position:fixed directly
+       against the viewport so mix-blend-mode:exclusion blends against
+       the real backdrop (camera), not a stacking-context surface. */
+    #player-wrap { display: contents; }
+
+    /* Shared fixed positioning — mirrors how .meta-col works */
+    #player-now-playing,
+    #player-art,
+    #player-controls,
+    #player-caption {
       position: fixed;
-      z-index: 6;
       left: 63.3vw;
-      bottom: 13px;
       width: calc(170 / 1440 * 100vw);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    body.profile-active #player-wrap {
-      visibility: visible;
-      pointer-events: auto;
+      z-index: 6;
     }
 
-    /* "Now Playing" label */
+    /* "Now Playing" label — sits above the vinyl */
     #player-now-playing {
+      bottom: calc(70px + 170 / 1440 * 100vw);
       font-size: 12px;
       line-height: 1;
       color: white;
       mix-blend-mode: exclusion;
-      margin-bottom: 5px;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.5s ease;
     }
-    body.profile-active #player-now-playing { opacity: 1; }
+    body.profile-active #player-now-playing { opacity: 1; pointer-events: auto; }
 
     /* Vinyl record art */
     @keyframes vinyl-spin {
       to { transform: rotate(360deg); }
     }
     #player-art {
-      width: 100%;
+      bottom: 62px;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       display: block;
@@ -337,20 +337,25 @@
       user-select: none;
       -webkit-user-select: none;
       -webkit-user-drag: none;
+      visibility: hidden;
+      pointer-events: none;
     }
+    body.profile-active #player-art { visibility: visible; pointer-events: auto; }
     #player-art.playing { animation-play-state: running; }
     #player-art:active { cursor: grabbing; }
 
     /* Controls row: buttons + scrub bar */
     #player-controls {
+      bottom: 38px;
       display: flex;
       align-items: center;
       gap: 8px;
       mix-blend-mode: exclusion;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.5s ease;
     }
-    body.profile-active #player-controls { opacity: 1; }
+    body.profile-active #player-controls { opacity: 1; pointer-events: auto; }
     #player-controls button {
       background: none;
       border: none;
@@ -377,6 +382,7 @@
 
     /* Track caption */
     #player-caption {
+      bottom: 13px;
       font-size: 12px;
       line-height: 1.4;
       white-space: nowrap;
@@ -384,9 +390,10 @@
       mix-blend-mode: exclusion;
       cursor: default;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.5s ease;
     }
-    body.profile-active #player-caption { opacity: 1; }
+    body.profile-active #player-caption { opacity: 1; pointer-events: auto; }
     #player-caption:hover { color: white; }
 
 
@@ -530,11 +537,17 @@
       }
 
       /* Player mobile: left-anchored */
-      #player-wrap {
+      #player-now-playing,
+      #player-art,
+      #player-controls,
+      #player-caption {
         left: 15px !important;
         width: 130px !important;
-        bottom: 13px !important;
       }
+      #player-now-playing { bottom: 200px !important; } /* 70px + 130px vinyl */
+      #player-art         { bottom: 62px !important; }
+      #player-controls    { bottom: 38px !important; }
+      #player-caption     { bottom: 13px !important; }
     }
   </style>
 </head>
