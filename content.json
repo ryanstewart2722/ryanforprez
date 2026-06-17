@@ -130,12 +130,28 @@
       "orientation": "portrait"
     },
     {
+      "caption": "Look at This Photograph",
+      "src": "Images/15_look-at-this-photograph.jpg",
+      "hover": "Images/hover/15_look-at-this-photograph.mp4",
+      "mobileHover": "Images/hover/lookat.jpg",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Cult Holdings Co.",
       "src": "Images/Hard Drives.mp4",
       "hover": "Images/hover/Comp 13_supercut.mp4",
       "mobileHover": "Images/hover/supercut_2.mp4",
       "hidden": false,
       "orientation": "portrait"
+    },
+    {
+      "caption": "Cassettes",
+      "src": "Images/Cassettes_B.webp",
+      "hover": "Images/hover/16_cassettes.jpg",
+      "mobileHover": "Images/hover/Cassettes_A.webp",
+      "hidden": false,
+      "orientation": "landscape"
     },
     {
       "caption": "Standard Issue",
@@ -152,22 +168,6 @@
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
-    },
-    {
-      "caption": "Look at This Photograph",
-      "src": "Images/15_look-at-this-photograph.jpg",
-      "hover": "Images/hover/15_look-at-this-photograph.mp4",
-      "mobileHover": "Images/hover/lookat.jpg",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
-      "caption": "Cassettes",
-      "src": "Images/Cassettes_B.webp",
-      "hover": "Images/hover/16_cassettes.jpg",
-      "mobileHover": "Images/hover/Cassettes_A.webp",
-      "hidden": false,
-      "orientation": "landscape"
     },
     {
       "caption": "Elements Vol 1",
