@@ -38,7 +38,7 @@
       "src": "Images/01_future-projects.jpg",
       "hover": "Images/hover/01_future-projects.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -46,7 +46,7 @@
       "src": "Images/02_common-bond.mp4",
       "hover": "Images/hover/Common Bond Digital Screens.jpeg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -54,7 +54,7 @@
       "src": "Images/03_proof-of-concept.jpeg",
       "hover": "Images/hover/03_proof-of-concept.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -62,7 +62,7 @@
       "src": "Images/04_jugger-brand-id.jpg",
       "hover": "Images/hover/04_jugger-brand-id.mp4",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -70,7 +70,7 @@
       "src": "Images/05_lentrata-wine.jpg",
       "hover": "Images/hover/05_lentrata-wine.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -78,7 +78,7 @@
       "src": "Images/06_beadle.png",
       "hover": "Images/hover/06_beadle.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -86,7 +86,7 @@
       "src": "Images/07_stunt-devil.mp4",
       "hover": "Images/hover/Stunt Devil_Album Visualizer.mp4",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -94,7 +94,7 @@
       "src": "Images/08_cmftzn.jpg",
       "hover": "Images/hover/08_cmftzn.mov",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -102,7 +102,7 @@
       "src": "Images/09_puppet-master.jpg",
       "hover": "Images/hover/09_puppet-master.mp4",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -110,7 +110,7 @@
       "src": "Images/10_run2rave.jpg",
       "hover": "Images/hover/10_run2rave.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -118,7 +118,7 @@
       "src": "Images/11_wesley-knight.jpg",
       "hover": "Images/hover/11_wesley-knight.jpeg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -126,7 +126,7 @@
       "src": "Images/12_standard-issue.jpg",
       "hover": "Images/hover/12_standard-issue.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -134,7 +134,7 @@
       "src": "Images/13_nft-youngboy.mp4",
       "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -142,7 +142,7 @@
       "src": "Images/14_spoiler-alert.mp4",
       "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -150,7 +150,7 @@
       "src": "Images/15_look-at-this-photograph.jpg",
       "hover": "Images/hover/15_look-at-this-photograph.mp4",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -158,7 +158,7 @@
       "src": "Images/16_cassettes.jpg",
       "hover": "Images/hover/16_cassettes.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -166,7 +166,7 @@
       "src": "Images/17_elements-vol-1.jpg",
       "hover": "Images/hover/17_elements-vol-1.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -174,7 +174,7 @@
       "src": "Images/18_sound-off.jpg",
       "hover": "Images/hover/18_sound-off.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -182,7 +182,7 @@
       "src": "Images/19_cwktsof.jpg",
       "hover": "Images/hover/19_cwktsof.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -190,7 +190,7 @@
       "src": "Images/20_south-west.jpg",
       "hover": "Images/hover/20_south-west.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -198,7 +198,7 @@
       "src": "Images/21_the-canvas-2-0.jpg",
       "hover": "Images/hover/21_the-canvas-2-0.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -206,7 +206,7 @@
       "src": "Images/The Canvas Website_B.jpg",
       "hover": "Images/hover/22_the-canvas-web.mp4",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -214,7 +214,7 @@
       "src": "Images/23_bean-sans.jpg",
       "hover": "Images/hover/23_bean-sans.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -222,7 +222,7 @@
       "src": "Images/24_no-more-noise.jpg",
       "hover": "Images/hover/24_no-more-noise.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     },
     {
@@ -230,7 +230,7 @@
       "src": "Images/25_Peterson-Rich-Office.jpg",
       "hover": "Images/hover/25_Peterson-Rich-Office.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -238,7 +238,7 @@
       "src": "Images/26_Pill-Poppers.png",
       "hover": "Images/hover/26_Pill-Poppers.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -246,7 +246,7 @@
       "src": "Images/27_Tendencies.png",
       "hover": "Images/hover/27_Tendencies.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "landscape"
     },
     {
@@ -254,7 +254,7 @@
       "src": "Images/28_Edible-Landscapes.png",
       "hover": "Images/hover/28_Edible-Landscapes.jpg",
       "mobileHover": null,
-      "thumbVideo": null,
+      "hidden": false,
       "orientation": "portrait"
     }
   ],
@@ -268,6 +268,11 @@
       "caption": "Valerie BBC Radio - Amy Winehouse",
       "src": "Audio/Valerie BBC Radio-Amy Winehouse.mp3",
       "art": "Images/Valerie BBC Radio-Amy Winehouse.png"
+    },
+    {
+      "caption": "Stevie Wonder - My Cherie Amour",
+      "src": "Audio/My Cherie Amour (1).mp3",
+      "art": "Images/My Cherie Amour.png"
     },
     {
       "caption": "Choose U - Project Pat",
