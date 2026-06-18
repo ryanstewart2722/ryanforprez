@@ -44,8 +44,8 @@
     {
       "caption": "Common Bond",
       "src": "Images/02_common-bond.mp4",
-      "hover": "Images/hover/Common Bond Digital Screens.jpeg",
-      "mobileHover": null,
+      "hover": "Images/hover/Common Bond Motion_Subway Graphics.mp4",
+      "mobileHover": "Images/hover/03.webp",
       "hidden": false,
       "orientation": "landscape"
     },
