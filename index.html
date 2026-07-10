@@ -574,7 +574,7 @@
   <span id="nav-work-studio" class="nav-item">
     <span class="work">Work</span><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Profile</span>
   </span>
-  <a id="nav-case-studies" class="nav-item" href="mailto:yo@ryanforprez.org">Case Studies Available on Request.</a>
+  <a id="nav-case-studies" class="nav-item" href="mailto:yo@ryanforprez.org">Case Studies Available On Request</a>
 
   <!-- Camera toggle -->
   <div id="bg-toggle"><span>Camera</span></div>
@@ -803,7 +803,7 @@
     function showProfile() {
       document.body.classList.add('profile-active');
       profileOverlay.classList.add('active');
-      navCaseStudies.textContent = 'Case Studies Available on Request.';
+      navCaseStudies.textContent = 'Case Studies Available On Request';
       hideFullbleed();
       history.pushState({}, '', '#profile');
       layoutProfile();
@@ -812,7 +812,7 @@
     function showWork() {
       document.body.classList.remove('profile-active');
       profileOverlay.classList.remove('active');
-      navCaseStudies.textContent = 'Case Studies Available on Request.';
+      navCaseStudies.textContent = 'Case Studies Available On Request';
       history.pushState({}, '', window.location.pathname);
     }
 
