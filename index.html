@@ -120,6 +120,8 @@
     #nav-case-studies {
       left: calc(60.71% - 100.29px);
       color: rgba(255,255,255,0.2);
+      text-decoration: none;
+      cursor: pointer;
     }
 
     /* ── Camera toggle ── */
@@ -572,7 +574,7 @@
   <span id="nav-work-studio" class="nav-item">
     <span class="work">Work</span><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Profile</span>
   </span>
-  <span id="nav-case-studies" class="nav-item">Full Case Studies Coming Soon</span>
+  <a id="nav-case-studies" class="nav-item" href="mailto:yo@ryanforprez.org">Drop a line — full case studies on request.</a>
 
   <!-- Camera toggle -->
   <div id="bg-toggle"><span>Camera</span></div>
@@ -801,7 +803,7 @@
     function showProfile() {
       document.body.classList.add('profile-active');
       profileOverlay.classList.add('active');
-      navCaseStudies.textContent = 'Contact for Full Case Studies, Coming Soon';
+      navCaseStudies.textContent = 'Drop a line — full case studies on request.';
       hideFullbleed();
       history.pushState({}, '', '#profile');
       layoutProfile();
@@ -810,7 +812,7 @@
     function showWork() {
       document.body.classList.remove('profile-active');
       profileOverlay.classList.remove('active');
-      navCaseStudies.textContent = 'Full Case Studies Coming Soon';
+      navCaseStudies.textContent = 'Drop a line — full case studies on request.';
       history.pushState({}, '', window.location.pathname);
     }
 
