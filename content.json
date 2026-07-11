@@ -122,6 +122,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Gin & Juice x Flippers UK Launch Party",
+      "src": "Images/8.jpg",
+      "hover": "Images/hover/4.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "NFT Youngboy",
       "src": "Images/13_nft-youngboy.mp4",
       "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
@@ -210,6 +218,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Snoop Dogg Arizona Bowl",
+      "src": "Images/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
+      "hover": "Images/hover/Drop it like it’s HOT… because Tucson will be. 😎🔥⏰ Countdown to the Snoop Dogg Arizona Bowl - .jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "South + West",
       "src": "Images/20_south-west.jpg",
       "hover": "Images/hover/20_south-west.jpg",
@@ -274,23 +290,23 @@
       "orientation": "portrait"
     },
     {
-      "caption": "Snoop Dogg Arizona Bowl",
-      "src": "Images/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
-      "hover": "Images/hover/Drop it like it’s HOT… because Tucson will be. 😎🔥⏰ Countdown to the Snoop Dogg Arizona Bowl - .jpg",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
-      "caption": "Gin & Juice x Flippers UK Launch Party",
-      "src": "Images/8.jpg",
-      "hover": "Images/hover/4.jpg",
+      "caption": "Gin & Juice Tao Nightclub Visuals",
+      "src": "Images/3.mp4",
+      "hover": "Images/hover/7.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
     },
     {
-      "caption": "",
+      "caption": "Jewelbox Pictures",
+      "src": "Images/Jewelbox Comp 10.mp4",
+      "hover": "Images/hover/Jewelbox Comp 5.mp4",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "By Dre & Snoop x Yankees",
       "src": "",
       "hover": "",
       "mobileHover": null,
