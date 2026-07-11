@@ -1499,6 +1499,12 @@ function setupUploadZone(zone, pathInput, folder) {
 
 function isVideo(name) { return /\.(mp4|mov|webm|avi|mkv)$/i.test(name); }
 
+function sanitizeFilename(name) {
+  const ext  = name.match(/\.[^.]+$/)?.[0] ?? '';
+  const base = name.slice(0, name.length - ext.length);
+  return base.replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '') + ext;
+}
+
 async function compressImage(file, maxPx = 1920, quality = 0.82) {
   // Skip GIFs (animation) and SVGs (vector)
   if (/\.(gif|svg)$/i.test(file.name)) return file;
@@ -1540,7 +1546,10 @@ async function doUpload(file, zone, pathInput, folder) {
   }
 
   try {
-    const uploadFile = isImage(file.name) ? await compressImage(file) : file;
+    let uploadFile = isImage(file.name) ? await compressImage(file) : file;
+    const cleanName = sanitizeFilename(uploadFile.name);
+    if (cleanName !== uploadFile.name)
+      uploadFile = new File([uploadFile], cleanName, { type: uploadFile.type });
     const origMB = (file.size / 1_000_000).toFixed(1);
     const newMB  = (uploadFile.size / 1_000_000).toFixed(1);
     const path   = `${folder}/${uploadFile.name}`;
