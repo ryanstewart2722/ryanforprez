@@ -34,6 +34,14 @@
   },
   "projects": [
     {
+      "caption": "Late Denim",
+      "src": "Images/Decode 2.mp4",
+      "hover": "Images/hover/Flare 1.mp4",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Future Projects",
       "src": "Images/Future Projects_A.jpg",
       "hover": "Images/hover/1.mp4",
@@ -285,7 +293,7 @@
     {
       "caption": "Chief Keef - Citgo",
       "src": "Audio/Citgo.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 7.07.18 AM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18â¯AM.webp"
     },
     {
       "caption": "Valerie BBC Radio - Amy Winehouse",
@@ -340,7 +348,7 @@
     {
       "caption": "Whearus - Teenage Dirtbag",
       "src": "Audio/Teenage Dirtbag.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 10.58.23 PM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 10.58.23â¯PM.webp"
     },
     {
       "caption": "Anika - Yang Yang",
