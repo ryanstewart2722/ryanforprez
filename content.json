@@ -154,6 +154,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Snoop Dogg Arizona Bowl",
+      "src": "Images/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
+      "hover": "Images/hover/Drop it like it’s HOT… because Tucson will be. 😎🔥⏰ Countdown to the Snoop Dogg Arizona Bowl - .jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Cult Holdings Co.",
       "src": "Images/Hard Drives.mp4",
       "hover": "Images/hover/Comp 13_supercut.mp4",
@@ -162,17 +170,17 @@
       "orientation": "portrait"
     },
     {
-      "caption": "Cassettes",
-      "src": "Images/Cassettes_B.webp",
-      "hover": "Images/hover/16_cassettes.jpg",
-      "mobileHover": "Images/hover/Cassettes_A.webp",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
       "caption": "Standard Issue",
       "src": "Images/12_standard-issue.jpg",
       "hover": "Images/hover/12_standard-issue.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Jewelbox Pictures",
+      "src": "Images/Jewelbox Comp 10.mp4",
+      "hover": "Images/hover/Jewelbox Comp 5.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
@@ -190,6 +198,14 @@
       "src": "Images/17_elements-vol-1.jpg",
       "hover": "Images/hover/17_elements-vol-1.jpg",
       "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "By Dre & Snoop x Yankees",
+      "src": "Images/Sensitive_G&J_C4D_Yankees_COMPED_2.mp4",
+      "hover": "Images/hover/1.mp4",
+      "mobileHover": "Images/hover/3.jpg",
       "hidden": false,
       "orientation": "landscape"
     },
@@ -218,12 +234,20 @@
       "orientation": "landscape"
     },
     {
-      "caption": "Snoop Dogg Arizona Bowl",
-      "src": "Images/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
-      "hover": "Images/hover/Drop it like it’s HOT… because Tucson will be. 😎🔥⏰ Countdown to the Snoop Dogg Arizona Bowl - .jpg",
+      "caption": "Cassettes",
+      "src": "Images/Cassettes_B.webp",
+      "hover": "Images/hover/16_cassettes.jpg",
+      "mobileHover": "Images/hover/Cassettes_A.webp",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Gin & Juice Tao Nightclub Visuals",
+      "src": "Images/3.mp4",
+      "hover": "Images/hover/7.mp4",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "South + West",
@@ -274,6 +298,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Gin & Juice Merch",
+      "src": "Images/Screenshot 2026-07-10 at 10.39.12 PM.webp",
+      "hover": "Images/hover/Screenshot 2026-07-10 at 10.39.40 PM.webp",
+      "mobileHover": "Images/hover/HOODIE Back 7_B.webp",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Tendencies",
       "src": "Images/27_Tendencies.png",
       "hover": "Images/hover/27_Tendencies.jpg",
@@ -288,30 +320,6 @@
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
-    },
-    {
-      "caption": "Gin & Juice Tao Nightclub Visuals",
-      "src": "Images/3.mp4",
-      "hover": "Images/hover/7.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
-      "caption": "Jewelbox Pictures",
-      "src": "Images/Jewelbox Comp 10.mp4",
-      "hover": "Images/hover/Jewelbox Comp 5.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
-      "caption": "By Dre & Snoop x Yankees",
-      "src": "",
-      "hover": "",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
     }
   ],
   "songs": [
