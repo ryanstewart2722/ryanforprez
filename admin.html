@@ -27,9 +27,9 @@
       --accent-bg:  #eff6ff;
       --danger:     #dc2626;
       --success:    #16a34a;
-      --sidebar-bg: #111111;
-      --sidebar-txt:#b0b0b0;
-      --sidebar-act:#ffffff;
+      --sidebar-bg: #f2f2f2;
+      --sidebar-txt: rgb(0,0,255);
+      --sidebar-act: rgb(0,0,255);
       --font:       'ABCDiatype', system-ui, sans-serif;
       --mono:       'ABCDiatype', system-ui, sans-serif;
     }
@@ -55,8 +55,7 @@
     #login-logo {
       font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: rgb(0,0,255);
       margin-bottom: 8px;
     }
@@ -121,17 +120,15 @@
       padding: 20px 18px 16px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: rgb(0,0,255);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid var(--border);
     }
     #sidebar-logo span {
       display: block;
       font-weight: 400;
       color: var(--sidebar-txt);
       font-size: 10px;
-      letter-spacing: 0.06em;
       margin-top: 2px;
     }
     #sidebar-nav {
@@ -142,9 +139,7 @@
     .nav-label {
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+      color: rgba(0,0,255,0.35);
       padding: 14px 10px 6px;
     }
     .nav-item {
@@ -160,27 +155,27 @@
       transition: background 0.1s, color 0.1s;
       user-select: none;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--sidebar-act); }
-    .nav-item.active { background: rgba(255,255,255,0.1); color: var(--sidebar-act); }
+    .nav-item:hover { background: rgba(0,0,0,0.04); color: var(--sidebar-act); }
+    .nav-item.active { background: rgba(0,0,0,0.07); color: var(--sidebar-act); }
     .nav-item .nav-icon { font-size: 15px; opacity: 0.7; width: 18px; text-align: center; }
     .nav-item .nav-count {
       margin-left: auto;
       font-size: 10px;
-      background: rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.4);
+      background: rgba(0,0,255,0.1);
+      color: rgba(0,0,255,0.6);
       padding: 1px 6px;
       border-radius: 10px;
     }
     #sidebar-footer {
       padding: 12px 8px;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      border-top: 1px solid var(--border);
     }
     #logout-btn {
       width: 100%;
       padding: 8px;
       background: none;
       border: none;
-      color: rgba(255,255,255,0.3);
+      color: rgba(0,0,255,0.4);
       font-family: var(--font);
       font-size: 12px;
       cursor: pointer;
@@ -188,7 +183,7 @@
       text-align: left;
       transition: background 0.1s, color 0.1s;
     }
-    #logout-btn:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.7); }
+    #logout-btn:hover { background: rgba(0,0,0,0.04); color: rgb(0,0,255); }
 
     /* ── Main area ── */
     #main {
@@ -226,7 +221,6 @@
     /* ── Content ── */
     #content {
       padding: 32px 28px 80px;
-      max-width: 840px;
     }
 
     .section { display: none; }
@@ -614,7 +608,7 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 6px;
-      margin-bottom: 12px;
+      margin: 0 -28px 12px;
     }
     .project-tile {
       position: relative;
@@ -665,7 +659,7 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 6px;
-      margin-bottom: 12px;
+      margin: 0 -28px 12px;
     }
     .song-tile {
       position: relative;
