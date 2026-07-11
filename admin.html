@@ -57,7 +57,7 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text);
+      color: rgb(0,0,255);
       margin-bottom: 8px;
     }
     #login-screen h2 {
@@ -123,7 +123,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--sidebar-act);
+      color: rgb(0,0,255);
       border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     #sidebar-logo span {
@@ -609,6 +609,89 @@
     /* ── Drag over card ── */
     .card.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
 
+    /* ── Projects thumbnail grid ── */
+    #projects-list {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .project-tile {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border: 2px solid transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      background: var(--bg);
+      transition: border-color 0.12s;
+    }
+    .project-tile:hover { border-color: var(--border); }
+    .project-tile.selected { border-color: var(--accent); }
+    .project-tile.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+    .project-tile.dragging { opacity: 0.35; }
+    .project-tile.is-hidden { opacity: 0.35; }
+    .project-tile img, .project-tile video {
+      width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none;
+    }
+    .tile-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 18px 5px 5px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.65));
+      color: #fff; line-height: 1.3;
+    }
+    .tile-num  { font-size: 9px; opacity: 0.65; display: block; }
+    .tile-name { font-size: 10px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile-hidden-badge {
+      position: absolute; top: 4px; right: 4px;
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 9px; padding: 1px 5px; border-radius: 2px;
+    }
+
+    /* ── Project editor panel ── */
+    #project-editor { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+    #project-editor.open { display: block; }
+    .editor-header { display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+    .editor-num { font-size: 11px; font-weight: 500; color: var(--faint); width: 22px; flex-shrink: 0; }
+    .editor-title-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .editor-close { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--faint); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; line-height: 1; transition: color 0.1s; }
+    .editor-close:hover { color: var(--text); }
+    .btn-editor-delete { background: none; border: none; color: var(--faint); font-size: 16px; cursor: pointer; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; transition: color 0.1s, background 0.1s; }
+    .btn-editor-delete:hover { color: var(--danger); background: #fef2f2; }
+    .editor-body { padding: 0 16px 20px; }
+
+    /* ── Songs thumbnail grid ── */
+    #songs-list {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .song-tile {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border: 2px solid transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      background: var(--bg);
+      transition: border-color 0.12s;
+    }
+    .song-tile:hover { border-color: var(--border); }
+    .song-tile.selected { border-color: var(--accent); }
+    .song-tile.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+    .song-tile.dragging { opacity: 0.35; }
+    .song-tile img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .song-tile .no-art {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: var(--faint); background: var(--surface);
+    }
+
+    /* ── Song editor panel ── */
+    #song-editor { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+    #song-editor.open { display: block; }
+
     /* ── Divider ── */
     .section-divider {
       font-size: 11px;
@@ -645,7 +728,7 @@
 
 <!-- ── Login ── -->
 <div id="login-screen">
-  <div id="login-logo">Ryan Stewart <span>Content Management</span></div>
+  <div id="login-logo">ryanforprez.org <span>Content Management</span></div>
 
   <!-- Setup: shown only first time -->
   <div id="login-box" id="setup-box" style="display:none">
@@ -691,7 +774,7 @@
 
   <!-- Sidebar -->
   <aside id="sidebar">
-    <div id="sidebar-logo">Ryan Stewart <span>CMS</span></div>
+    <div id="sidebar-logo">ryanforprez.org <span>CMS</span></div>
     <nav id="sidebar-nav">
       <div class="nav-label">Content</div>
       <div class="nav-item active" data-section="projects">
@@ -762,6 +845,7 @@
             </label>
           </div>
           <div id="songs-list"></div>
+          <div id="song-editor"></div>
           <button class="btn-add-card" id="add-song-btn">+ Add song</button>
         </div>
       </div>
@@ -783,6 +867,7 @@
           </label>
         </div>
         <div id="projects-list"></div>
+        <div id="project-editor"></div>
         <button class="btn-add-card" id="add-project-btn">+ Add project</button>
       </div>
 
@@ -1082,18 +1167,299 @@ document.getElementById('add-recognition-link').addEventListener('click', () => 
 });
 
 // ── Projects ─────────────────────────────────────────────────
+// ── Projects grid state ──────────────────────────────────────
+let projectsData    = [];
+let selectedTileEl  = null;
+let selectedProjIdx = null;
+
 function renderProjects(projects) {
+  projectsData = projects.map(p => Object.assign({}, p));
   const list = document.getElementById('projects-list');
   list.innerHTML = '';
-  projects.forEach((p, i) => list.appendChild(makeProjectCard(p, i + 1)));
-  updateCount('projects', projects.length);
+  projectsData.forEach((p, i) => list.appendChild(makeProjectTile(p, i)));
+  updateCount('projects', projectsData.length);
+  closeProjectEditor();
+}
+
+function makeProjectTile(p, idx) {
+  const tile = document.createElement('div');
+  tile.className = 'project-tile' + (p.hidden ? ' is-hidden' : '');
+  tile.draggable = true;
+  tile._data = p;
+  refreshTileContent(tile, p, idx);
+
+  tile.addEventListener('click', () => {
+    if (selectedTileEl === tile) { closeProjectEditor(); return; }
+    commitEditorToData();
+    if (selectedTileEl) selectedTileEl.classList.remove('selected');
+    tile.classList.add('selected');
+    selectedTileEl  = tile;
+    selectedProjIdx = [...document.getElementById('projects-list').children].indexOf(tile);
+    openProjectEditor(p, selectedProjIdx);
+  });
+
+  tile.addEventListener('dragstart', e => {
+    dragSrc = tile;
+    e.dataTransfer.effectAllowed = 'move';
+    requestAnimationFrame(() => tile.classList.add('dragging'));
+  });
+  tile.addEventListener('dragend', () => {
+    tile.classList.remove('dragging');
+    document.querySelectorAll('.project-tile').forEach(t => t.classList.remove('drag-over'));
+    const list = document.getElementById('projects-list');
+    projectsData = [...list.children].map(t => t._data);
+    renumberTiles();
+    if (selectedTileEl) {
+      selectedProjIdx = [...list.children].indexOf(selectedTileEl);
+    }
+    dragSrc = null;
+  });
+  tile.addEventListener('dragover', e => {
+    if (!dragSrc || dragSrc === tile) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    tile.classList.add('drag-over');
+  });
+  tile.addEventListener('dragleave', () => tile.classList.remove('drag-over'));
+  tile.addEventListener('drop', e => {
+    if (!dragSrc || dragSrc === tile) return;
+    e.preventDefault();
+    tile.classList.remove('drag-over');
+    const list  = document.getElementById('projects-list');
+    const tiles = [...list.children];
+    const si = tiles.indexOf(dragSrc);
+    const di = tiles.indexOf(tile);
+    if (si < di) list.insertBefore(dragSrc, tile.nextSibling);
+    else         list.insertBefore(dragSrc, tile);
+    dragSrc = null;
+  });
+
+  return tile;
+}
+
+function refreshTileContent(tile, p, idx) {
+  const isVid = /\.(mp4|mov|webm|ogg)$/i.test(p.src || '');
+  const media = p.src
+    ? (isVid
+        ? `<video src="${esc(p.src)}" muted preload="none"></video>`
+        : `<img src="${esc(p.src)}" alt="" onerror="this.style.opacity=0">`)
+    : '';
+  tile.innerHTML = `
+    ${media}
+    <div class="tile-overlay">
+      <span class="tile-num">${String(idx + 1).padStart(2, '0')}</span>
+      <span class="tile-name">${esc(p.caption) || 'Untitled'}</span>
+    </div>
+    ${p.hidden ? '<span class="tile-hidden-badge">hidden</span>' : ''}
+  `;
+  tile.classList.toggle('is-hidden', !!p.hidden);
+}
+
+function renumberTiles() {
+  [...document.getElementById('projects-list').children].forEach((tile, i) => {
+    const n = tile.querySelector('.tile-num');
+    if (n) n.textContent = String(i + 1).padStart(2, '0');
+  });
+}
+
+function openProjectEditor(p, idx) {
+  const orient = p.orientation || 'landscape';
+  const editor = document.getElementById('project-editor');
+  editor.classList.add('open');
+  editor.innerHTML = `
+    <div class="editor-header">
+      <span class="editor-num">${String(idx + 1).padStart(2, '0')}</span>
+      <span class="editor-title-text">${esc(p.caption) || 'Untitled project'}</span>
+      <button class="btn-editor-delete" title="Remove">×</button>
+      <button class="editor-close" title="Close">✕</button>
+    </div>
+    <div class="editor-body">
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">Caption</label>
+          <input type="text" class="f-caption" value="${esc(p.caption)}" placeholder="Project name">
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Thumbnail (image or video)</label>
+          <div class="upload-zone js-upload" data-field="src" data-folder="Images">
+            <div class="upload-preview ${p.src ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.src)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.src ? p.src.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
+              </div>
+            </div>
+            <div style="${p.src ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
+            </div>
+          </div>
+          <div class="path-input-row"><span class="path-label">Path:</span>
+            <input type="text" class="f-src" value="${esc(p.src)}" placeholder="Images/file.jpg">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Hover (desktop fullbleed)</label>
+          <div class="upload-zone js-upload" data-field="hover" data-folder="Images/hover">
+            <div class="upload-preview ${p.hover ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.hover)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.hover ? p.hover.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
+              </div>
+            </div>
+            <div style="${p.hover ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
+            </div>
+          </div>
+          <div class="path-input-row"><span class="path-label">Path:</span>
+            <input type="text" class="f-hover" value="${esc(p.hover)}" placeholder="Images/hover/file.jpg">
+          </div>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Mobile hover <span style="font-weight:400;color:var(--faint);">(optional)</span></label>
+          <div class="upload-zone js-upload" data-field="mobileHover" data-folder="Images/hover">
+            <div class="upload-preview ${p.mobileHover ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(p.mobileHover)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(p.mobileHover ? p.mobileHover.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
+              </div>
+            </div>
+            <div style="${p.mobileHover ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG, MP4, MOV</div>
+            </div>
+          </div>
+          <div class="path-input-row"><span class="path-label">Path:</span>
+            <input type="text" class="f-mobileHover" value="${esc(p.mobileHover)}" placeholder="Optional">
+          </div>
+        </div>
+      </div>
+      <div class="field-group" style="align-items:flex-end;">
+        <div class="field">
+          <label class="field-label">Orientation</label>
+          <div class="orient-group">
+            <button class="orient-btn ${orient==='portrait'?'active':''}" data-val="portrait">Portrait</button>
+            <button class="orient-btn ${orient==='landscape'?'active':''}" data-val="landscape">Landscape</button>
+          </div>
+        </div>
+        <div class="field" style="flex:0">
+          <label class="field-label">Visibility</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:8px 0">
+            <input type="checkbox" class="f-hidden" ${p.hidden ? 'checked' : ''} style="width:14px;height:14px;cursor:pointer">
+            Hide from site
+          </label>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Caption sync → tile name + header
+  editor.querySelector('.f-caption').addEventListener('input', e => {
+    const v = e.target.value || 'Untitled project';
+    editor.querySelector('.editor-title-text').textContent = v;
+    if (selectedTileEl) {
+      const n = selectedTileEl.querySelector('.tile-name');
+      if (n) n.textContent = v;
+    }
+  });
+
+  // Orientation
+  editor.querySelectorAll('.orient-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      editor.querySelectorAll('.orient-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Hidden → tile opacity
+  editor.querySelector('.f-hidden').addEventListener('change', e => {
+    if (selectedTileEl) {
+      selectedTileEl.classList.toggle('is-hidden', e.target.checked);
+      const badge = selectedTileEl.querySelector('.tile-hidden-badge');
+      if (e.target.checked && !badge) {
+        const b = document.createElement('span');
+        b.className = 'tile-hidden-badge'; b.textContent = 'hidden';
+        selectedTileEl.appendChild(b);
+      } else if (!e.target.checked && badge) badge.remove();
+    }
+  });
+
+  // Upload zones
+  editor.querySelectorAll('.js-upload').forEach(zone => {
+    const field  = zone.dataset.field;
+    const folder = zone.dataset.folder;
+    const input  = editor.querySelector(`.f-${field}`);
+    setupUploadZone(zone, input, folder);
+    if (field === 'src') {
+      input.addEventListener('change', () => {
+        if (selectedTileEl) {
+          const d = collectEditorData();
+          refreshTileContent(selectedTileEl, d, selectedProjIdx);
+          selectedTileEl._data = d;
+        }
+      });
+    }
+  });
+
+  // Close
+  editor.querySelector('.editor-close').addEventListener('click', closeProjectEditor);
+
+  // Delete
+  editor.querySelector('.btn-editor-delete').addEventListener('click', () => {
+    const name = editor.querySelector('.f-caption')?.value || 'this project';
+    if (!confirm(`Remove "${name}"?`)) return;
+    projectsData.splice(selectedProjIdx, 1);
+    renderProjects(projectsData);
+    updateCount('projects', projectsData.length);
+  });
+
+  editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function collectEditorData() {
+  const ed = document.getElementById('project-editor');
+  if (!ed.classList.contains('open')) return null;
+  return {
+    caption:     ed.querySelector('.f-caption')?.value.trim() || '',
+    src:         ed.querySelector('.f-src')?.value.trim() || '',
+    hover:       ed.querySelector('.f-hover')?.value.trim() || '',
+    mobileHover: ed.querySelector('.f-mobileHover')?.value.trim() || null,
+    hidden:      ed.querySelector('.f-hidden')?.checked || false,
+    orientation: ed.querySelector('.orient-btn.active')?.dataset.val || 'landscape'
+  };
+}
+
+function commitEditorToData() {
+  if (selectedProjIdx === null) return;
+  const d = collectEditorData();
+  if (!d) return;
+  projectsData[selectedProjIdx] = d;
+  if (selectedTileEl) selectedTileEl._data = d;
+}
+
+function closeProjectEditor() {
+  commitEditorToData();
+  document.getElementById('project-editor').classList.remove('open');
+  if (selectedTileEl) selectedTileEl.classList.remove('selected');
+  selectedTileEl  = null;
+  selectedProjIdx = null;
 }
 
 function updateCount(type, n) {
   document.getElementById(`nav-count-${type}`).textContent = n;
 }
 
-function makeProjectCard(p = {}, num = 1) {
+function makeProjectCard_UNUSED(p = {}, num = 1) {
   const card = document.createElement('div');
   card.className = 'card';
   card.draggable = true;
@@ -1286,36 +1652,229 @@ function makeProjectCard(p = {}, num = 1) {
   return card;
 }
 
-function renumberProjects() {
-  document.querySelectorAll('#projects-list .card').forEach((card, i) => {
-    const n = card.querySelector('.card-num');
-    if (n) n.textContent = String(i + 1).padStart(2, '0');
-  });
-  updateCount('projects', document.querySelectorAll('#projects-list .card').length);
-}
+function renumberProjects() { renumberTiles(); }
 
 document.getElementById('add-project-btn').addEventListener('click', () => {
+  const newP = { caption: '', src: '', hover: '', mobileHover: null, hidden: false, orientation: 'landscape' };
+  projectsData.push(newP);
   const list = document.getElementById('projects-list');
-  const num  = list.children.length + 1;
-  const card = makeProjectCard({}, num);
-  list.appendChild(card);
-  card.querySelector('.card-body').classList.add('open');
-  card.querySelector('.card-chevron').classList.add('open');
-  card.querySelector('.f-caption').focus();
-  updateCount('projects', num);
+  const tile = makeProjectTile(newP, projectsData.length - 1);
+  list.appendChild(tile);
+  updateCount('projects', projectsData.length);
+  tile.click(); // open editor immediately
 });
 
 // ── Songs ────────────────────────────────────────────────────
 function renderSongs(songs, shuffleSongs) {
+  songsData = songs.map(s => Object.assign({}, s));
   const list = document.getElementById('songs-list');
   list.innerHTML = '';
-  songs.forEach(s => list.appendChild(makeSongCard(s)));
+  songsData.forEach((s, i) => list.appendChild(makeSongTile(s, i)));
+  closeSongEditor();
   document.getElementById('shuffle-songs-toggle').checked = !!shuffleSongs;
 }
 
+function makeSongTile(s, idx) {
+  const tile = document.createElement('div');
+  tile.className = 'song-tile';
+  tile.draggable = true;
+  tile._data = s;
+  refreshSongTileContent(tile, s, idx);
+
+  tile.addEventListener('click', () => {
+    if (selectedSongTileEl === tile) { closeSongEditor(); return; }
+    commitSongEditorToData();
+    if (selectedSongTileEl) selectedSongTileEl.classList.remove('selected');
+    tile.classList.add('selected');
+    selectedSongTileEl = tile;
+    selectedSongIdx = [...document.getElementById('songs-list').children].indexOf(tile);
+    openSongEditor(s, selectedSongIdx);
+  });
+
+  tile.addEventListener('dragstart', e => {
+    dragSrcSong = tile;
+    e.dataTransfer.effectAllowed = 'move';
+    requestAnimationFrame(() => tile.classList.add('dragging'));
+  });
+  tile.addEventListener('dragend', () => {
+    tile.classList.remove('dragging');
+    document.querySelectorAll('.song-tile').forEach(t => t.classList.remove('drag-over'));
+    const list = document.getElementById('songs-list');
+    songsData = [...list.children].map(t => t._data);
+    if (selectedSongTileEl) {
+      selectedSongIdx = [...list.children].indexOf(selectedSongTileEl);
+    }
+    dragSrcSong = null;
+  });
+  tile.addEventListener('dragover', e => {
+    if (!dragSrcSong || dragSrcSong === tile) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    tile.classList.add('drag-over');
+  });
+  tile.addEventListener('dragleave', () => tile.classList.remove('drag-over'));
+  tile.addEventListener('drop', e => {
+    if (!dragSrcSong || dragSrcSong === tile) return;
+    e.preventDefault();
+    tile.classList.remove('drag-over');
+    const list  = document.getElementById('songs-list');
+    const tiles = [...list.children];
+    const si = tiles.indexOf(dragSrcSong);
+    const di = tiles.indexOf(tile);
+    if (si < di) list.insertBefore(dragSrcSong, tile.nextSibling);
+    else         list.insertBefore(dragSrcSong, tile);
+    dragSrcSong = null;
+  });
+
+  return tile;
+}
+
+function refreshSongTileContent(tile, s, idx) {
+  tile.innerHTML = s.art
+    ? `<img src="${esc(s.art)}" alt="" onerror="this.style.opacity=0">
+       <div class="tile-overlay">
+         <span class="tile-num">${String(idx + 1).padStart(2, '0')}</span>
+         <span class="tile-name">${esc(s.caption) || 'Untitled'}</span>
+       </div>`
+    : `<div class="no-art">♪</div>
+       <div class="tile-overlay">
+         <span class="tile-num">${String(idx + 1).padStart(2, '0')}</span>
+         <span class="tile-name">${esc(s.caption) || 'Untitled'}</span>
+       </div>`;
+}
+
+function openSongEditor(s, idx) {
+  const editor = document.getElementById('song-editor');
+  editor.classList.add('open');
+  editor.innerHTML = `
+    <div class="editor-header">
+      <span class="editor-num">${String(idx + 1).padStart(2, '0')}</span>
+      <span class="editor-title-text">${esc(s.caption) || 'Untitled song'}</span>
+      <button class="btn-editor-delete" title="Remove">×</button>
+      <button class="editor-close" title="Close">✕</button>
+    </div>
+    <div class="editor-body">
+      <div class="field-group full" style="margin-top:16px;">
+        <div class="field">
+          <label class="field-label">Song title</label>
+          <input type="text" class="f-caption" value="${esc(s.caption)}" placeholder="Artist – Track">
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Audio file</label>
+          <div class="upload-zone js-upload" data-field="src" data-folder="Audio">
+            <div class="upload-preview ${s.src ? 'show' : ''}">
+              <div class="preview-info">
+                <span class="preview-name">${esc(s.src ? s.src.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
+              </div>
+            </div>
+            <div style="${s.src ? 'display:none' : ''}">
+              <div class="upload-zone-icon">♪</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">MP3, WAV, M4A</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-src" value="${esc(s.src)}" placeholder="Audio/track.mp3">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Album art</label>
+          <div class="upload-zone js-upload" data-field="art" data-folder="Images">
+            <div class="upload-preview ${s.art ? 'show' : ''}">
+              <img class="preview-thumb" src="${esc(s.art)}" onerror="this.src=''">
+              <div class="preview-info">
+                <span class="preview-name">${esc(s.art ? s.art.split('/').pop() : '')}</span>
+                <button class="preview-change">Change file</button><button class="preview-remove">Remove</button>
+              </div>
+            </div>
+            <div style="${s.art ? 'display:none' : ''}">
+              <div class="upload-zone-icon">↑</div>
+              <div class="upload-zone-text">Drag file or <b>browse</b></div>
+              <div class="upload-zone-hint">JPG, PNG</div>
+            </div>
+          </div>
+          <div class="path-input-row">
+            <span class="path-label">Path:</span>
+            <input type="text" class="f-art" value="${esc(s.art)}" placeholder="Images/art.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  editor.querySelector('.f-caption').addEventListener('input', e => {
+    const v = e.target.value || 'Untitled song';
+    editor.querySelector('.editor-title-text').textContent = v;
+    if (selectedSongTileEl) {
+      const n = selectedSongTileEl.querySelector('.tile-name');
+      if (n) n.textContent = v;
+    }
+  });
+
+  editor.querySelectorAll('.js-upload').forEach(zone => {
+    const field  = zone.dataset.field;
+    const folder = zone.dataset.folder;
+    const input  = editor.querySelector(`.f-${field}`);
+    setupUploadZone(zone, input, folder);
+    if (field === 'art') {
+      input.addEventListener('change', () => {
+        if (selectedSongTileEl) {
+          const d = collectSongEditorData();
+          refreshSongTileContent(selectedSongTileEl, d, selectedSongIdx);
+          selectedSongTileEl._data = d;
+        }
+      });
+    }
+  });
+
+  editor.querySelector('.editor-close').addEventListener('click', closeSongEditor);
+
+  editor.querySelector('.btn-editor-delete').addEventListener('click', () => {
+    const name = editor.querySelector('.f-caption')?.value || 'this song';
+    if (!confirm(`Remove "${name}"?`)) return;
+    songsData.splice(selectedSongIdx, 1);
+    renderSongs(songsData, document.getElementById('shuffle-songs-toggle').checked);
+  });
+
+  editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function collectSongEditorData() {
+  const ed = document.getElementById('song-editor');
+  if (!ed.classList.contains('open')) return null;
+  return {
+    caption: ed.querySelector('.f-caption')?.value.trim() || '',
+    src:     ed.querySelector('.f-src')?.value.trim() || '',
+    art:     ed.querySelector('.f-art')?.value.trim() || ''
+  };
+}
+
+function commitSongEditorToData() {
+  if (selectedSongIdx === null) return;
+  const d = collectSongEditorData();
+  if (!d) return;
+  songsData[selectedSongIdx] = d;
+  if (selectedSongTileEl) selectedSongTileEl._data = d;
+}
+
+function closeSongEditor() {
+  commitSongEditorToData();
+  document.getElementById('song-editor').classList.remove('open');
+  if (selectedSongTileEl) selectedSongTileEl.classList.remove('selected');
+  selectedSongTileEl = null;
+  selectedSongIdx    = null;
+}
+
+let songsData        = [];
+let selectedSongTileEl  = null;
+let selectedSongIdx     = null;
 let dragSrcSong = null;
 
-function makeSongCard(s = {}) {
+function makeSongCard_UNUSED(s = {}) {
   const card = document.createElement('div');
   card.className = 'card';
   card.draggable = true;
@@ -1442,9 +2001,12 @@ function makeSongCard(s = {}) {
 }
 
 document.getElementById('add-song-btn').addEventListener('click', () => {
+  const newS = { caption: '', src: '', art: '' };
+  songsData.push(newS);
   const list = document.getElementById('songs-list');
-  list.appendChild(makeSongCard());
-  updateCount('songs', list.children.length);
+  const tile = makeSongTile(newS, songsData.length - 1);
+  list.appendChild(tile);
+  tile.click();
 });
 
 // ── Upload zones ──────────────────────────────────────────────
@@ -1616,20 +2178,16 @@ function collectLinks(containerId) {
 }
 
 function collectData() {
-  const projects = [...document.querySelectorAll('#projects-list .card')].map(card => ({
-    caption:     card.querySelector('.f-caption').value.trim(),
-    src:         card.querySelector('.f-src').value.trim(),
-    hover:       card.querySelector('.f-hover').value.trim(),
-    mobileHover: card.querySelector('.f-mobileHover').value.trim() || null,
-    hidden:      card.querySelector('.f-hidden').checked || false,
-    orientation: card.querySelector('.orient-btn.active')?.dataset.val || 'landscape'
-  }));
+  commitEditorToData();
+  commitSongEditorToData();
+  // Read tile DOM order (drag may have changed it) and sync arrays
+  const projTiles = [...document.querySelectorAll('#projects-list .project-tile')];
+  if (projTiles.length) projectsData = projTiles.map(t => t._data);
+  const projects = projectsData;
 
-  const songs = [...document.querySelectorAll('#songs-list .card')].map(card => ({
-    caption: card.querySelector('.f-caption').value.trim(),
-    src:     card.querySelector('.f-src').value.trim(),
-    art:     card.querySelector('.f-art').value.trim()
-  }));
+  const songTiles = [...document.querySelectorAll('#songs-list .song-tile')];
+  if (songTiles.length) songsData = songTiles.map(t => t._data);
+  const songs = songsData;
 
   return {
     shuffle:      document.getElementById('shuffle-toggle').checked,

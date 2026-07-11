@@ -98,28 +98,26 @@
 
     #nav-name {
       left: 25px;
-      color: rgba(255,255,255,0.2);
-      cursor: pointer;
+      color: rgb(0,0,255);
     }
-    #nav-name:hover { color: rgba(255,255,255,1); }
 
     #nav-work-studio {
       left: calc(32.14% - 18.86px);
       font-size: 0;
     }
-    #nav-work-studio .work   { font-size: 14px; color: rgba(255,255,255,1);   cursor: pointer; }
-    #nav-work-studio .studio { font-size: 14px; color: rgba(255,255,255,0.3); cursor: pointer; }
+    #nav-work-studio .work   { font-size: 14px; color: rgb(0,0,255);          cursor: pointer; }
+    #nav-work-studio .studio { font-size: 14px; color: rgba(0,0,255,0.35);    cursor: pointer; }
 
     /* Flip active state on profile page */
-    body.profile-active #nav-work-studio .work   { color: rgba(255,255,255,0.3); }
-    body.profile-active #nav-work-studio .studio { color: rgba(255,255,255,1);   }
+    body.profile-active #nav-work-studio .work   { color: rgba(0,0,255,0.35); }
+    body.profile-active #nav-work-studio .studio { color: rgb(0,0,255);       }
 
     #nav-work-studio .work:hover,
-    #nav-work-studio .studio:hover { color: rgba(255,255,255,1); }
+    #nav-work-studio .studio:hover { color: rgb(0,0,255); }
 
     #nav-case-studies {
       left: calc(60.71% - 100.29px);
-      color: rgba(255,255,255,0.2);
+      color: rgb(0,0,255);
       text-decoration: none;
       cursor: pointer;
     }
@@ -570,7 +568,7 @@
   </div>
 
   <!-- Nav -->
-  <span id="nav-name" class="nav-item">Ryan Stewart</span>
+  <span id="nav-name" class="nav-item">ryanforprez.org</span>
   <span id="nav-work-studio" class="nav-item">
     <span class="work">Work</span><span class="studio">&nbsp;&nbsp;&nbsp;&nbsp;Profile</span>
   </span>
