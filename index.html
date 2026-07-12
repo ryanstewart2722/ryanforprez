@@ -164,6 +164,7 @@
       position: relative;
       align-self: center;
     }
+    .grid-item.landscape { aspect-ratio: 4 / 3; }
 
     .grid-item img,
     .grid-item video {
@@ -442,13 +443,15 @@
       }
 
       .grid-item,
-      .grid-item.landscape,
       .grid-item.portrait {
         width: 100%;
         aspect-ratio: 3 / 4;
         overflow: hidden;
         cursor: pointer;
         flex-shrink: 0;
+      }
+      .grid-item.landscape {
+        aspect-ratio: 4 / 3;
       }
 
       /* No translateY/blur on mobile — avoids visual overlap during load */
