@@ -90,22 +90,6 @@
       "orientation": "portrait"
     },
     {
-      "caption": "Beadle",
-      "src": "Images/06_beadle.png",
-      "hover": "Images/hover/06_beadle.jpg",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
-      "caption": "Jewelbox Pictures",
-      "src": "Images/Jewelbox Comp 10.mp4",
-      "hover": "Images/hover/Jewelbox Comp 5.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
       "caption": "Stunt Devil",
       "src": "Images/07_stunt-devil.mp4",
       "hover": "Images/hover/Stunt Devil_Album Visualizer.mp4",
@@ -114,9 +98,25 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Beadle",
+      "src": "Images/06_beadle.png",
+      "hover": "Images/hover/06_beadle.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Snoop Dogg Arizona Bowl",
-      "src": "Images/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
-      "hover": "Images/hover/Drop it like itâs HOTâ¦ because Tucson will be. ðð¥â° Countdown to the Snoop Dogg Arizona Bowl - .jpg",
+      "src": "Images/az-bowl-field_2.webp",
+      "hover": "Images/hover/az-bowl-field_1.webp",
+      "mobileHover": "Images/hover/Champion-Graphics-Fresno-State-Champion-1080x1350-1.jpg.webp",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Jewelbox Pictures",
+      "src": "Images/Jewelbox Comp 10.mp4",
+      "hover": "Images/hover/Jewelbox Comp 5.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
@@ -130,20 +130,20 @@
       "orientation": "landscape"
     },
     {
-      "caption": "L'Entrata Wine",
-      "src": "Images/05_lentrata-wine.jpg",
-      "hover": "Images/hover/05_lentrata-wine.jpg",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
       "caption": "Spoiler Alert",
       "src": "Images/14_spoiler-alert.mp4",
       "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
       "mobileHover": "Images/hover/Standard_Issue_Scans3.jpg",
       "hidden": false,
       "orientation": "landscape"
+    },
+    {
+      "caption": "L'Entrata Wine",
+      "src": "Images/05_lentrata-wine.jpg",
+      "hover": "Images/hover/05_lentrata-wine.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
     },
     {
       "caption": "Cult Holdings Co.",
@@ -154,9 +154,9 @@
       "orientation": "portrait"
     },
     {
-      "caption": "NFT Youngboy",
-      "src": "Images/13_nft-youngboy.mp4",
-      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
+      "caption": "Beadle Typeface",
+      "src": "Images/Beadle-Display-IG4.gif",
+      "hover": "Images/hover/240311_Beadle_Motion.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
@@ -186,9 +186,25 @@
       "orientation": "portrait"
     },
     {
+      "caption": "NFT Youngboy",
+      "src": "Images/13_nft-youngboy.mp4",
+      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "RUN2RAVE",
       "src": "Images/10_run2rave.jpg",
       "hover": "Images/hover/RUN2RAVE_4200x3000.mp4",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "By Dre & Snoop x Yankees",
+      "src": "Images/3.jpg",
+      "hover": "Images/hover/1.mp4",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
@@ -202,26 +218,10 @@
       "orientation": "landscape"
     },
     {
-      "caption": "By Dre & Snoop x Yankees",
-      "src": "Images/3.jpg",
-      "hover": "Images/hover/1.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
-    },
-    {
       "caption": "Sound OFF",
       "src": "Images/Desktop---626.jpg",
       "hover": "Images/hover/18_sound-off.jpg",
       "mobileHover": "Images/hover/IMG_8972_2000x2800-1.png",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
-      "caption": "CMFTZN",
-      "src": "Images/08_cmftzn.jpg",
-      "hover": "Images/hover/08_cmftzn.mov",
-      "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
     },
@@ -232,6 +232,14 @@
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
+    },
+    {
+      "caption": "CMFTZN",
+      "src": "Images/08_cmftzn.jpg",
+      "hover": "Images/hover/08_cmftzn.mov",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
     },
     {
       "caption": "Cassettes",
@@ -283,8 +291,8 @@
     },
     {
       "caption": "Gin & Juice Merch",
-      "src": "Images/Screenshot 2026-07-10 at 10.39.12â¯PM.webp",
-      "hover": "Images/hover/Screenshot 2026-07-10 at 10.39.40â¯PM.webp",
+      "src": "Images/Screenshot 2026-07-10 at 10.39.12Ã¢ÂÂ¯PM.webp",
+      "hover": "Images/hover/Screenshot 2026-07-10 at 10.39.40Ã¢ÂÂ¯PM.webp",
       "mobileHover": "Images/hover/HOODIE Back 7_B.webp",
       "hidden": false,
       "orientation": "landscape"
@@ -320,14 +328,6 @@
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
-    },
-    {
-      "caption": "Beadle Typeface",
-      "src": "Images/Beadle-Display-IG4.gif",
-      "hover": "Images/hover/240311_Beadle_Motion.mp4",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
     }
   ],
   "songs": [
@@ -349,7 +349,7 @@
     {
       "caption": "Chief Keef - Citgo",
       "src": "Audio/Citgo.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 7.07.18Ã¢ÂÂ¯AM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18ÃÂ¢ÃÂÃÂ¯AM.webp"
     },
     {
       "caption": "Valerie BBC Radio - Amy Winehouse",
@@ -404,7 +404,7 @@
     {
       "caption": "Whearus - Teenage Dirtbag",
       "src": "Audio/Teenage Dirtbag.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 10.58.23Ã¢ÂÂ¯PM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 10.58.23ÃÂ¢ÃÂÃÂ¯PM.webp"
     },
     {
       "caption": "Anika - Yang Yang",
