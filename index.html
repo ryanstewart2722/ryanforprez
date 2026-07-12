@@ -158,13 +158,12 @@
 
     .grid-item {
       width: var(--item-w);
-      height: var(--portrait-h);
+      aspect-ratio: 3 / 4;
       overflow: hidden;
       cursor: none;
       position: relative;
       align-self: center;
     }
-    .grid-item.landscape { height: var(--landscape-h); }
 
     .grid-item img,
     .grid-item video {
@@ -432,6 +431,7 @@
         row-gap: 17.21vw;
         padding: 84px 3.49vw 80px;
         justify-content: start;
+        align-items: start;
       }
 
       /* Wrapper becomes the grid child — flex column keeps caption always below image */
@@ -445,8 +445,8 @@
       .grid-item.landscape,
       .grid-item.portrait {
         width: 100%;
-        height: auto !important;
-        overflow: visible;
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
         cursor: pointer;
         flex-shrink: 0;
       }
@@ -455,8 +455,8 @@
       .grid-item img,
       .grid-item video {
         width: 100%;
-        height: auto !important;
-        object-fit: fill;
+        height: 100% !important;
+        object-fit: cover;
         display: block;
         transform: none !important;
         filter: none !important;
