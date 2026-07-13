@@ -323,11 +323,11 @@
     },
     {
       "caption": "",
-      "src": "Images/R2R-2.webp",
-      "hover": "Images/hover/R2R-3.webp",
+      "src": "",
+      "hover": "",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "Tendencies",
@@ -341,6 +341,14 @@
       "caption": "Sound OFF",
       "src": "Images/Sound-Off-2.webp",
       "hover": "Images/hover/Sound-Off.webp",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "",
+      "src": "",
+      "hover": "",
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
