@@ -314,6 +314,22 @@
       "orientation": "landscape"
     },
     {
+      "caption": "Edible Landscapes",
+      "src": "Images/28_Edible-Landscapes.png",
+      "hover": "Images/hover/28_Edible-Landscapes.jpg",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Wesley Knight Identity",
+      "src": "Images/230716_Wesley-Knight-1.webp",
+      "hover": "Images/hover/WK-Texture_4800x3200_DOWNSIZE.mp4",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Tendencies",
       "src": "Images/27_Tendencies.png",
       "hover": "Images/hover/27_Tendencies.jpg",
@@ -322,12 +338,12 @@
       "orientation": "landscape"
     },
     {
-      "caption": "Edible Landscapes",
-      "src": "Images/28_Edible-Landscapes.png",
-      "hover": "Images/hover/28_Edible-Landscapes.jpg",
+      "caption": "",
+      "src": "",
+      "hover": "",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     }
   ],
   "songs": [
@@ -349,7 +365,7 @@
     {
       "caption": "Chief Keef - Citgo",
       "src": "Audio/Citgo.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 7.07.18ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯AM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯AM.webp"
     },
     {
       "caption": "Valerie BBC Radio - Amy Winehouse",
@@ -404,7 +420,7 @@
     {
       "caption": "Whearus - Teenage Dirtbag",
       "src": "Audio/Teenage Dirtbag.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 10.58.23ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯PM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 10.58.23ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯PM.webp"
     },
     {
       "caption": "Anika - Yang Yang",
