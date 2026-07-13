@@ -314,6 +314,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "",
+      "src": "",
+      "hover": "",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Edible Landscapes",
       "src": "Images/28_Edible-Landscapes.png",
       "hover": "Images/hover/28_Edible-Landscapes.jpg",
@@ -322,12 +330,12 @@
       "orientation": "portrait"
     },
     {
-      "caption": "Wesley Knight Identity",
-      "src": "Images/230716_Wesley-Knight-1.webp",
-      "hover": "Images/hover/WK-Texture_4800x3200_DOWNSIZE.mp4",
+      "caption": "",
+      "src": "",
+      "hover": "",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "Tendencies",
