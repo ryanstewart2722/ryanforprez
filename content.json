@@ -314,14 +314,6 @@
       "orientation": "landscape"
     },
     {
-      "caption": "",
-      "src": "",
-      "hover": "",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
       "caption": "Edible Landscapes",
       "src": "Images/28_Edible-Landscapes.png",
       "hover": "Images/hover/28_Edible-Landscapes.jpg",
@@ -346,9 +338,9 @@
       "orientation": "landscape"
     },
     {
-      "caption": "",
-      "src": "",
-      "hover": "",
+      "caption": "Sound OFF",
+      "src": "Images/Sound-Off-2.webp",
+      "hover": "Images/hover/Sound-Off.webp",
       "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
