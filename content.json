@@ -123,8 +123,8 @@
     },
     {
       "caption": "Spoiler Alert",
-      "src": "Images/14_spoiler-alert.mp4",
-      "hover": "Images/hover/Standard_Issue_Scans5.jpeg",
+      "src": "Images/Standard_Issue_Scans5.webp",
+      "hover": "Images/hover/14_spoiler-alert.mp4",
       "mobileHover": "Images/hover/Standard_Issue_Scans3.jpg",
       "hidden": false,
       "orientation": "landscape"
@@ -167,7 +167,7 @@
       "hover": "Images/hover/240311_Beadle_Motion.mp4",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "portrait"
+      "orientation": "landscape"
     },
     {
       "caption": "Stunt Devil",
