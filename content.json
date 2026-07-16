@@ -146,6 +146,14 @@
       "orientation": "portrait"
     },
     {
+      "caption": "NFT Youngboy",
+      "src": "Images/13_nft-youngboy.mp4",
+      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
       "caption": "Puppet Master",
       "src": "Images/09_puppet-master.jpg",
       "hover": "Images/hover/09_puppet-master.mp4",
@@ -159,7 +167,7 @@
       "hover": "Images/hover/240311_Beadle_Motion.mp4",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Stunt Devil",
@@ -182,14 +190,6 @@
       "src": "Images/15_look-at-this-photograph.jpg",
       "hover": "Images/hover/15_look-at-this-photograph.mp4",
       "mobileHover": "Images/hover/lookat.jpg",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
-      "caption": "NFT Youngboy",
-      "src": "Images/13_nft-youngboy.mp4",
-      "hover": "Images/hover/nft_youngboy_SMALLER RES.png",
-      "mobileHover": null,
       "hidden": false,
       "orientation": "landscape"
     },
