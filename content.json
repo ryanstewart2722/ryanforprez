@@ -1,6 +1,6 @@
 {
   "shuffle": false,
-  "shuffleSongs": true,
+  "shuffleSongs": false,
   "profile": {
     "bio": "Ryan, a Graphic Designer based in Brooklyn, NY, graduated from Arizona State University with a degree in Visual Communication. His specialties include branding, art direction, web design, motion graphics, typography, and letterform design.\n\nHe collaborates with others to create effective and purposeful designs. Ryan's approach to design is rational, purpose-driven, and focused on communicating overarching concepts with clever solutions.",
     "contact": [
@@ -374,6 +374,11 @@
       "art": "Images/My Cherie Amour.png"
     },
     {
+      "caption": "The White Stripes - Apple Blossom",
+      "src": "Audio/Apple-Blossom.mp3",
+      "art": "Images/DeStijl.webp"
+    },
+    {
       "caption": "Slightly Stoopid - Officer",
       "src": "Audio/Officer.mp3",
       "art": "Images/ab67616d0000b273bbd081a355b3acd631d226d4.jpeg"
@@ -432,11 +437,6 @@
       "caption": "Choose U - Project Pat",
       "src": "Audio/Choose U - Project Pat.mp3",
       "art": "Images/Choose U - Project Pat.png"
-    },
-    {
-      "caption": "The White Stripes - Apple Blossom",
-      "src": "Audio/Apple-Blossom.mp3",
-      "art": "Images/DeStijl.webp"
     },
     {
       "caption": "Anika - Yang Yang",
