@@ -90,14 +90,6 @@
       "orientation": "portrait"
     },
     {
-      "caption": "Stunt Devil",
-      "src": "Images/07_stunt-devil.mp4",
-      "hover": "Images/hover/Stunt Devil_Album Visualizer.mp4",
-      "mobileHover": "Images/hover/Stunt-Devil-MV-IG_5.jpg",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
       "caption": "Beadle",
       "src": "Images/06_beadle.png",
       "hover": "Images/hover/06_beadle.jpg",
@@ -154,6 +146,14 @@
       "orientation": "portrait"
     },
     {
+      "caption": "Puppet Master",
+      "src": "Images/09_puppet-master.jpg",
+      "hover": "Images/hover/09_puppet-master.mp4",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Beadle Typeface",
       "src": "Images/Beadle-Display-IG4.gif",
       "hover": "Images/hover/240311_Beadle_Motion.mp4",
@@ -162,9 +162,17 @@
       "orientation": "landscape"
     },
     {
-      "caption": "Puppet Master",
-      "src": "Images/09_puppet-master.jpg",
-      "hover": "Images/hover/09_puppet-master.mp4",
+      "caption": "Stunt Devil",
+      "src": "Images/07_stunt-devil.mp4",
+      "hover": "Images/hover/Stunt Devil_Album Visualizer.mp4",
+      "mobileHover": "Images/hover/Stunt-Devil-MV-IG_5.jpg",
+      "hidden": false,
+      "orientation": "landscape"
+    },
+    {
+      "caption": "Standard Issue",
+      "src": "Images/12_standard-issue.jpg",
+      "hover": "Images/hover/12_standard-issue.jpg",
       "mobileHover": null,
       "hidden": false,
       "orientation": "portrait"
@@ -176,14 +184,6 @@
       "mobileHover": "Images/hover/lookat.jpg",
       "hidden": false,
       "orientation": "landscape"
-    },
-    {
-      "caption": "Standard Issue",
-      "src": "Images/12_standard-issue.jpg",
-      "hover": "Images/hover/12_standard-issue.jpg",
-      "mobileHover": null,
-      "hidden": false,
-      "orientation": "portrait"
     },
     {
       "caption": "NFT Youngboy",
