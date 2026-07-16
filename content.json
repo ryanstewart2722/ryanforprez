@@ -242,14 +242,6 @@
       "orientation": "landscape"
     },
     {
-      "caption": "Cassettes",
-      "src": "Images/Cassettes_B.webp",
-      "hover": "Images/hover/16_cassettes.jpg",
-      "mobileHover": "Images/hover/Cassettes_A.webp",
-      "hidden": false,
-      "orientation": "landscape"
-    },
-    {
       "caption": "Gin & Juice Tao Nightclub Visuals",
       "src": "Images/3.mp4",
       "hover": "Images/hover/7.mp4",
@@ -322,12 +314,12 @@
       "orientation": "portrait"
     },
     {
-      "caption": "",
-      "src": "",
-      "hover": "",
+      "caption": "RUN2RAVE",
+      "src": "Images/R2R-2.webp",
+      "hover": "Images/hover/R2R-3.webp",
       "mobileHover": null,
       "hidden": false,
-      "orientation": "landscape"
+      "orientation": "portrait"
     },
     {
       "caption": "Tendencies",
@@ -338,6 +330,14 @@
       "orientation": "landscape"
     },
     {
+      "caption": "AgentSmyth",
+      "src": "Images/BB-Nasdaq.mp4",
+      "hover": "Images/hover/AS-Hover.webp",
+      "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
       "caption": "Sound OFF",
       "src": "Images/Sound-Off-2.webp",
       "hover": "Images/hover/Sound-Off.webp",
@@ -346,10 +346,18 @@
       "orientation": "landscape"
     },
     {
-      "caption": "",
-      "src": "",
-      "hover": "",
+      "caption": "Wesley Knight",
+      "src": "Images/230716_Wesley-Knight-1.webp",
+      "hover": "Images/hover/WK2.mp4",
       "mobileHover": null,
+      "hidden": false,
+      "orientation": "portrait"
+    },
+    {
+      "caption": "Cassettes",
+      "src": "Images/Cassettes_B.webp",
+      "hover": "Images/hover/16_cassettes.jpg",
+      "mobileHover": "Images/hover/Cassettes_A.webp",
       "hidden": false,
       "orientation": "landscape"
     }
@@ -373,7 +381,7 @@
     {
       "caption": "Chief Keef - Citgo",
       "src": "Audio/Citgo.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 7.07.18ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯AM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 7.07.18ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯AM.webp"
     },
     {
       "caption": "Valerie BBC Radio - Amy Winehouse",
@@ -428,7 +436,7 @@
     {
       "caption": "Whearus - Teenage Dirtbag",
       "src": "Audio/Teenage Dirtbag.mp3",
-      "art": "Images/Screenshot 2026-06-17 at 10.58.23ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯PM.webp"
+      "art": "Images/Screenshot 2026-06-17 at 10.58.23ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯PM.webp"
     },
     {
       "caption": "Anika - Yang Yang",
