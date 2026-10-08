@@ -29,6 +29,14 @@
       {
         "label": "Awwwards - Peterson Rich Office",
         "href": "https://www.awwwards.com/sites/peterson-rich-office"
+      },
+      {
+        "label": "The Brand Identity - Late Denim",
+        "href": "https://www.instagram.com/p/DePo_ZvmUG-/"
+      },
+      {
+        "label": "Klikkenthéke - Alyssa Bonanno",
+        "href": "https://www.instagram.com/p/Dd9CeWIiKOq/?hl=en&img_index=1"
       }
     ]
   },
@@ -442,6 +450,11 @@
       "caption": "Anika - Yang Yang",
       "src": "Audio/Yang Yang [XlQ3rZMcShY].mp3",
       "art": "Images/a1224771393_10.jpg"
+    },
+    {
+      "caption": "Rick James - Mary Jane",
+      "src": "Audio/MaryJane-RickJames.mp3",
+      "art": "Images/Mary-Jane.webp"
     }
   ]
 }
